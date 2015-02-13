@@ -31,7 +31,7 @@ public class gameGlobal {
 		return null;
 	}
 	
-	public attack getAttack()
+	public Attack getAttack()
 	{
 		return null;	
 	}
