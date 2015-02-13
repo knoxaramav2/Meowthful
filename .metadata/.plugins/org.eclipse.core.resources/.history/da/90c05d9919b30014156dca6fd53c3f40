@@ -1,0 +1,7 @@
+package gameEngine;
+
+import java.util.*;
+
+public class gameGlobal {
+
+}

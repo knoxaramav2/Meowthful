@@ -1,0 +1,13 @@
+package gameEngine;
+
+import java.util.*;
+
+
+//stores global databases of base objects
+public class gameGlobal {
+
+	ArrayList PokemonDB = new ArrayList();
+	ArrayList AttackListDB = new ArrayList();
+	
+	
+}
