@@ -38,7 +38,7 @@ public class Pokemon {
 	int nextLevelExp;// countdown to next level
 	int expToNextLevel;//current amount to reach to next level
 	
-	Attack.Type type;
+	int type;
 	
 	ArrayList attacks = new ArrayList();
 	
@@ -108,12 +108,12 @@ public class Pokemon {
 			//check attack list against attack database
 			for (int y=0; y<attackList.size(); y++)
 			{
-				Attack atk = (Attack) attackList.get(y);
+				attack atk = (attack) attackList.get(y);
 				for (int z=0; z<attacks.size(); z++)
 				{
 					String atkStr = (String) attacks.get(z);
 					
-					if (atkStr.equals(atk.getName()))
+					if (atkStr.equals(atk.name))
 						this.attacks.add(atk);//load attack into pokemon
 				}
 			}
@@ -122,41 +122,5 @@ public class Pokemon {
 			break;
 		}
 	}
-	}
-	
-	public Attack.Type getType(){
-		return type;
-	}
-	
-	public int getSpeed(){
-		return currentSpeed;
-	}
-	
-	public int getHealth(){
-		return currentHealth;
-	}
-	
-	public void setHealth(int value){
-		currentHealth = value;
-	}
-	
-	public int getLevel(){
-		return level;
-	}
-	
-	public int getSpecialAttack(){
-		return currentSpecialAttack;
-	}
-	
-	public int getSpecialDefense(){
-		return currentSpecialDefense;
-	}
-	
-	public int getAttack(){
-		return currentAttack;
-	}
-	
-	public int getDefense(){
-		return currentDefense;
 	}
 }
