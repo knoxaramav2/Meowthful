@@ -17,6 +17,8 @@ public class Launcher {
 		unownInterpreter iEngine = new unownInterpreter();
 		data Sys = new data();
 		
+		//load base files
+		
 		//start graphics
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {

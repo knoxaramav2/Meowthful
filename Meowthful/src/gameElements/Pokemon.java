@@ -6,7 +6,7 @@ public class Pokemon {
 	
 	//create graphic variables (sprite, front, back)
 
-	String name = new String();
+	public String name = new String();
 	
 	//stats
 	int baseHealth;

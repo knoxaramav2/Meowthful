@@ -1,0 +1,10 @@
+package gameEngine;
+
+import java.util.*;
+
+public class gameGlobal {
+
+	ArrayList PokeMon = new ArrayList();
+	ArrayList AttackList = new AttackList();
+	
+}
