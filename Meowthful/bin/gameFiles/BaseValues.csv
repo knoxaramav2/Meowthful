@@ -1,4 +1,4 @@
-,Name,Health,Attack,Defense,Special Attack,Special Defense,Speed,,,,,
+:pkmn,Name,Health,Attack,Defense,Special Attack,Special Defense,Speed,,,,,
 1,Bulbasaur,45,49,49,65,65,45,,,,,
 2,Ivysaur,60,62,63,80,80,60,,,,,
 3,Venusaur,80,82,83,100,100,80,,,,,
@@ -151,5 +151,5 @@
 150,Mewtwo,106,110,90,154,90,130,,,,,
 151,Mew,100,100,100,100,100,100,,,,,
 ,,,,,,,,,,,,
-,Name,Type,Party,,,,,,Level,Money,Battleable,Items
-1,Test Grunt,Grunt,Zubat,,,,,,5,10,yes,potionx2
+:actor,Name,Type,Party,,,,,,Level,Money,Battleable,Items
+1,Test Grunt,Grunt,Zubat,n/a,n/a,n/a,n/a,n/a,5,10,yes,potion(2)
