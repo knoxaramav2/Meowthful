@@ -9,38 +9,38 @@ public class Pokemon {
 	public String name = new String();
 
 	// stats
-	int baseHealth;
-	int currentHealth;
+	private int baseHealth;
+	private int currentHealth;
 
-	int baseSpeed;
-	int currentSpeed;
+	private int baseSpeed;
+	private int currentSpeed;
 
-	int baseEvasiveness;
-	int currentEvasiveness;
+	private int baseEvasiveness;
+	private int currentEvasiveness;
 
-	int baseAttack;
-	int currentAttack;
+	private int baseAttack;
+	private int currentAttack;
 
-	int baseDefense;
-	int currentDefense;
+	private int baseDefense;
+	private int currentDefense;
 
-	int baseSpecialAttack;
-	int currentSpecialAttack;
+	private int baseSpecialAttack;
+	private int currentSpecialAttack;
 
-	int baseSpecialDefense;
-	int currentSpecialDefense;
+	private int baseSpecialDefense;
+	private int currentSpecialDefense;
 
-	int level;
-	int baseStatMultiplier;
-	int statMultiplier;
+	private int level;
+	private int baseStatMultiplier;
+	private int statMultiplier;
 
-	int exp;// current exp overall
-	int nextLevelExp;// countdown to next level
-	int expToNextLevel;// current amount to reach to next level
+	private int exp;// current exp overall
+	private int nextLevelExp;// countdown to next level
+	private int expToNextLevel;// current amount to reach to next level
 
-	int currentWeight;
+	private int currentWeight;
 	
-	Types.Type type;
+	private Types.Type type;
 
 	ArrayList attacks = new ArrayList();
 
@@ -139,6 +139,10 @@ public class Pokemon {
 		if (currentHealth < 0) currentHealth = 0;
 		if (currentHealth > baseHealth) currentHealth = baseHealth;
 	}
+	
+	public void resetHealth(){
+		currentHealth = baseHealth;
+	}
 
 	public int getAttack() {
 		return currentAttack;
@@ -152,6 +156,10 @@ public class Pokemon {
 	public void modAttack(int value){
 		currentAttack += value;
 		if (currentAttack < 0) currentAttack = 0;
+	}
+
+	public void resetAttack(){
+		currentAttack = baseAttack;
 	}
 
 	public int getDefense() {
@@ -168,6 +176,10 @@ public class Pokemon {
 		if (currentDefense< 0) currentDefense= 0;
 	}
 	
+	public void resetDefense(){
+		currentDefense = baseDefense;
+	}
+	
 	public int getSpecialAttack() {
 		return currentSpecialAttack;
 	}
@@ -182,6 +194,10 @@ public class Pokemon {
 		if (currentSpecialAttack < 0) currentSpecialAttack = 0;
 	}
 
+	public void resetSpecialAttack(){
+		currentSpecialAttack = baseSpecialAttack;
+	}
+	
 	public int getSpecialDefense() {
 		return currentSpecialDefense;
 	}
@@ -196,6 +212,10 @@ public class Pokemon {
 		if (currentSpecialDefense < 0) currentSpecialDefense = 0;
 	}
 
+	public void resetSpecialDefense(){
+		currentSpecialDefense = baseSpecialDefense;
+	}
+	
 	public int getSpeed() {
 		return currentSpeed;
 	}
@@ -210,6 +230,10 @@ public class Pokemon {
 		if (currentSpeed < 0) currentSpeed = 0;
 	}
 
+	public void resetSpeed(){
+		currentSpeed = baseSpeed;
+	}
+	
 	public Types.Type getType() {
 		return type;
 	}
