@@ -1,28 +1,28 @@
 package gameElements;
 
-public class Attack {
-	public enum Type{normal, flying, fighting, ground, rock, bug, grass, water, fire, electric, ghost, psychic, dragon, ice, poison};
-	
+public class Attack {	
 	private int basePP;
 	private String name;
 	private int accuracy;
-	private Type type;
+	private Types.Type type;
 	private int damage;
 	private int effect;
 	private int basePower;
 	private boolean isSpcAtk;
+	private double flinchProbability;
 
 	// creates base attack object (to be referenced only)
-	public Attack(String name, int accuracy, Type type, int damage, int basePP, int effect) {
+	public Attack(String name, int accuracy, Types.Type type, int damage, int basePP, int effect, double flinchProbability) {
 		this.basePP = basePP;
 		this.name = name;
 		this.accuracy = accuracy;
 		this.type = type;
 		this.damage = damage;
 		this.effect = effect;
+		this.flinchProbability = flinchProbability;
 	}
 
-	public Type getAttackType(){
+	public Types.Type getAttackType(){
 		return type;
 	}
 	
@@ -52,5 +52,9 @@ public class Attack {
 	
 	public int getBasePower(){
 		return basePower;
+	}
+	
+	public double getFlinchProbability(){
+		return flinchProbability;
 	}
 }

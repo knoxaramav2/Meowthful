@@ -41,7 +41,9 @@ public class Pokemon {
 	private int currentWeight;
 	
 	private Types.Type type;
-
+	private Types.ExplicitStatus explicitStatus;
+	private Types.ImplicitStatus implicitStatus;
+	
 	ArrayList attacks = new ArrayList();
 
 	public Pokemon() {
@@ -77,6 +79,8 @@ public class Pokemon {
 		expToNextLevel = 0;// current amount to reach to next level
 
 		type = Types.Type.normal;
+		explicitStatus = Types.ExplicitStatus.none;
+		implicitStatus = Types.ImplicitStatus.none;
 		
 		currentWeight = 0;
 	}
