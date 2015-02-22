@@ -32,13 +32,11 @@ public class Pokemon {
 
 	private int level;
 	private int baseStatMultiplier;
-	private int statMultiplier;
+	private int currentStatMultiplier;
 
 	private int exp;// current exp overall
 	private int nextLevelExp;// countdown to next level
 	private int expToNextLevel;// current amount to reach to next level
-
-	private int currentWeight;
 	
 	private Types.Type type;
 	private Types.ExplicitStatus explicitStatus;
@@ -72,7 +70,7 @@ public class Pokemon {
 
 		level = 0;
 		baseStatMultiplier = 0;
-		statMultiplier = 0;
+		currentStatMultiplier = 0;
 
 		exp = 0;// current exp overall
 		nextLevelExp = 0;// countdown to next level
@@ -80,26 +78,49 @@ public class Pokemon {
 
 		type = Types.Type.normal;
 		explicitStatus = Types.ExplicitStatus.none;
-		implicitStatus = Types.ImplicitStatus.none;
-		
-		currentWeight = 0;
+		implicitStatus = Types.ImplicitStatus.none;		
 	}
 
 	// loads base pokemon. Specific stats must be loaded seperately
 	public Pokemon(String name, int baseHealth, int baseAttack,
 			int baseDefense, int baseSpeed, int baseEvasiveness,
 			int baseSpecialAttack, int baseSpecialDefense, int ExpToNextLevel,
-			int baseStatMultiplier) {
+			int baseStatMultiplier, Types.Type type, Types.ExplicitStatus expStatus,
+			Types.ImplicitStatus impStatus) {
 		this.name = name;
 
 		this.baseHealth = baseHealth;
+		currentHealth = baseHealth;
+		
 		this.baseAttack = baseAttack;
+		currentAttack = baseAttack;
+		
 		this.baseDefense = baseDefense;
+		currentDefense = baseDefense;
+		
 		this.baseEvasiveness = baseEvasiveness;
+		currentEvasiveness = baseEvasiveness;
+		
 		this.baseSpecialAttack = baseSpecialAttack;
+		currentSpecialAttack = baseSpecialAttack;
+		
 		this.baseSpecialDefense = baseSpecialDefense;
+		currentSpecialDefense = baseSpecialDefense;
+		
 		this.baseSpeed = baseSpeed;
+		currentSpeed = baseSpeed;
+		
 		this.baseStatMultiplier = baseStatMultiplier;
+		currentStatMultiplier = baseStatMultiplier;
+		
+		this.type = type;
+		explicitStatus = expStatus;
+		implicitStatus = impStatus;
+		
+		level = 0;
+		exp = 0;
+		nextLevelExp = 0;
+		expToNextLevel = 0;
 	}
 
 	// create specific pokemon instance from name and specific stats
@@ -220,6 +241,24 @@ public class Pokemon {
 		currentSpecialDefense = baseSpecialDefense;
 	}
 	
+	public int getEvasiveness(){
+		return currentEvasiveness;
+	}
+	
+	public void setEvasiveness(int value){
+		currentEvasiveness = value;
+		if(currentEvasiveness < 0) currentEvasiveness = 0;
+	}
+	
+	public void modEvasiveness(int value){
+		currentEvasiveness += value;
+		if(currentEvasiveness < 0) currentEvasiveness = 0;
+	}
+	
+	public void resetEvasiveness(){
+		currentEvasiveness = baseEvasiveness;
+	}
+	
 	public int getSpeed() {
 		return currentSpeed;
 	}
@@ -241,6 +280,34 @@ public class Pokemon {
 	public Types.Type getType() {
 		return type;
 	}
+	
+	public void setType(Types.Type newType){
+		type = newType;
+	}
+	
+	public Types.ExplicitStatus getExplicitStatus(){
+		return explicitStatus;
+	}
+	
+	public void setExplicitStatus(Types.ExplicitStatus newStatus){
+		explicitStatus = newStatus;
+	}
+	
+	public void removeExplicitStatusEffect(){
+		explicitStatus = Types.ExplicitStatus.none;
+	}
+	
+	public Types.ImplicitStatus getImplicitStatus(){
+		return implicitStatus;
+	}
+	
+	public void setImplicitStatus(Types.ImplicitStatus newStatus){
+		implicitStatus = newStatus;
+	}
+	
+	public void removeImplicitStatusEffect(){
+		implicitStatus = Types.ImplicitStatus.none;
+	}
 
 	public int getLevel() {
 		return level;
@@ -254,19 +321,5 @@ public class Pokemon {
 	public void modLevel(int value){
 		level += value;
 		if(level < 0) level = 0;
-	}
-	
-	public int getWeight(){
-		return currentWeight;
-	}
-
-	public void setWeight(int value){
-		currentWeight = value;
-		if(currentWeight < 0) currentWeight = 0;
-	}
-
-	public void modWeight(int value){
-		currentWeight += value;
-		if(currentWeight < 0) currentWeight = 0;
 	}
 }
