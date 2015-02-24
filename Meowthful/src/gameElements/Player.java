@@ -4,19 +4,21 @@ import java.awt.image.BufferedImage;
 
 public class Player {
 	//Player, AI
-	public Player()
+	
+	public String name;
+	public int money;
+	public int rank;
+	public ArrayList <Pokemon> party;
+	
+	public int posx, posy;
+	public int map;
+	
+	public boolean controllable;
+	public boolean trainer;
+	
+	public Player(String params)
 	{
-		String name= new String();
-		int money;
-		int rank;
-		ArrayList party = new ArrayList();
-		
-		int posx, posy;
-		int map;
-		
-		boolean controllable;
-		boolean trainer;
-		
+		//Parse from line into base
 		
 	}
 
