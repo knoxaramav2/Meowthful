@@ -1,5 +1,6 @@
 package gameEngine;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import scriptEngine.unownInterpreter;
@@ -25,7 +26,12 @@ public class Launcher {
 		//start graphics
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	renderer.createAndShowGUI();
+            	try {
+					renderer.createAndShowGUI();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 		
