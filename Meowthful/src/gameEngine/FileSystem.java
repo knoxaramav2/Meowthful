@@ -17,9 +17,32 @@ public class FileSystem {
 	//load flags
 	static int _actor=0, _pkmn=1;
 	
-	public static gameGlobal loadGlobals(String fileName) throws IOException
+	public static gameGlobal loadGlobals(gameGlobal g, String fileName)
 	{
-		gameGlobal gG = new gameGlobal();
+		BufferedReader br=null;
+		
+		String cache = new String();
+	
+		
+		//determine file to read
+		if (fileName.equals("Actors.csv"))
+		{//read AI data/Player
+			
+		}
+		else if (fileName.equals("BaseValues.csv"))
+		{
+			
+		}
+		else if (fileName.equals("Attacks.csv"))
+		{
+			
+		}
+		return g;
+	}
+}
+
+/*
+ * gameGlobal gG = new gameGlobal();
 		BufferedReader br=null;
 		String line = "";
 		String delim = ",|\\n";
@@ -29,45 +52,5 @@ public class FileSystem {
 		
 		try {
 			br = new BufferedReader(new FileReader(fileName));
-			while ((line=br.readLine()) != null)
-			{
-				//get lines
-				String[] input = line.split(delim);
-				for (String res : input)
-				{
-					//ignore blank values
-					if (res.equals(""))
-						continue;
-					
-					//check for mode
-					if (res.charAt(0)==':')
-					{
-						//begin loading pokemon base block
-						if (res.equals(":pkmn"))
-						{
-							mode=_pkmn;
-						}//begin loading actor base block
-						else if (res.equals(":actor")){
-							mode=_actor;
-						}
-					}
-					
-				}
-					
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}finally {
-			if (br !=null)
-				try {
-					br.close();
-				}catch (IOException e)
-			{
-					e.printStackTrace();
-			}
-		}
-		
-		return gG;
-	}
-	
-}
+ */
+*/

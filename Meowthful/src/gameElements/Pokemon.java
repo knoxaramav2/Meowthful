@@ -80,6 +80,11 @@ public class Pokemon {
 	}
 
 	// loads base pokemon. Specific stats must be loaded seperately
+<<<<<<< HEAD
+	public Pokemon(String params) {
+		//parse into base values
+		//set current to base
+=======
 	public Pokemon(String name, int baseHealth, int baseAttack,
 			int baseDefense, int baseSpeed, int baseEvasiveness,
 			int baseSpecialAttack, int baseSpecialDefense, int ExpToNextLevel,
@@ -140,6 +145,7 @@ public class Pokemon {
 				break;
 			}
 		}
+>>>>>>> d53a386adc3916cee3846ef6acee188fd1a8d7b8
 	}
 
 	public String getName() {

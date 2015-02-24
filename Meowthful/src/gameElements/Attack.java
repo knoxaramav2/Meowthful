@@ -1,7 +1,7 @@
 package gameElements;
 
 public class Attack {	
-	private String 				name;
+	public String 				name;
 	private Types.Type 			type;
 	private Types.AttackEffects effect;
 	private int 				basePP;
@@ -17,25 +17,8 @@ public class Attack {
 	private boolean 			isSpcAtk;
 
 	// creates base attack object (to be referenced only)
-	public Attack(String name, int accuracy, Types.Type type, int damage, int basePP, Types.AttackEffects effect, double flinchProbability, int turnCooldown) {
-		this.name = name;
-		this.effect = effect;
-		this.type = type;
-		
-		this.basePP = basePP;
-		currentPP = basePP;
-		
-		this.baseAccuracy = accuracy;
-		currentAccuracy = accuracy;
-		
-		this.baseDamage = damage;
-		currentDamage = damage;		
-		
-		this.baseFlinchProbability = flinchProbability;
-		currentFlinchProbability = flinchProbability;
-		
-		this.cooldownTimer = turnCooldown;
-		currentCooldown = 0;
+	public Attack(String params) {
+
 	}
 
 	public String getName(){

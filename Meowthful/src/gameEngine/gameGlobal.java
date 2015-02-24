@@ -7,9 +7,9 @@ import gameElements.*;
 //stores global databases of base objects
 public class gameGlobal {
 
-	ArrayList pokemonDB = new ArrayList();
-	ArrayList attackListDB = new ArrayList();
-	ArrayList playerList = new ArrayList();
+	ArrayList <Pokemon> pokemonDB = new <Pokemon> ArrayList();
+	ArrayList <Attack> attackListDB = new <Attack> ArrayList();
+	ArrayList <Player> playerList = new <Player> ArrayList();
 	
 	//retrieve copy of base pokemon
 	public Pokemon getPokemon(String name)
@@ -26,13 +26,31 @@ public class gameGlobal {
 		return null;
 	}
 	
-	public Player getPlayer()
+	public Player getPlayer(String name)
 	{
+		Player p = null;
+		for (int x=0; x<playerList.size(); x++)
+		{
+			p=(Player)playerList.get(x);
+			if (p.name.equals(name))
+			{
+				return p;
+			}
+		}
 		return null;
 	}
 	
-	public Attack getAttack()
+	public Attack getAttack(String name)
 	{
+		Attack p = null;
+		for (int x=0; x<attackListDB.size(); x++)
+		{
+			p=attackListDB.get(x);
+			if (p.name.equals(name))
+			{
+				return p;
+			}
+		}
 		return null;	
 	}
 }
