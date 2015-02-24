@@ -6,42 +6,125 @@ import gameElements.Attack;
 import gameElements.Types;
 
 public class BattleManager {
-	private Pokemon attacker;
-	private Pokemon defender;
-	private Attack  attack;
 	private Random  rand;
 	private boolean canAttack;
+	private Pokemon poke1;
+	private Pokemon poke2;
+	private Pokemon winner;
+	private Attack  atk1;
+	private Attack  atk2;
 	
-	public BattleManager(Pokemon attacker, Pokemon defender, Attack attack){
-		this.attacker = attacker;
-		this.defender = defender;
-		this.attack = attack;
+	//TODO: Figure out what needs to go in here
+	public BattleManager(){
 		rand = new Random();
 		canAttack = true;
 	}
+	
+	public void executeRound(Pokemon pokemon1, Pokemon pokemon2, Attack attack1, Attack attack2){
+		poke1 = pokemon1;
+		poke2 = pokemon2;
+		atk1  = attack1;
+		atk2  = attack2;
 		
-	public void ApplyDamage(){
-		defender.modHealth(-CalculateDamage());
+		if(poke1.getSpeed() > poke2.getSpeed()){
+			if(atk1.canAttack() && poke1.getHealth() > 0) applyDamage(poke1, poke2, atk1);
+			if(atk2.canAttack() && poke2.getHealth() > 0) applyDamage(poke2, poke1, atk2);
+		}else{
+			if(atk2.canAttack() && poke2.getHealth() > 0) applyDamage(poke2, poke1, atk2);			
+			if(atk1.canAttack() && poke1.getHealth() > 0) applyDamage(poke1, poke2, atk1);
+		}
+		 
+		calculateStatusEffect(poke1, false);
+		calculateWinner();
+		if(winner == null) calculateStatusEffect(poke2, false);
+		calculateWinner();
 	}
 	
-	private boolean criticalHit(){
-		return (rand.nextFloat() <= (attacker.getSpeed()/512.0f));
+	public Pokemon getWinner(){
+		return winner;
 	}
 	
-	private boolean stabBonus(){
-		return (attack.getAttackType() == attacker.getType());
+	public void resetWinner(){
+		winner = null;
+	}
+	
+	private void calculateWinner(){
+		if(poke1.getHealth() == 0 && poke2.getHealth() > 0) winner = poke2;
+		else if(poke1.getHealth() > 0 && poke2.getHealth() == 0) winner = poke1;
+		else winner = null;
+	}
+		
+	private void applyDamage(Pokemon attacker, Pokemon defender, Attack attack){
+		defender.modHealth(-calculateDamage(attacker, defender, attack));
+	}
+	
+	private boolean criticalHit(Pokemon poke){
+		return (rand.nextFloat() <= (poke.getSpeed()/512.0f));
+	}
+	
+	private boolean stabBonus(Pokemon poke, Attack atk){
+		return (atk.getAttackType() == poke.getType());
 	}
 	
 	private float randomModifier(){
 		return (rand.nextInt(15) + 85)/100.0f;
 	}
 	
-	private int CalculateDamage(){
-		float damageMultiplier = 1.0f;
-		int   attackPower = 0;
-		int   defenseStrength = 0;
-		int   damageApplied = 0;
-
+	//TODO: finish all status effects and group by when the effect takes place
+	private boolean calculateStatusEffect(Pokemon poke, boolean beforeTurn){
+		switch(poke.getExplicitStatus()){
+			case paralysis:
+				if(rand.nextFloat() < 0.25f && beforeTurn) return false;
+				break;
+				
+			case burn:
+			case poison:
+				if(!beforeTurn){
+					float healthMod = 1.0f*poke.getBaseHealth();
+					healthMod *= 0.0625f;
+					poke.modHealth((int)(-healthMod));
+				}
+				break;
+				
+			case sleep:
+			case frozen:
+				if(beforeTurn) return false;
+				break;
+				
+			default:;
+		}
+		
+		switch(poke.getImplicitStatus()){			
+			case confusion:
+				
+				break;
+				
+			case bound:
+				
+				break;
+				
+			case infatuation:
+				
+				break;
+				
+			case fear:
+				
+				break;
+				
+			default:;
+		}
+		
+		return true;
+	}
+	
+	private int calculateDamage(Pokemon attacker, Pokemon defender, Attack attack){
+		float   damageMultiplier = 1.0f;
+		int     attackPower = 0;
+		int   	defenseStrength = 0;
+		int   	damageApplied = 0;		
+		
+		canAttack = calculateStatusEffect(attacker, true);
+		
 		if(canAttack){
 			switch(attack.getAttackType()){
 			case normal:
@@ -190,8 +273,8 @@ public class BattleManager {
 			
 			attackPower = (attack.isSpecialAttack()) ? attacker.getSpecialAttack() : attacker.getAttack();
 			defenseStrength = (attack.isSpecialAttack()) ? defender.getSpecialDefense() : defender.getDefense();
-			if(stabBonus()) damageMultiplier *= 1.5;
-			if(criticalHit()) damageMultiplier *= 2;
+			if(stabBonus(attacker, attack)) damageMultiplier *= 1.5;
+			if(criticalHit(attacker)) damageMultiplier *= 2;
 			damageMultiplier *= randomModifier();
 			
 			damageApplied = (int)((((((2*attacker.getLevel()) + 10)/250.0f)*((float)attackPower/defenseStrength)*(attack.getBasePower()))+2)*damageMultiplier);
