@@ -9,15 +9,15 @@ public class BattleRound {
 	}
 
 	public void executeRound(Pokemon poke1, Pokemon poke2, Attack att1, Attack att2){
-		BattleManager bm1 = new BattleManager(poke1, poke2, att1);
-		BattleManager bm2 = new BattleManager(poke2, poke1, att2);;
+//		BattleManager bm1 = new BattleManager(poke1, poke2, att1);
+//		BattleManager bm2 = new BattleManager(poke2, poke1, att2);;
 		
 		if(poke1.getSpeed() >= poke2.getSpeed()){
-			if(poke1.getHealth() > 0) bm1.ApplyDamage();
-			if(poke2.getHealth() > 0) bm2.ApplyDamage();
+//			if(poke1.getHealth() > 0) bm1.ApplyDamage();
+//			if(poke2.getHealth() > 0) bm2.ApplyDamage();
 		}else{
-			if(poke2.getHealth() > 0) bm2.ApplyDamage();
-			if(poke1.getHealth() > 0) bm1.ApplyDamage();			
+//			if(poke2.getHealth() > 0) bm2.ApplyDamage();
+//			if(poke1.getHealth() > 0) bm1.ApplyDamage();			
 		}
 		
 		postRoundAilments(poke1, poke2);

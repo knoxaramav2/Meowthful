@@ -152,8 +152,6 @@ public class Attack {
 	}
 	
 	private boolean calculateIsSpecialAttack(){
-		return (type == Types.Type.water || type == Types.Type.grass    || type == Types.Type.fire    ||
-		        type == Types.Type.ice   || type == Types.Type.electric || type == Types.Type.psychic ||
-		        type == Types.Type.dragon);
+		return (type == Types.Type.water || type == Types.Type.grass || type == Types.Type.fire || type == Types.Type.ice || type == Types.Type.electric || type == Types.Type.psychic || type == Types.Type.dragon);
 	}
 }

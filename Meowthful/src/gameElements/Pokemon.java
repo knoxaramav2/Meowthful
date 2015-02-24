@@ -36,7 +36,6 @@ public class Pokemon {
 
 	private int exp;// current exp overall
 	private int nextLevelExp;// countdown to next level
-	private int expToNextLevel;// current amount to reach to next level
 	
 	private Types.Type type;
 	private Types.ExplicitStatus explicitStatus;
@@ -74,7 +73,6 @@ public class Pokemon {
 
 		exp = 0;// current exp overall
 		nextLevelExp = 0;// countdown to next level
-		expToNextLevel = 0;// current amount to reach to next level
 
 		type = Types.Type.normal;
 		explicitStatus = Types.ExplicitStatus.none;
@@ -120,7 +118,6 @@ public class Pokemon {
 		level = 0;
 		exp = 0;
 		nextLevelExp = 0;
-		expToNextLevel = 0;
 	}
 
 	// create specific pokemon instance from name and specific stats
@@ -149,6 +146,18 @@ public class Pokemon {
 		return name;
 	}
 
+	public int getBaseHealth(){
+		return baseHealth;
+	}
+	
+	public void setBaseHealth(int value){
+		baseHealth = value;
+	}
+	
+	public void modBaseHealth(int value){
+		baseHealth += value;
+	}
+	
 	public int getHealth() {
 		return currentHealth;
 	}
@@ -321,5 +330,40 @@ public class Pokemon {
 	public void modLevel(int value){
 		level += value;
 		if(level < 0) level = 0;
+	}
+	
+	public void resetLevel(){
+		level = 0;
+	}
+	
+	public int getEXP(){
+		return exp;
+	}
+	
+	public void setEXP(int value){
+		exp = value;
+		if(exp < 0) exp = 0;
+	}
+	
+	public void modEXP(int value){
+		exp += value;
+		if(exp < 0) exp = 0;
+	}
+	
+	public void resetEXP(){
+		exp = 0;
+	}
+	
+	public int getNextLevelEXP(){
+		return nextLevelExp;
+	}
+	
+	public void setNextLevelEXP(int value){
+		nextLevelExp = value;
+		if(nextLevelExp <= exp) nextLevelExp = exp + 1;
+	}
+	
+	public int getEXPToNextLevel(){
+		return nextLevelExp - exp;
 	}
 }
