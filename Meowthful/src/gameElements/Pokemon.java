@@ -80,72 +80,10 @@ public class Pokemon {
 	}
 
 	// loads base pokemon. Specific stats must be loaded seperately
-<<<<<<< HEAD
+
 	public Pokemon(String params) {
 		//parse into base values
 		//set current to base
-=======
-	public Pokemon(String name, int baseHealth, int baseAttack,
-			int baseDefense, int baseSpeed, int baseEvasiveness,
-			int baseSpecialAttack, int baseSpecialDefense, int ExpToNextLevel,
-			int baseStatMultiplier, Types.Type type, Types.ExplicitStatus expStatus,
-			Types.ImplicitStatus impStatus) {
-		this.name = name;
-
-		this.baseHealth = baseHealth;
-		currentHealth = baseHealth;
-		
-		this.baseAttack = baseAttack;
-		currentAttack = baseAttack;
-		
-		this.baseDefense = baseDefense;
-		currentDefense = baseDefense;
-		
-		this.baseEvasiveness = baseEvasiveness;
-		currentEvasiveness = baseEvasiveness;
-		
-		this.baseSpecialAttack = baseSpecialAttack;
-		currentSpecialAttack = baseSpecialAttack;
-		
-		this.baseSpecialDefense = baseSpecialDefense;
-		currentSpecialDefense = baseSpecialDefense;
-		
-		this.baseSpeed = baseSpeed;
-		currentSpeed = baseSpeed;
-		
-		this.baseStatMultiplier = baseStatMultiplier;
-		currentStatMultiplier = baseStatMultiplier;
-		
-		this.type = type;
-		explicitStatus = expStatus;
-		implicitStatus = impStatus;
-		
-		level = 0;
-		exp = 0;
-		nextLevelExp = 0;
-	}
-
-	// create specific pokemon instance from name and specific stats
-	public Pokemon(String name, ArrayList pokeList, ArrayList attacks,
-			ArrayList attackList, String baseStats, String currentStats) {
-		for (int x = 0; x < pokeList.size(); x++) {
-			Pokemon p = (Pokemon) pokeList.get(x);
-			if (p.name == name) {
-				// check attack list against attack database
-				for (int y = 0; y < attackList.size(); y++) {
-					Attack atk = (Attack) attackList.get(y);
-					for (int z = 0; z < attacks.size(); z++) {
-						String atkStr = (String) attacks.get(z);
-
-						if (atkStr.equals(atk.getName()))
-							this.attacks.add(atk);// load attack into pokemon
-					}
-				}
-
-				break;
-			}
-		}
->>>>>>> d53a386adc3916cee3846ef6acee188fd1a8d7b8
 	}
 
 	public String getName() {

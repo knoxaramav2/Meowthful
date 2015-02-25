@@ -57,7 +57,7 @@ public class AttackTests {
 							 "With a cooldown of 2, the current cooldown should be 2 after calling activate cooldown",
 							 "With a cooldown of 2, the current cooldown should be 1 after activating the cooldown and waiting 1 turn"};
 
-	
+	/*
 	@Test
 	public void GetName(){
 		Attack a = new Attack("Hyper Beam", 90, Types.Type.normal, 100, 5, Types.AttackEffects.recharge, 0.5, 2);
@@ -406,4 +406,6 @@ public class AttackTests {
 		a.decreaseCooldown();
 		assertEquals(msgs[47], 1, a.getCurrentCooldown());
 	}
+	
+	*/
 }

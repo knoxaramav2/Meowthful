@@ -1,5 +1,6 @@
 package gameEngine;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import scriptEngine.unownInterpreter;
@@ -17,15 +18,20 @@ public class Launcher {
 		//initialize classes
 		unownInterpreter iEngine = new unownInterpreter();
 		data Sys = new data();
-		gameGlobal global;
+		gameGlobal global = new gameGlobal();
 		
 		//load base files
-		global = FileSystem.loadGlobals("src/gameFiles/BaseValues.csv");
+		global = FileSystem.loadGlobals(global, "src/gameFiles/BaseValues.csv");
 		
 		//start graphics
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	renderer.createAndShowGUI();
+            	try {
+					renderer.createAndShowGUI();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 		
