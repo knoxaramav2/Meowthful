@@ -1,2 +1,2 @@
-:actor,name,type,party,,,,,,level,money,battleable,Items,startmap,position,aischeme
-1,Test Grunt,grunt,zubat,n/a,n/a,n/a,n/a,n/a,5,10,yes,potion(2),,,
+meta:,name,rank,party,,,,,,level,money,battleable,Items,startmap,position,aischeme,orientation,battleCoolDown
+1,Test Grunt,grunt,zubat:5,n/a,n/a,n/a,n/a,n/a,5,10,yes,potion(2),0,5|10,0,0,10

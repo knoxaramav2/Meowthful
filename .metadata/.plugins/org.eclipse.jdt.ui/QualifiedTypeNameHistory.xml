@@ -4,11 +4,13 @@
 <fullyQualifiedTypeName name="gameElements.Attack.Type"/>
 <fullyQualifiedTypeName name="org.junit.Assert"/>
 <fullyQualifiedTypeName name="org.junit.Before"/>
-<fullyQualifiedTypeName name="gameElements.Pokemon"/>
 <fullyQualifiedTypeName name="gameElements.Types.ImplicitStatus"/>
-<fullyQualifiedTypeName name="gameElements.Types.ExplicitStatus"/>
-<fullyQualifiedTypeName name="gameElements.Attack"/>
 <fullyQualifiedTypeName name="gameElements.Types"/>
-<fullyQualifiedTypeName name="gameElements.Types.AttackEffects"/>
+<fullyQualifiedTypeName name="java.nio.file.Files"/>
+<fullyQualifiedTypeName name="gameElements.Pokemon"/>
+<fullyQualifiedTypeName name="gameElements.Attack"/>
+<fullyQualifiedTypeName name="gameElements.Player"/>
 <fullyQualifiedTypeName name="gameElements.Types.Type"/>
+<fullyQualifiedTypeName name="gameElements.Types.ExplicitStatus"/>
+<fullyQualifiedTypeName name="gameElements.Types.AttackEffects"/>
 </qualifiedTypeNameHistroy>

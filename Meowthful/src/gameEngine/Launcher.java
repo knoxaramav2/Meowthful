@@ -20,12 +20,12 @@ public class Launcher {
 		data Sys = new data();
 		gameGlobal global = new gameGlobal();
 		
-		//load base files
-		global = FileSystem.loadGlobals(global, "src/gameFiles/BaseValues.csv");
+		//load base files (complete)
+		global = FileSystem.loadGlobals(global, "src/gameFiles/BaseValues.csv","src/gameFiles/Attacks.csv","src/gameFiles/Actors.csv");
 		
 		//start graphics
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+            public void run() {//game peripheral loop in renderer class
             	try {
 					renderer.createAndShowGUI();
 				} catch (IOException e) {
@@ -34,20 +34,6 @@ public class Launcher {
 				}
             }
         });
-		
-		//game loop
-		while (Sys.active)
-		{
-			//get keystrokes
-			
-			//check movement
-			
-			//send events
-			
-			//receive events
-			
-			//update graphics
-		}
 		
 	}
 

@@ -5,30 +5,39 @@ import java.util.ArrayList;
 public class Pokemon {
 
 	// create graphic variables (sprite, front, back)
+	
+	//TODO: add stat multipliers to load file. Use to level pokemon stats
 
 	public String name = new String();
 
 	// stats
 	private int baseHealth;
 	private int currentHealth;
+	private int healthMultiplier;
 
 	private int baseSpeed;
 	private int currentSpeed;
+	private int speedMultiplier;
 
 	private int baseEvasiveness;
 	private int currentEvasiveness;
+	private int evasivenessMultiplier;
 
 	private int baseAttack;
 	private int currentAttack;
+	private int attackMultiplier;
 
 	private int baseDefense;
 	private int currentDefense;
+	private int defenseMultiplier;
 
 	private int baseSpecialAttack;
 	private int currentSpecialAttack;
+	private int specialAttackMultiplier;
 
 	private int baseSpecialDefense;
 	private int currentSpecialDefense;
+	private int specialDefenseMultiplier;
 
 	private int level;
 	private int baseStatMultiplier;
@@ -41,7 +50,9 @@ public class Pokemon {
 	private Types.ExplicitStatus explicitStatus;
 	private Types.ImplicitStatus implicitStatus;
 	
-	ArrayList attacks = new ArrayList();
+	private int number;
+	
+	ArrayList <Attack> attacks = new <Attack> ArrayList();
 
 	public Pokemon() {
 		String name = new String();
@@ -77,6 +88,8 @@ public class Pokemon {
 		type = Types.Type.normal;
 		explicitStatus = Types.ExplicitStatus.none;
 		implicitStatus = Types.ImplicitStatus.none;		
+		
+		number=0;
 	}
 
 	// loads base pokemon. Specific stats must be loaded seperately
@@ -84,6 +97,92 @@ public class Pokemon {
 	public Pokemon(String params) {
 		//parse into base values
 		//set current to base
+		String list[] = params.split(",");
+		
+		for (int i=1; i<params.length()-1;i++)
+		{
+			switch(i)
+			{
+			case 0:
+				number=Integer.parseInt(list[i]);
+				break;
+			case 1:
+				name=list[i];
+				break;
+			case 2:
+				baseHealth=Integer.parseInt(list[i]);
+				break;
+			case 3:
+				baseAttack=Integer.parseInt(list[i]);
+				break;
+			case 4:
+				baseDefense=Integer.parseInt(list[i]);
+				break;
+			case 5:
+				baseSpecialAttack=Integer.parseInt(list[i]);
+				break;
+			case 6:
+				baseSpecialDefense=Integer.parseInt(list[i]);
+				break;
+			case 7:
+				baseSpeed=Integer.parseInt(list[i]);
+				break;
+			}
+		}
+		
+		restoreStats();
+		
+	}
+	
+	//levels input base pokemon to  
+	public void generateAtLevel(String name, int level, Pokemon p)
+	{
+		
+	}
+	
+	public void restoreCondition()
+	{
+		explicitStatus = Types.ExplicitStatus.none;
+		implicitStatus = Types.ImplicitStatus.none;	
+	}
+	
+	public void restoreAllPP()
+	{
+		for (int x=0; x<attacks.size(); x++)
+		{
+			Attack a = attacks.get(x);
+			a.resetCurrentPP();
+		}
+	}
+	
+	public void restoreStats()
+	{
+		currentHealth = baseHealth;
+
+		currentSpeed = baseSpeed;;
+
+		currentEvasiveness = baseEvasiveness;
+
+		currentAttack = baseAttack;
+
+		currentDefense = baseDefense;
+
+		currentSpecialAttack = baseSpecialAttack;
+
+		currentSpecialDefense = baseSpecialDefense;
+
+		explicitStatus = Types.ExplicitStatus.none;
+		implicitStatus = Types.ImplicitStatus.none;		
+	}
+	
+	public void restoreHealth()
+	{
+		currentHealth=baseHealth;
+	}
+	
+	public int getNumber()
+	{
+		return number;
 	}
 
 	public String getName() {

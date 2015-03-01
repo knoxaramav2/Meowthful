@@ -1,7 +1,10 @@
 package gameElements;
 
+import gameElements.Types.Type;
+
 public class Attack {	
 	public String 				name;
+	public String				desc;
 	private Types.Type 			type;
 	private Types.AttackEffects effect;
 	private int 				basePP;
@@ -15,10 +18,49 @@ public class Attack {
 	private double  			baseFlinchProbability;
 	private double  			currentFlinchProbability;
 	private boolean 			isSpcAtk;
+	boolean						explicitEffect;
+	private int					priority;
 
 	// creates base attack object (to be referenced only)
 	public Attack(String params) {
-
+String list[] = params.split(",");
+		
+		for (int i=1; i<params.length()-1;i++)
+		{
+			switch(i)
+			{
+			case 0:
+				name=list[i];
+				break;
+			case 1:
+				type=Type.getType(Integer.parseInt(list[i]));
+				break;
+			case 2:
+				baseDamage=Integer.parseInt(list[i]);
+				break;
+			case 3: 
+				baseAccuracy=Integer.parseInt(list[i]);
+				break;
+			case 4:
+				basePP=Integer.parseInt(list[i]);
+				break;
+			case 5:
+				if (list[i]=="exp")
+					explicitEffect=true;
+				else
+					explicitEffect=false;
+				break;
+			case 6:
+					effect=Types.AttackEffects.getType(Integer.parseInt(list[i]));
+				break;
+			case 7:
+				priority=Integer.parseInt(list[i]);
+				break;
+			case 8:
+				desc=list[i];
+				break;
+			}
+		}
 	}
 
 	public String getName(){
