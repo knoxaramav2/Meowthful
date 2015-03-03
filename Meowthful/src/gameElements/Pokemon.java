@@ -97,7 +97,11 @@ public class Pokemon {
 	public Pokemon(String params) {
 		//parse into base values
 		//set current to base
+		
 		String list[] = params.split(",");
+		
+		if (list.length<7)
+			return;
 		
 		for (int i=1; i<params.length()-1;i++)
 		{

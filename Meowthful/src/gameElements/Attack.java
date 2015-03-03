@@ -1,12 +1,14 @@
 package gameElements;
 
+import java.util.ArrayList;
+
 import gameElements.Types.Type;
 
 public class Attack {	
 	public String 				name;
 	public String				desc;
 	private Types.Type 			type;
-	private Types.AttackEffects effect;
+	private ArrayList <Types.AttackEffects> effect = new ArrayList <Types.AttackEffects>();
 	private int 				basePP;
 	private int 				currentPP;
 	private int 				baseAccuracy;
@@ -51,7 +53,11 @@ String list[] = params.split(",");
 					explicitEffect=false;
 				break;
 			case 6:
-					effect=Types.AttackEffects.getType(Integer.parseInt(list[i]));
+				String effectList[] = list[i].split("\\|");
+				if (effectList.length>1)
+					System.out.println("Found");
+				for (int loop=0; loop<effectList.length; loop++)
+					effect.add(Types.AttackEffects.getType(Integer.parseInt(effectList[loop])));
 				break;
 			case 7:
 				priority=Integer.parseInt(list[i]);
@@ -127,12 +133,12 @@ String list[] = params.split(",");
 		currentDamage = baseDamage;
 	}
 	
-	public Types.AttackEffects getEffect(){
+	public ArrayList <Types.AttackEffects> getEffect(){
 		return effect;
 	}
 	
 	public void setEffect(Types.AttackEffects newEffect){
-		effect = newEffect;
+		effect.add(newEffect);
 	}
 	
 	public boolean isSpecialAttack(){

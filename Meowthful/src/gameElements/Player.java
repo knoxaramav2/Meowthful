@@ -53,48 +53,67 @@ String list[] = params.split(",");
 				if (list[i].equals("Leader"))
 					rank=5;
 				break;
-			case 3://load party data
-				String partyList[] = list[i].split("|");
-				for (int l=0; l<partyList.length-1; l++)
-				{
-					//get base pokemon and level
-					String pokeParam[] = partyList[l].split(":");
-					Pokemon temp= new Pokemon();
-					
-					temp.generateAtLevel(pokeParam[0], Integer.parseInt(pokeParam[1]), temp);
-					party.add(temp);
-				}
-				break;
+			case 3:
 			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+				//load party data
+				//1:pokemon name
+				//2:pokemon level
+				//3:pokemon health
+				//4:pokemon explicit status
+				//5:attack list
+				//	1:attack name
+				//	2:attack pp
+					//get base pokemon and level
+				
+				//skip empty slot
+				if (list[i]=="n/a")
+					continue;
+				
+				String partyList[] = list[i].split("\\|");
+				
+				for (int loop=0; loop<partyList.length; loop++)
+				{
+					String pokeParam[] = partyList[loop].split(":");//individual parameters
+					
+					for (int j=0; j<pokeParam.length; j++)
+						party.add(new Pokemon(pokeParam[j]));
+				}
+				
+				break;
+			case 9:
 				level=Integer.parseInt(list[i]);
 				break;
-			case 5:
+			case 10:
 				money=Integer.parseInt(list[i]);
 				break;
-			case 6:
+			case 11:
 				if (Integer.parseInt(list[i])>0)
 					trainer=true;
 				else
 					trainer=false;
 				break;
-			case 7:
+			case 12:
 				//load items
 				break;
-			case 8:
+			case 13:
 				map=Integer.parseInt(list[i]);
 				break;
-			case 9:
-				String coord[] = list[i].split("|");
+			case 14:
+				String coord[] = list[i].split("\\|");
 				posx=Integer.parseInt(coord[0]);
 				posy=Integer.parseInt(coord[1]);
 				break;
-			case 10:
+			case 15:
 				AI=Integer.parseInt(list[i]);
 				break;
-			case 11:
+			case 16:
 				orientation=Integer.parseInt(list[i]);
 				break;
-			case 12:
+			case 17:
 				coolDown=Integer.parseInt(list[i]);
 				break;
 			}
