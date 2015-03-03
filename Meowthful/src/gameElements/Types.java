@@ -1,6 +1,9 @@
 package gameElements;
 
 public class Types{
+	
+	//add method to get Type from string
+	
 	public enum Type{normal(0), flying(1), fighting(2), ground(3), rock(4), bug(5), grass(6), 
 		water(7), fire(8), electric(9), ghost(10), psychic(11), dragon(12), ice(13), poison(14);
 	private int typeIndex;

@@ -21,7 +21,12 @@ public class Launcher {
 		gameGlobal global = new gameGlobal();
 		
 		//load base files (complete)
-		global = FileSystem.loadGlobals(global, "src/gameFiles/BaseValues.csv","src/gameFiles/Attacks.csv","src/gameFiles/Actors.csv");
+		global = FileSystem.loadGlobals(global, 
+				"src/gameFiles/BaseValues.csv",
+				"src/gameFiles/Attacks.csv",
+				"src/gameFiles/Actors.csv", 
+				"src/gameFiles/spritesheet.png");
+		
 		
 		//start graphics
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

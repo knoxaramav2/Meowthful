@@ -5,12 +5,15 @@
 <fullyQualifiedTypeName name="org.junit.Assert"/>
 <fullyQualifiedTypeName name="org.junit.Before"/>
 <fullyQualifiedTypeName name="gameElements.Types.ImplicitStatus"/>
-<fullyQualifiedTypeName name="gameElements.Types"/>
 <fullyQualifiedTypeName name="java.nio.file.Files"/>
 <fullyQualifiedTypeName name="gameElements.Pokemon"/>
 <fullyQualifiedTypeName name="gameElements.Attack"/>
 <fullyQualifiedTypeName name="gameElements.Player"/>
-<fullyQualifiedTypeName name="gameElements.Types.Type"/>
 <fullyQualifiedTypeName name="gameElements.Types.ExplicitStatus"/>
 <fullyQualifiedTypeName name="gameElements.Types.AttackEffects"/>
+<fullyQualifiedTypeName name="java.awt.image.BufferedImage"/>
+<fullyQualifiedTypeName name="javax.imageio.ImageIO"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="gameElements.Types"/>
+<fullyQualifiedTypeName name="gameElements.Types.Type"/>
 </qualifiedTypeNameHistroy>

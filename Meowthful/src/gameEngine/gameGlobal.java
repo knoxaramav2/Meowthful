@@ -10,6 +10,7 @@ public class gameGlobal {
 	ArrayList <Pokemon> pokemonDB = new <Pokemon> ArrayList();
 	ArrayList <Attack> attackListDB = new <Attack> ArrayList();
 	ArrayList <Player> playerList = new <Player> ArrayList();
+	Sprites spriteDB = new Sprites();
 	
 	//retrieve copy of base pokemon
 	public Pokemon getPokemon(String name)

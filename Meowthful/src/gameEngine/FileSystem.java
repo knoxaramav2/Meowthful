@@ -22,7 +22,11 @@ public class FileSystem {
 	//load flags
 	static int _actor=0, _pkmn=1;
 	
-	public static gameGlobal loadGlobals(gameGlobal g, String baseFile, String attackFile, String actorFile)
+	public static gameGlobal loadGlobals(gameGlobal g, 
+			String baseFile, 
+			String attackFile, 
+			String actorFile, 
+			String spriteFile)
 	{
 		BufferedReader br=null;
 		String buffer=null;
@@ -31,7 +35,7 @@ public class FileSystem {
 		String cache = new String();
 	
 		//load each base file into respective database
-		for (int x=0; x<3; x++)
+		for (int x=0; x<4; x++)
 		{
 			try
 			{
@@ -46,6 +50,9 @@ public class FileSystem {
 				case 2://actorFile
 					filebuffer=actorFile;
 					break;
+				case 3://sprite sheet
+					g.spriteDB.loadPokeSprites(spriteFile);
+					continue;
 				}
 				br = new BufferedReader(new FileReader(filebuffer));
 				boolean firstLine=false;
