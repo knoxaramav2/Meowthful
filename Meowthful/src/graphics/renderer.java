@@ -1,5 +1,7 @@
 package graphics;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,13 +14,32 @@ import javax.swing.JPanel;
 
 //make window 720 x 1280
  
-public class renderer {
+public class Renderer {
     /**
      * Create the GUI and show it.  For thread safety,
      * this method should be invoked from the
      * event-dispatching thread.
      * @throws IOException 
      */
+	
+	BufferedImage mapUL = null;
+	BufferedImage mapUM = null;
+	BufferedImage mapUR = null;
+	
+	BufferedImage mapML = null;
+	BufferedImage mapMM = null;
+	BufferedImage mapMR = null;
+	
+	BufferedImage mapLL = null;
+	BufferedImage mapLM = null;
+	BufferedImage mapLR = null;
+	
+	//flatten and render current image
+	public void paint(Graphics g)
+	{
+		Graphics2D g2d = (Graphics2D)g;
+	}
+	
     public static void createAndShowGUI() throws IOException {
         //Create and set up the window.
         JFrame frame = new JFrame("Meowthful");
@@ -30,9 +51,6 @@ public class renderer {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
-        //Add the ubiquitous "Hello World" label.
-//        JLabel label = new JLabel("Hello World");
-//        frame.getContentPane().add(label);
         panel.add(label);
         frame.add(panel);
  

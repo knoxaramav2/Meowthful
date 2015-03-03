@@ -1,24 +1,22 @@
 package gameEngine;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import scriptEngine.unownInterpreter;
-import system.data;
-import graphics.renderer;
+import scriptEngine.UnownInterpreter;
+import graphics.Renderer;
 
 
 
 public class Launcher {
 	
-	ArrayList scriptStack = new ArrayList();
+	ArrayList <String> scriptStack = new ArrayList<String>();
 
 	public static void main(String[] args) throws Exception {
 		 
 		//initialize classes
-		unownInterpreter iEngine = new unownInterpreter();
-		data Sys = new data();
+		BattleManager battleManager = new BattleManager();
 		gameGlobal global = new gameGlobal();
+		UnownInterpreter iEngine = new UnownInterpreter(global, battleManager);
 		
 		//load base files (complete)
 		global = FileSystem.loadGlobals(global, 
@@ -27,12 +25,11 @@ public class Launcher {
 				"src/gameFiles/Actors.csv", 
 				"src/gameFiles/spritesheet.png");
 		
-		
 		//start graphics
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {//game peripheral loop in renderer class
             	try {
-					renderer.createAndShowGUI();
+					Renderer.createAndShowGUI();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

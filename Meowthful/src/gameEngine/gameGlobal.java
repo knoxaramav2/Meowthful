@@ -1,15 +1,16 @@
 package gameEngine;
 
 import java.util.*;
+
 import gameElements.*;
 
 
 //stores global databases of base objects
 public class gameGlobal {
 
-	ArrayList <Pokemon> pokemonDB = new <Pokemon> ArrayList();
-	ArrayList <Attack> attackListDB = new <Attack> ArrayList();
-	ArrayList <Player> playerList = new <Player> ArrayList();
+	ArrayList <Pokemon> pokemonDB = new ArrayList<Pokemon>();
+	ArrayList <Attack> attackListDB = new ArrayList<Attack>();
+	ArrayList <Player> playerList = new ArrayList<Player>();
 	Sprites spriteDB = new Sprites();
 	
 	//retrieve copy of base pokemon
