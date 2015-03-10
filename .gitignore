@@ -73,5 +73,3 @@ local.properties
 .buildpath
 *.index
 *.index
-*.class
-*.class
