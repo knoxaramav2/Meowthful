@@ -42,10 +42,11 @@ public class Renderer {
 	
     public static void createAndShowGUI() throws IOException {
         //Create and set up the window.
+    	gameElements.Map map = new gameElements.Map("src/gameFiles/testMap.WORLD");
         JFrame frame = new JFrame("Meowthful");
-		BufferedImage testPic = ImageIO.read(new File("src/gameFiles/mewtwoTestPic.png"));
+//		BufferedImage testPic = ImageIO.read(new File("src/gameFiles/mewtwoTestPic.png"));
         JPanel panel = new JPanel();
-        JLabel label = new JLabel(new ImageIcon(testPic));
+        JLabel label = new JLabel(new ImageIcon(map.getMap()));
 
         frame.getContentPane().setSize(1280, 720);
         frame.setResizable(false);
