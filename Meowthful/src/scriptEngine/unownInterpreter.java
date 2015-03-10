@@ -3,12 +3,49 @@ package scriptEngine;
 import gameEngine.BattleManager;
 import gameEngine.gameGlobal;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+
+
 
 public class UnownInterpreter {
 	
 	//connection to database
 	gameGlobal g = null;
 	BattleManager bm = null;
+	CommandCodes codes;
+	
+	//super magic happy system fun time
+	void reportError(String mess, String[]raw)
+	{
+		System.out.print(mess+" : \t");
+		for (String ele: raw)
+			System.out.print(ele);
+		System.out.println("");
+	}
+	
+	private boolean attack(ArrayList<String> params)
+	{
+		//attacker, target, attack
+		return true;
+	}
+	
+	public void loadScript(String fName) throws IOException
+	{
+		File file = new File(fName);
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String buffer=new String();
+		
+		while ((buffer=br.readLine())!=null)
+		{
+			interpret(buffer);
+		}
+	}
 	
 	public UnownInterpreter(gameGlobal g, BattleManager bm)
 	{
@@ -18,14 +55,24 @@ public class UnownInterpreter {
 	
 	public void interpret(String raw)
 	{
+		//creates command code with parameters. No tokenizing
 		Packet p = new Packet(raw.split(" |+|,|/|-|*|%"));
 		
-		broadcast(p);
+		execute(p);
 	}
 	
-	//distribute messages
-	public void broadcast(Packet p)
+	//distribute or execute messages
+	public void execute(Packet p)
 	{
+		//battle
+		if (p.hash==codes.attack)
+			if (attack(p.params)==false)
+				reportError("Bad parameter set",p.raw);
+		
+		//items
+		
+		//AI
+		
 		
 	}
 	

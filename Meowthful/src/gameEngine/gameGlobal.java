@@ -4,10 +4,10 @@ import java.util.*;
 
 import gameElements.*;
 
-
 //stores global databases of base objects
 public class gameGlobal {
-
+	
+	
 	ArrayList <Pokemon> pokemonDB = new ArrayList<Pokemon>();
 	ArrayList <Attack> attackListDB = new ArrayList<Attack>();
 	ArrayList <Player> playerList = new ArrayList<Player>();
