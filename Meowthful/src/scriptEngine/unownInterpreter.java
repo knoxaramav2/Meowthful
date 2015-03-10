@@ -4,13 +4,13 @@ import gameEngine.BattleManager;
 import gameEngine.gameGlobal;
 
 
-public class UnownInterpreter {
+public class unownInterpreter {
 	
 	//connection to database
 	gameGlobal g = null;
 	BattleManager bm = null;
 	
-	public UnownInterpreter(gameGlobal g, BattleManager bm)
+	public unownInterpreter(gameGlobal g, BattleManager bm)
 	{
 		this.g=g;
 		this.bm=bm;

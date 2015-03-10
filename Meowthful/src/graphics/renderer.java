@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 //make window 720 x 1280
  
-public class Renderer {
+public class renderer {
     /**
      * Create the GUI and show it.  For thread safety,
      * this method should be invoked from the
