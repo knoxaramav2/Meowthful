@@ -1,6 +1,7 @@
 package system;
 
 import gameElements.Map;
+import gameElements.Player;
 import gameElements.Pokemon;
 
 
@@ -13,9 +14,9 @@ public class data {
 	
 	public boolean active;
 	//active player battle pokemon
-	Pokemon playerActive;
-	Pokemon enemyActive;
+	public Pokemon playerActive;
+	public Pokemon enemyActive;
 	//active map
-	Map current;
-	
+	public Map current;
+	public Player player;
 }

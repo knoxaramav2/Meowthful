@@ -42,6 +42,20 @@ public class gameGlobal {
 		return null;
 	}
 	
+	public Player getPlayer(int id)
+	{
+		Player p = null;
+		for (int x=0; x<playerList.size(); x++)
+		{
+			p=(Player)playerList.get(x);
+			if (p.id==id)
+			{
+				return p;
+			}
+		}
+		return null;
+	}
+	
 	public Attack getAttack(String name)
 	{
 		Attack p = null;
