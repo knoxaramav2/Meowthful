@@ -14,9 +14,10 @@ import javax.imageio.ImageIO;
 public class Map {
 	private static int width = 1280;
 	private static int height = 720;
-	BufferedImage map = null;
-	int attributeMatrix[] = null;
-	Point loc = null;
+	private BufferedImage map = null;
+	private int attributeMatrix[] = null;
+	private boolean[][] blocked = new boolean[15][15];
+	private Point loc = null;
 
 	public Map(String fileName) throws IOException {
 		attributeMatrix = new int[1280 * 720];

@@ -76,8 +76,8 @@ public class FileSystem {
 						g.attackListDB.add(a);
 						break;
 					case 2://actorFile
-						Player pl = new Player(buffer);
-						g.playerList.add(pl);
+//						Player pl = new Player(buffer);
+//						g.playerList.add(pl);
 						break;
 					}
 				}
