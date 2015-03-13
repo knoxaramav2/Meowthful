@@ -16,8 +16,9 @@ public class data {
 		enemyActive =null;
 		current=null;
 		player=null;
-		lastResult=null;
-		variables=null;
+		lastResult="";
+		variables= new ArrayList <String>();
+		values= new ArrayList <String>();
 	}
 	
 	public String getVar(String name)
@@ -29,6 +30,40 @@ public class data {
 		return null;
 	}
 	
+	void setPlayer(Player p)
+	{
+		player = p;
+	}
+	
+	void setEnemy(Player p)
+	{
+		enemy=p;
+	}
+	
+	public void delVar(String var)
+	{
+		int index = variables.indexOf(var);
+		
+		if (index==-1)
+			return;
+		
+		variables.remove(index);
+		values.remove(index);
+	}
+	
+	public void addVar(String var, String val)
+	{
+		int index = variables.indexOf(var);
+		if (index==-1)//add new
+		{
+			variables.add(var);
+			values.add(val);
+		}else
+		{
+			values.set(index, val);
+		}
+	}
+	
 	public boolean active;
 	//active player battle pokemon
 	public Pokemon playerActive;
@@ -36,7 +71,10 @@ public class data {
 	//active map
 	public Map current;
 	public Player player;
+	public Player enemy;
 	//system caches
 	public String lastResult;
+	
 	public ArrayList <String> variables;
+	public ArrayList <String> values;
 }

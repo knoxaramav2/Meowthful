@@ -25,6 +25,39 @@ public class unownInterpreter {
 	
 	//super magic happy system fun time
 	
+	private void deleteVar(Packet p)
+	{
+		if (p.params.size()!=1)
+		{
+			reportError("Error: Illegal parameter set",p.raw);
+			return;
+		}
+		
+		system.delVar(p.params.get(0));
+	}
+	
+	private void setVar(Packet p)
+	{
+		if (p.params.size()<1 || p.params.size()>2)
+		{
+			reportError("Error: Illegal parameter set",p.raw);
+			return;
+		}
+		
+		if (p.params.size()==1)
+			system.addVar(p.params.get(0), "");
+		else 
+			system.addVar(p.params.get(0), p.params.get(1));
+	}
+	
+	private void print(Packet p)
+	{
+		for (int x=0; x<p.params.size(); x++)
+			System.out.print(p.params.get(x));
+		System.out.println();
+	}
+	
+	
 	private void quitGame()
 	{
 		system.active=false;
@@ -34,7 +67,7 @@ public class unownInterpreter {
 	{
 		System.out.print(mess+" : \t");
 		for (String ele: raw)
-			System.out.print(ele);
+			System.out.print(ele+" ");
 		System.out.println("");
 	}
 	
@@ -91,60 +124,84 @@ public class unownInterpreter {
 	{
 		//creates command code with parameters. No tokenizing
 		Packet p = new Packet(raw.split(" |\\+|\\,|/|\\-|\\*|\\%"));
-		if (p.hash==null)
+		if (p.code==null)
 			return;
 		
-		for (String param: p.params)
+		for (int x=0; x<p.params.size(); x++)
 		{
 			//identify and replace macros
-			if (param.length()<2)
+			if (p.params.get(x).length()<2)
 				continue;
 			
+			String param = p.params.get(x);
 			//check for identifier
-			String check = new String(param);
-			char c = check.charAt(0);
-			check = check.replace(""+c, "");
+			String check = new String(param.substring(1, param.length()));
+			char c = p.params.get(0).charAt(0);
 			switch (c)
 			{
-			case '$'://cache reference
-				param = system.lastResult;
+			case '$'://special cache/register
+				if (check=="register")
+					param = system.lastResult;
+				if (check=="lastOpponent")
+					param = Integer.toString(system.enemy.id);
+				if (check=="lastEnemyPokemon")
+					param = Integer.toString(system.enemy.party.get(0).id);
+				if (check=="lastPlayerPokemon")
+					param = Integer.toString(system.player.party.get(0).id);
 				break;
-			case '#':
+			case '#'://variable
+				int index = system.variables.indexOf(check);
+				if (index==-1)
+				{
+					param="";
+					reportError("Error: symbol undefined",p.raw);
+					break;
+				}
+				else
+					param=system.values.get(index);
+				break;
+			case '&'://special function codes (may not need)
 				
 				break;
 			case ';'://comment
 				continue;
 			}
+			p.params.set(x, param);//rewrite value with parsed one
+			
 		}
-		
-		System.out.println(p.hash.toString());
-		System.out.println(p.hash);
-		
-		for (String param: p.params)
-			System.out.println(param);
 		
 		execute(p);
 	}
 	
 	//distribute or execute messages
+	@SuppressWarnings("static-access")
 	public void execute(Packet p)
 	{
-		//battle
-		//if (p.hash==codes.attack)
-			if (attack(p.params)==false)
-				reportError("Bad parameter set",p.raw);
-		
-		//items
-		
-		//AI
-		
-		//System
-		//if (p.hash==codes.quitGame)
+		switch (p.code.value)
+		{
+			//battle
+			
+			//items
+			
+			//AI
+			
+			//System
+		case CommandCodes.quitGame:
 			quitGame();
-		
+			break;
+		case CommandCodes.print:
+			print(p);
+			break;
+		case CommandCodes.setVar:
+			setVar(p);
+			break;
+		case CommandCodes.deleteVar:
+			deleteVar(p);
+			break;
+		default:
+			return;
+		}	
 	}
-	
-	
 }
 
 /*

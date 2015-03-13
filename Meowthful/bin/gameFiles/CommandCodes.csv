@@ -1,0 +1,56 @@
+COMMAND,HASH,DESCRIPTION
+attackMenu,0,open attack menu
+attack,-1407259064,use selected attack
+flee,3145702,attempt to run from battle
+swapParty,-1285939949,swap active pokemon (in battle)
+usePokeBall,1794789343,use pokeball
+heal,3198440,heal pokemon
+useBattleItem,639617234,use item in battle
+,,
+giveItem,1293248964,add item to inventory
+dropItem,-432861534,remove item from inventory
+viewInventory,1671571511,open inventory
+,,
+faceNorth,-1787300696,actor faces north (Think about direction)
+faceWest,496793004,actor faces west (Think about the place where you live)
+faceEast,496252922,actor faces East (Think about the place where you live)
+faceSouth,-1782680208,actor faces South
+faceActor,-1799662184,actor faces another actor
+mapFaceActor,-1650845796,all actors face an another actor
+,,
+speech,-896071454,dialogue box
+prompt,-979805852,dialogue box with input
+sellInterface,-1563371001,sellers interface
+buyInterface,178586963,buyers interface
+,,
+talkTo,-881081273,talk to actor
+open,3417674,open door/object
+interact,570398262,general interact (activates interactable command specific to target)
+buyItem,244693689,"add item to inventory, subtract money"
+buyPokemon,-1404955795,"add pokemon to party, subtract money"
+sellItem,1197262213,"sell item from inventory, get money"
+sellPokemon,-284981983,"sell pokemon from party, get money"
+,,
+viewParty,-1587425471,open party viewer
+selectParty,201044810,select pokemon
+evolve,-1291033219,evolve pokemon
+levelUp,69784895,level pokemon
+teachMove,-454855194,add/trade move if applicable
+,,
+useItemOnParty,1543764397,use item outside of battle
+releaseParty,-1979781345,drop pokemon from party
+addToParty,739199306,add pokemon to party
+,,
+random,-938285885,resolve to random integer in range (special function)
+print,106934957,print message to screen
+setCache,1389129792,set cache value
+addVar,-1422522682,add variable to list
+quitGame,-1051778335,exit game
+setMessage,-366376635,set message cache
+saveGame,-2073003249,save game
+loadGame,1845207544,load game
+deleteVar,-358718084,delete variable
+getCache,1950242252,resolves to cache value (special function)
+,,
+teleport,-1360201941,move actor
+event,96891546,alert interpreter to event
