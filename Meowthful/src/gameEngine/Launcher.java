@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import scriptEngine.unownInterpreter;
 import system.data;
-import graphics.renderer;
+import graphics.Renderer;
 
 
 
@@ -31,7 +31,7 @@ public class Launcher {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {//game peripheral loop in renderer class
             	try {
-					renderer.createAndShowGUI();
+					Renderer.createAndShowGUI();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
