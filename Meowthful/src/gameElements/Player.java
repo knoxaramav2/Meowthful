@@ -126,6 +126,28 @@ public class Player {
 		}
 	}
 	
+	//modified deep copy (certain elements shallow copied)
+	public Player(Player origin)
+	{
+		this.name = origin.name;
+		this.money = origin.money;
+		this.rank = origin.rank;
+		this.level=origin.level;
+		this.party = new ArrayList<Pokemon>(origin.party);
+		this.posx=origin.posx;
+		this.posy=origin.posy;
+		this.map=origin.map;
+		this.orientation=origin.orientation;
+		this.controllable=origin.controllable;
+		this.trainer = origin.trainer;
+		this.AI= origin.AI;
+		this.coolDown=origin.coolDown;
+		
+		this.id=origin.id;
+		
+		this.sprites=origin.sprites;
+	}
+	
 	public BufferedImage getSprite(int index){
 		return sprites[index];
 	}

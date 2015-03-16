@@ -33,7 +33,7 @@ public class BattleManager {
 			if(atk2.canAttack() && poke2.getHealth() > 0) applyDamage(poke2, poke1, atk2);			
 			if(atk1.canAttack() && poke1.getHealth() > 0) applyDamage(poke1, poke2, atk1);
 		}
-		 
+		
 		calculateStatusEffect(poke1, false);
 		calculateWinner();
 		if(winner == null) calculateStatusEffect(poke2, false);

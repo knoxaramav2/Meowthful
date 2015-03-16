@@ -12,10 +12,6 @@ public class data {
 	public data()
 	{
 		active=true;
-		playerActive=null;
-		enemyActive =null;
-		current=null;
-		player=null;
 		lastResult="";
 		variables= new ArrayList <String>();
 		values= new ArrayList <String>();
@@ -28,16 +24,6 @@ public class data {
 				return res;
 		
 		return null;
-	}
-	
-	void setPlayer(Player p)
-	{
-		player = p;
-	}
-	
-	void setEnemy(Player p)
-	{
-		enemy=p;
 	}
 	
 	public void delVar(String var)
@@ -66,12 +52,9 @@ public class data {
 	
 	public boolean active;
 	//active player battle pokemon
-	public Pokemon playerActive;
-	public Pokemon enemyActive;
+	
 	//active map
 	public Map current;
-	public Player player;
-	public Player enemy;
 	//system caches
 	public String lastResult;
 	

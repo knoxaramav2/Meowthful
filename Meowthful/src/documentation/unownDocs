@@ -1,0 +1,60 @@
+unown scripting langauage function and syntax reference
+
+General syntax form:
+	[Function] [Parameter...]
+
+Modifiers
+	$	-	retrieve register value
+	#	-	retrieve variable value
+	;	-	comment
+	
+Functions w/ parameter overloads
+
+FUNCTION			PARAMETERS
+[attackMenu]		[actor id]
+[attack]			[attacker id] [target id] [attack]
+[flee]				[player id]
+[swapParty]			[from position] [to position]
+[usePokeBall]		
+[heal]				[target id] [amount]
+[heal]				[target id]	["implicit"/"explicit"]
+[useBattleItem]		[actor id] [item] [target id]
+[battleFrame]		[player 1] [player 2] [attack 1] [attack 2]
+
+[giveItem]			[actor id] [item] [quantity]
+[dropItem]			[actor id] [item] [quantity]
+[viewInventory]		[actor id]
+
+faceNorth			[actor id]
+faceWest			[actor id]
+faceEast			[actor id]
+faceSouth			[actor id]
+faceActor			[actor id] [target actor id]
+mapFaceActor		[target actor id]
+
+[speech]			[actor id] [text]
+[prompt]			[actor id] [text]
+[sellInterface]		[buyerId] [wares...]
+[buyInterface]		[sellerId] [wares...]
+
+[talkTo]			[target actor id]
+[open]				[target id] [condition]
+[interact]			[target id]
+[buyItem]			[buyerId] [sellerId] [item] [quantity]
+[sellItem]			[buyerId] [sellerId] [item] [quantity]
+[buyPokemon]		[buyerId] [sellerId] [pokemonId]
+[sellPokemon]		[buyerId] [sellerId] [pokemonId]
+
+[viewParty]			[actor id]
+[selectParty]		[actor id] [pokemonId]
+[evolve]			[actor id] [pokemonId]
+[levelUp]			[actor id] [pokemonId]
+[teachMove]			[actor id] [pokemonId] [moveId]
+
+[useItemOnParty]	[actor id] [pokemonId] [item]
+[releaseParty]		[actor id] [pokemonId]
+[addToParty]		[actor id] [pokemon] [level]
+[]
+[]
+[]
+[]

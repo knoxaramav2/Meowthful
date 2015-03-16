@@ -2,6 +2,7 @@ package scriptEngine;
 
 import gameElements.Player;
 import gameElements.Pokemon;
+import gameEngine.BattleCache;
 import gameEngine.BattleManager;
 import gameEngine.gameGlobal;
 
@@ -22,6 +23,7 @@ public class unownInterpreter {
 	BattleManager bm = null;
 	CommandCodes codes;
 	data system = null;
+	BattleCache bc=new BattleCache();
 	
 	//super magic happy system fun time
 	
@@ -57,7 +59,7 @@ public class unownInterpreter {
 		System.out.println();
 	}
 	
-	
+	//none
 	private void quitGame()
 	{
 		system.active=false;
@@ -78,9 +80,11 @@ public class unownInterpreter {
 		return true;
 	}
 	
+	//
 	private boolean startBattle(ArrayList<String> params)
 	{
-		//find active pokemon of each
+		//assign enemy
+		
 		
 		return true;
 	}
@@ -140,14 +144,14 @@ public class unownInterpreter {
 			switch (c)
 			{
 			case '$'://special cache/register
-				if (check=="register")
+				if (check.equals("register"))
 					param = system.lastResult;
-				if (check=="lastOpponent")
-					param = Integer.toString(system.enemy.id);
-				if (check=="lastEnemyPokemon")
-					param = Integer.toString(system.enemy.party.get(0).id);
-				if (check=="lastPlayerPokemon")
-					param = Integer.toString(system.player.party.get(0).id);
+				if (check.equals("Opponent"))
+					param = Integer.toString(bc.p2.id);
+				if (check.equals("opponentActiveParty") || check.equals("OAP"))
+					param = Integer.toString(bc.p2Active.id);
+				if (check.equals("playerActiveParty") || check.equals("PAP"))
+					param = Integer.toString(bc.p1Active.id);
 				break;
 			case '#'://variable
 				int index = system.variables.indexOf(check);
@@ -155,7 +159,7 @@ public class unownInterpreter {
 				{
 					param="";
 					reportError("Error: symbol undefined",p.raw);
-					break;
+					return;
 				}
 				else
 					param=system.values.get(index);

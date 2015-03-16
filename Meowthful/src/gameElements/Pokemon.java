@@ -51,6 +51,7 @@ public class Pokemon {
 	private Types.ImplicitStatus implicitStatus;
 	
 	private int number;
+	public int id;
 	
 	ArrayList <Attack> attacks = new <Attack> ArrayList();
 
@@ -90,6 +91,7 @@ public class Pokemon {
 		implicitStatus = Types.ImplicitStatus.none;		
 		
 		number=0;
+		id=0;
 	}
 
 	// loads base pokemon. Specific stats must be loaded seperately
@@ -136,6 +138,11 @@ public class Pokemon {
 		
 		restoreStats();
 		
+	}
+	
+	public void assignId(int ID)
+	{
+		id=ID;
 	}
 	
 	//levels input base pokemon to  

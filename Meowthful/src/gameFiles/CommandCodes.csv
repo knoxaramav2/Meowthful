@@ -6,6 +6,7 @@ swapParty,-1285939949,swap active pokemon (in battle)
 usePokeBall,1794789343,use pokeball
 heal,3198440,heal pokemon
 useBattleItem,639617234,use item in battle
+battleFrame,-772465771,complete battle round between 2 pokemon
 ,,
 giveItem,1293248964,add item to inventory
 dropItem,-432861534,remove item from inventory
@@ -13,7 +14,7 @@ viewInventory,1671571511,open inventory
 ,,
 faceNorth,-1787300696,actor faces north (Think about direction)
 faceWest,496793004,actor faces west (Think about the place where you live)
-faceEast,496252922,actor faces East (Think about the place where you live)
+faceEast,496252922,actor faces East
 faceSouth,-1782680208,actor faces South
 faceActor,-1799662184,actor faces another actor
 mapFaceActor,-1650845796,all actors face an another actor
