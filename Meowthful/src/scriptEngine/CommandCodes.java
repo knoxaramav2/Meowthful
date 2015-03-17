@@ -10,6 +10,8 @@ public class CommandCodes{
 	public final static int usePokeBall	= 1794789343;
 	public final static int heal			= 3198440;
 	public final static int useBattleItem = 639617234;
+	public final static int startBattle = 1924640698;
+	public final static int endBattle = 1105032563;
 	
 	public final static int giveItem		= 1293248964;
 	public final static int dropItem		= -432861534;

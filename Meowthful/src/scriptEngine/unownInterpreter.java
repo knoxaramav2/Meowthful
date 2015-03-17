@@ -5,6 +5,7 @@ import gameElements.Pokemon;
 import gameEngine.BattleCache;
 import gameEngine.BattleManager;
 import gameEngine.gameGlobal;
+import gameEngine.Utility;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -73,34 +74,98 @@ public class unownInterpreter {
 		System.out.println("");
 	}
 	
-	private boolean changeActivePokemon(ArrayList<String> params)
+	//player/opponent, to_switch
+	private boolean changeActivePokemon(Packet p)
 	{
 		//swap out active pokemon
 		
 		return true;
 	}
 	
-	//
-	private boolean startBattle(ArrayList<String> params)
+	//actor 1, actor 2
+	//actor 1, pokemon name, pkmn level	-	autogenerate rest
+	//pokemon 1 name, lvl, pokemon 2 name, lvl
+	private boolean startBattle(Packet p)
 	{
-		//assign enemy
+		int psize=p.params.size();
+		if (psize<1 || psize>4)
+		{
+			reportError("Error: Function accepts 2,3 or 4 parameters",p.raw);
+			return false;
+		}
 		
+		switch (psize)
+		{
+		case 2:
+			if (!Utility.isInteger(p.params.get(0)) || !Utility.isInteger(p.params.get(1)))
+			{
+				reportError("Error: Parameters must be (int actor id, int actor id)",p.raw);
+				return false;
+			}
+			
+			bc.startSession(g.getPlayer(Integer.parseInt(p.params.get(0))), g.getPlayer(Integer.parseInt(p.params.get(1))));
+			
+			if (bc.p1==null || bc.p2==null)
+			{
+				if (bc.p1==null)
+					reportError("Error: Actor 1 not viable",p.raw);
+				if (bc.p2==null)
+					reportError("Error: Actor 2 not viable",p.raw);
+				return false;
+			}
+			
+			break;
+		case 3:
+			if (!Utility.isInteger(p.params.get(0)) || Utility.isInteger(p.params.get(1)) || !Utility.isInteger(p.params.get(2)))
+			{
+				reportError("Error: Parameters must be (int actor id, string pokemon, int level)",p.raw);
+				return false;
+			}
+			break;
+		case 4:
+			if (!Utility.isInteger(p.params.get(0)) || Utility.isInteger(p.params.get(1)) || !Utility.isInteger(p.params.get(2)) || Utility.isInteger(p.params.get(3)))
+			{
+				reportError("Error: Parameters must be (string pokemon, int level, string pokemon, int level)",p.raw);
+				return false;
+			}
+			break;
+		}
 		
 		return true;
 	}
 	
-	private boolean attack(ArrayList<String> params)
+	private void endBattle()
 	{
-		//enemy  pokemon attack attack
+		bc.endSession();
+	}
+	
+	//attack 1, attack 2
+	private boolean attack(Packet p)
+	{		
+		if (p.params.size()!=2)
+		{
+			reportError("Error: Function accepts 2 parameters (atk1, atk2)",p.raw);
+			return false;
+		}
 		
-		//get pokemon
-		Player p1 = g.getPlayer(0);//user player
-		Player p2 = g.getPlayer(Integer.parseInt(params.get(0)));
-		
-		Pokemon pk1 = p1.party.get(0);
-		Pokemon pk2 = p2.party.get(0);
+		Pokemon pk1 = bc.p1.party.get(0);
+		Pokemon pk2 = bc.p2.party.get(0);
 		
 		//get attacks
+		int indx = pk1.getAttackIndex(p.params.get(0));
+		if (indx==-1)
+		{
+			reportError("Error: Pokemon 1 does not have requested attack (atk1, atk2)",p.raw);
+			return false;
+		}
+		indx = pk2.getAttackIndex(p.params.get(1));
+		if (indx==-1)
+		{
+			reportError("Error: Pokemon 2 does not have requested attack (atk1, atk2)",p.raw);
+			return false;
+		}
+		
+		
 		
 		return true;
 	}
@@ -184,7 +249,12 @@ public class unownInterpreter {
 		switch (p.code.value)
 		{
 			//battle
-			
+		case CommandCodes.startBattle:
+			startBattle(p);
+			break;
+		case CommandCodes.endBattle:
+			endBattle();
+			break;
 			//items
 			
 			//AI

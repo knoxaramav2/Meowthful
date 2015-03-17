@@ -7,6 +7,8 @@ usePokeBall,1794789343,use pokeball
 heal,3198440,heal pokemon
 useBattleItem,639617234,use item in battle
 battleFrame,-772465771,complete battle round between 2 pokemon
+startBattle,1924640698,begin battle sequence
+endBattle,1105032563,end battle sequence
 ,,
 giveItem,1293248964,add item to inventory
 dropItem,-432861534,remove item from inventory

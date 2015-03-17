@@ -20,6 +20,10 @@ FUNCTION			PARAMETERS
 [heal]				[target id]	["implicit"/"explicit"]
 [useBattleItem]		[actor id] [item] [target id]
 [battleFrame]		[player 1] [player 2] [attack 1] [attack 2]
+[startBattle]		[player 1] [player 2]
+[startBattle]		[player 1] [pokemon]
+[startBattle]		[pokemon1] [pokemon2]
+[endBattle]
 
 [giveItem]			[actor id] [item] [quantity]
 [dropItem]			[actor id] [item] [quantity]

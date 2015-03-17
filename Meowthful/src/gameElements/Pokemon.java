@@ -53,7 +53,7 @@ public class Pokemon {
 	private int number;
 	public int id;
 	
-	ArrayList <Attack> attacks = new <Attack> ArrayList();
+	private ArrayList <Attack> attacks = new <Attack> ArrayList();
 
 	public Pokemon() {
 		String name = new String();
@@ -143,6 +143,19 @@ public class Pokemon {
 	public void assignId(int ID)
 	{
 		id=ID;
+	}
+	
+	public int getAttackIndex(String s)
+	{
+		for (int x=0; x<attacks.size(); x++)
+			if (s.equals(attacks.get(x).name))
+				return x;
+		return -1;
+	}
+	
+	public ArrayList <Attack> getAttackList()
+	{
+		return attacks;
 	}
 	
 	//levels input base pokemon to  
