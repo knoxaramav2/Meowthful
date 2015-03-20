@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -18,6 +19,7 @@ public class Map {
 	private int attributeMatrix[] = null;
 	private boolean[][] blocked = new boolean[15][15];
 	private Point loc = null;
+	private ArrayList <String> scripts = new ArrayList <String>();
 
 	public Map(String fileName) throws IOException {
 		attributeMatrix = new int[1280 * 720];

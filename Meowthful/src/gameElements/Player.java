@@ -37,7 +37,7 @@ public class Player {
 		// Parse from line into base
 		String list[] = params.split(",");
 
-		for (int i = 1; i < list.length - 1; i++) {
+		for (int i = 0; i < list.length; i++) {
 			switch (i) {
 			case 0:
 				id = Integer.parseInt(list[i]);

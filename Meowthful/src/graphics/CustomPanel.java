@@ -14,6 +14,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import scriptEngine.unownInterpreter;
+
 @SuppressWarnings("serial")
 public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	private BufferedImage map;
@@ -29,6 +31,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	private int cellX;
 	private int cellY;
 	private boolean moving;
+	private Console console;
 
 	public CustomPanel(BufferedImage map, Player player){			
 		this.map = map;
@@ -53,6 +56,12 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		timer.start();
 	}
 	
+	public void setConsole(unownInterpreter ui)
+	{
+		console = new Console();
+		Console.createAndShowGUI(ui);
+	}
+	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		g.drawImage(map, 0, 0, null);
@@ -68,6 +77,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) left = true;
 		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) down = true;
 		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) right = true;
+		if (e.getKeyCode()==KeyEvent.VK_F1) console.toggleVisible();
 	}
 
 	public void keyReleased(KeyEvent e){

@@ -64,6 +64,7 @@ public class unownInterpreter {
 	private void quitGame()
 	{
 		system.active=false;
+		System.exit(0);
 	}
 	
 	private void reportError(String mess, String[]raw)
@@ -93,6 +94,8 @@ public class unownInterpreter {
 			reportError("Error: Function accepts 2,3 or 4 parameters",p.raw);
 			return false;
 		}
+		
+		System.out.println("Battle start between " + bc.p1.name + " and " + bc.p2.name);
 		
 		switch (psize)
 		{
@@ -136,6 +139,7 @@ public class unownInterpreter {
 	
 	private void endBattle()
 	{
+		System.out.println("Battle end between " + bc.p1.name + " and " + bc.p2.name);	
 		bc.endSession();
 	}
 	

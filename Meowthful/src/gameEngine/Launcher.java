@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import scriptEngine.unownInterpreter;
 import system.data;
+import graphics.Console;
 import graphics.Renderer;
 
 
@@ -25,13 +26,14 @@ public class Launcher {
 				"src/gameFiles/BaseValues.csv",
 				"src/gameFiles/Attacks.csv",
 				"src/gameFiles/Actors.csv", 
-				"src/gameFiles/firered-leafgreen.png");
+				"src/gameFiles/spritesheet.png");
 		
 		//start graphics
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {//game peripheral loop in renderer class
             	try {
-					Renderer.createAndShowGUI();
+					Renderer.createAndShowGUI(iEngine);
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

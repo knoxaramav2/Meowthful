@@ -30,10 +30,10 @@ public class ScriptTest {
 		while (true)
 		{
 			String line = new String(in.nextLine());
-			toClipBoard(""+line.hashCode());
+			//toClipBoard(""+line.hashCode());
+			ui.interpret(line);
 		}
 		
-		//ui.interpret(line);
 		//in.close();
 	}
 	

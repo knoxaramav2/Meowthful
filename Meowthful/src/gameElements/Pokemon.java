@@ -13,35 +13,35 @@ public class Pokemon {
 	// stats
 	private int baseHealth;
 	private int currentHealth;
-	private int healthMultiplier;
+	private double healthMultiplier;
 
 	private int baseSpeed;
 	private int currentSpeed;
-	private int speedMultiplier;
+	private double speedMultiplier;
 
 	private int baseEvasiveness;
 	private int currentEvasiveness;
-	private int evasivenessMultiplier;
+	private double evasivenessMultiplier;
 
 	private int baseAttack;
 	private int currentAttack;
-	private int attackMultiplier;
+	private double attackMultiplier;
 
 	private int baseDefense;
 	private int currentDefense;
-	private int defenseMultiplier;
+	private double defenseMultiplier;
 
 	private int baseSpecialAttack;
 	private int currentSpecialAttack;
-	private int specialAttackMultiplier;
+	private double specialAttackMultiplier;
 
 	private int baseSpecialDefense;
 	private int currentSpecialDefense;
-	private int specialDefenseMultiplier;
+	private double specialDefenseMultiplier;
 
 	private int level;
 	private int baseStatMultiplier;
-	private int currentStatMultiplier;
+	private double currentStatMultiplier;
 
 	private int exp;// current exp overall
 	private int nextLevelExp;// countdown to next level
@@ -52,6 +52,9 @@ public class Pokemon {
 	
 	private int number;
 	public int id;
+	
+	public ArrayList<Integer> evolveTo = new ArrayList<Integer>();
+	private int evolveLvl;
 	
 	private ArrayList <Attack> attacks = new <Attack> ArrayList();
 
@@ -88,7 +91,9 @@ public class Pokemon {
 
 		type = Types.Type.normal;
 		explicitStatus = Types.ExplicitStatus.none;
-		implicitStatus = Types.ImplicitStatus.none;		
+		implicitStatus = Types.ImplicitStatus.none;	
+		
+		evolveLvl=0;
 		
 		number=0;
 		id=0;
@@ -102,7 +107,7 @@ public class Pokemon {
 		
 		String list[] = params.split(",");
 		
-		if (list.length<7)
+		if (list.length<16)
 			return;
 		
 		for (int i=1; i<params.length()-1;i++)
@@ -132,6 +137,34 @@ public class Pokemon {
 				break;
 			case 7:
 				baseSpeed=Integer.parseInt(list[i]);
+				break;
+			case 8:
+				healthMultiplier=Double.parseDouble(list[i]);
+				break;
+			case 9:
+				attackMultiplier=Double.parseDouble(list[i]);
+				break;
+			case 10:
+				defenseMultiplier=Double.parseDouble(list[i]);
+				break;
+			case 11:
+				specialAttackMultiplier=Double.parseDouble(list[i]);
+				break;
+			case 12:
+				specialDefenseMultiplier=Double.parseDouble(list[i]);
+				break;
+			case 13:
+				speedMultiplier=Double.parseDouble(list[i]);
+				break;
+			case 14://handle multi evolution
+				String evos[]=list[i].split("\\|");
+				if (evos.length>1)
+					System.out.println("");
+				for (String s:evos)
+					evolveTo.add(Integer.parseInt(s));
+				break;
+			case 15:
+				evolveLvl=Integer.parseInt(list[i]);
 				break;
 			}
 		}
