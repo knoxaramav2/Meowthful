@@ -1,5 +1,6 @@
 package scriptEngine;
 
+import gameElements.Attack;
 import gameElements.Player;
 import gameElements.Pokemon;
 import gameEngine.BattleCache;
@@ -95,8 +96,6 @@ public class unownInterpreter {
 			return false;
 		}
 		
-		System.out.println("Battle start between " + bc.p1.name + " and " + bc.p2.name);
-		
 		switch (psize)
 		{
 		case 2:
@@ -106,9 +105,10 @@ public class unownInterpreter {
 				return false;
 			}
 			
-			bc.startSession(g.getPlayer(Integer.parseInt(p.params.get(0))), g.getPlayer(Integer.parseInt(p.params.get(1))));
+			Player p1 = g.getPlayer(Integer.parseInt(p.params.get(0)));
+			Player p2 = g.getPlayer(Integer.parseInt(p.params.get(1)));
 			
-			if (bc.p1==null || bc.p2==null)
+			if (p1==null || p2==null)
 			{
 				if (bc.p1==null)
 					reportError("Error: Actor 1 not viable",p.raw);
@@ -116,6 +116,8 @@ public class unownInterpreter {
 					reportError("Error: Actor 2 not viable",p.raw);
 				return false;
 			}
+			
+			bc.startSession(p1, p2);
 			
 			break;
 		case 3:
@@ -162,6 +164,9 @@ public class unownInterpreter {
 			reportError("Error: Pokemon 1 does not have requested attack (atk1, atk2)",p.raw);
 			return false;
 		}
+		
+		Attack a1 = pk1.getAttack(indx);
+		
 		indx = pk2.getAttackIndex(p.params.get(1));
 		if (indx==-1)
 		{
@@ -169,7 +174,9 @@ public class unownInterpreter {
 			return false;
 		}
 		
+		Attack a2 = pk2.getAttack(indx);
 		
+		bm.executeRound(pk1, pk2, a1, a2);
 		
 		return true;
 	}
@@ -258,6 +265,9 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.endBattle:
 			endBattle();
+			break;
+		case CommandCodes.attack:
+			attack(p);
 			break;
 			//items
 			

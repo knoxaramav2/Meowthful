@@ -37,6 +37,8 @@ public class BattleCache {
 		
 		battleActive=true;
 		
+		System.out.println("Trainer Battle Start: " + p1.name + " vs. " + p2.name);
+		
 		return true;
 	}
 	
@@ -52,6 +54,8 @@ public class BattleCache {
 		
 		battleActive=true;
 		
+		System.out.println("Wild Battle Start: " + p1.name + " vs. " + p2.name);
+		
 		return true;
 	}
 	
@@ -66,11 +70,21 @@ public class BattleCache {
 		
 		battleActive=true;
 		
+		System.out.println("Wild Pokemon Battle Start: " + p1.name + " vs. " + p2.name);
+		
 		return true;
 	}
-	
+
 	public void endSession()
 	{
+		endSession("");
+	}
+	
+	public void endSession(String victor)
+	{
+		if (victor.length()>0)
+			System.out.println(victor + " wins the battle!");
+		
 		p1 = null;
 		p2 = null;
 		p1Active = null;

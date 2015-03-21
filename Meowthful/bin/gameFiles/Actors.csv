@@ -1,3 +1,3 @@
-id,name,rank,party,,,,,,level,money,battleable,Items,startmap,position,aischeme,orientation,battleCoolDown
-0,Player,grunt,zubat:5:40:0:tackle%35|screech%35,n/a,n/a,n/a,n/a,n/a,5,10,1,n/a,0,5|10,0,0,0
-1,Jeff,grunt,zubat:5:40:0:tackle%35|screech%35,n/a,n/a,n/a,n/a,n/a,5,10,1,potion%2,0,10-Oct,1,3,10
+id,name,rank,party,,,,,,level,money,battleable,Items,startmap,position,aischeme,orientation,battleCoolDown,type
+0,Player,grunt,zubat:5:40:0:tackle%35|screech%35,n/a,n/a,n/a,n/a,n/a,5,10,1,n/a,0,5|10,0,0,0,player
+1,Jeff,grunt,zubat:5:40:0:tackle%35|screech%35,n/a,n/a,n/a,n/a,n/a,5,10,1,potion%2,0,5|15,1,3,10,mGrunt

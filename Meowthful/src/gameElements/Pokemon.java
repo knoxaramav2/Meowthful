@@ -1,5 +1,8 @@
 package gameElements;
 
+import gameElements.Types.Type;
+import gameEngine.gameGlobal;
+
 import java.util.ArrayList;
 
 public class Pokemon {
@@ -110,7 +113,7 @@ public class Pokemon {
 		if (list.length<16)
 			return;
 		
-		for (int i=1; i<params.length()-1;i++)
+		for (int i=0; i<params.length();i++)
 		{
 			switch(i)
 			{
@@ -166,11 +169,128 @@ public class Pokemon {
 			case 15:
 				evolveLvl=Integer.parseInt(list[i]);
 				break;
+			case 16:
+				type=Type.getType(Integer.parseInt(list[i]));
+				break;
 			}
 		}
 		
 		restoreStats();
 		
+	}
+
+	public Pokemon (Pokemon pk)
+	{	
+		if (pk==null)
+			return;
+		
+		System.out.println(pk.name);
+		
+		name = new String(pk.name);
+
+		baseHealth = pk.baseHealth;
+		currentHealth = pk.currentHealth;
+		healthMultiplier = pk.healthMultiplier;
+
+		baseSpeed = pk.baseSpeed;
+		currentSpeed = pk.currentSpeed;
+		speedMultiplier = pk.speedMultiplier;
+
+		baseEvasiveness = pk.baseEvasiveness;
+		currentEvasiveness = pk.currentEvasiveness;
+		currentEvasiveness = pk.currentEvasiveness;
+
+		baseAttack = pk.baseAttack;
+		currentAttack = pk.currentAttack;
+		attackMultiplier = pk.attackMultiplier;
+
+		baseDefense = pk.baseDefense;
+		currentDefense = pk.currentDefense;
+		defenseMultiplier = pk.defenseMultiplier;
+
+		baseSpecialAttack = pk.baseSpecialAttack;
+		currentSpecialAttack = pk.currentSpecialAttack;
+		specialAttackMultiplier = pk.specialAttackMultiplier;
+
+		baseSpecialDefense = pk.baseSpecialDefense;
+		currentSpecialDefense = pk.currentSpecialDefense;
+		specialDefenseMultiplier = pk.defenseMultiplier;
+
+		level = pk.level;
+		baseStatMultiplier = pk.baseStatMultiplier;
+		currentStatMultiplier = pk.currentStatMultiplier;
+
+		exp = pk.exp;// current exp overall
+		nextLevelExp = pk.nextLevelExp;// countdown to next level
+
+		type = pk.type;
+		explicitStatus = Types.ExplicitStatus.none;
+		implicitStatus = Types.ImplicitStatus.none;	
+		
+		evolveLvl=pk.evolveLvl;
+		
+		number=pk.number;
+		id=pk.id;
+		
+		setLevel(level);
+	}
+	
+	public Pokemon(String Name, int lvl, gameGlobal gb)
+	{
+		Pokemon pk = new Pokemon(gb.getPokemon(Name));
+		
+		name = new String(Name);
+
+		baseHealth = pk.baseHealth;
+		currentHealth = pk.currentHealth;
+		healthMultiplier = pk.healthMultiplier;
+
+		baseSpeed = pk.baseSpeed;
+		currentSpeed = pk.currentSpeed;
+		speedMultiplier = pk.speedMultiplier;
+
+		baseEvasiveness = pk.baseEvasiveness;
+		currentEvasiveness = pk.currentEvasiveness;
+		currentEvasiveness = pk.currentEvasiveness;
+
+		baseAttack = pk.baseAttack;
+		currentAttack = pk.currentAttack;
+		attackMultiplier = pk.attackMultiplier;
+
+		baseDefense = pk.baseDefense;
+		currentDefense = pk.currentDefense;
+		defenseMultiplier = pk.defenseMultiplier;
+
+		baseSpecialAttack = pk.baseSpecialAttack;
+		currentSpecialAttack = pk.currentSpecialAttack;
+		specialAttackMultiplier = pk.specialAttackMultiplier;
+
+		baseSpecialDefense = pk.baseSpecialDefense;
+		currentSpecialDefense = pk.currentSpecialDefense;
+		specialDefenseMultiplier = pk.defenseMultiplier;
+
+		level = pk.level;
+		baseStatMultiplier = pk.baseStatMultiplier;
+		currentStatMultiplier = pk.currentStatMultiplier;
+
+		exp = pk.exp;// current exp overall
+		nextLevelExp = pk.nextLevelExp;// countdown to next level
+
+		type = pk.type;
+		explicitStatus = Types.ExplicitStatus.none;
+		implicitStatus = Types.ImplicitStatus.none;	
+		
+		evolveLvl=pk.evolveLvl;
+		
+		number=pk.number;
+		id=pk.id;
+		
+		setLevel(level);
+	}
+	
+	public void setAttackList(ArrayList <Attack> atL)
+	{
+		attacks = atL;
 	}
 	
 	public void assignId(int ID)
@@ -189,6 +309,13 @@ public class Pokemon {
 	public ArrayList <Attack> getAttackList()
 	{
 		return attacks;
+	}
+	
+	public Attack getAttack (int index)
+	{
+		if (index<0 || index>attacks.size())
+			return null;
+		return attacks.get(index);
 	}
 	
 	//levels input base pokemon to  
@@ -422,9 +549,30 @@ public class Pokemon {
 		return level;
 	}
 
+	public void levelUp()
+	{
+		setLevel(level+1);
+	}
+	
 	public void setLevel(int value) {
 		level = value;
 		if(level < 0) level = 0;
+		
+		baseHealth = (int) ((baseHealth * healthMultiplier) + 1);
+		baseSpeed = (int) ((baseSpeed *speedMultiplier)+1);
+		baseEvasiveness = (int) ((baseEvasiveness * evasivenessMultiplier)+1);
+		baseAttack = (int) ((baseAttack * attackMultiplier) + 1);
+		baseDefense = (int) ((baseDefense * defenseMultiplier)+1);
+		baseSpecialAttack = (int) ((baseSpecialAttack * specialAttackMultiplier)+1);
+		baseSpecialDefense = (int) ((baseSpecialDefense * specialDefenseMultiplier)+1);
+		
+		currentHealth = baseHealth;
+		currentSpeed = baseSpeed;
+		currentEvasiveness = baseEvasiveness;
+		currentAttack = baseAttack;
+		currentDefense = baseDefense;
+		currentSpecialAttack = baseSpecialAttack;
+		currentSpecialDefense = baseSpecialDefense;
 	}
 	
 	public void modLevel(int value){

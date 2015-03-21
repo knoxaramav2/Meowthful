@@ -1,6 +1,7 @@
 package graphics;
 
 import gameElements.Player;
+import gameElements.Sprites;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -65,7 +66,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		g.drawImage(map, 0, 0, null);
-		g.drawImage(player.getSprite(0), player.posx, player.posy, null);
+		g.drawImage(player.getSprite(Sprites.forward_idle), player.posx, player.posy, null);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {

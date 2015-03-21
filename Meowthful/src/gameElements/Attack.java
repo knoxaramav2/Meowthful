@@ -3,6 +3,7 @@ package gameElements;
 import java.util.ArrayList;
 
 import gameElements.Types.Type;
+import gameEngine.gameGlobal;
 
 public class Attack {	
 	public String 				name;
@@ -27,12 +28,12 @@ public class Attack {
 	public Attack(String params) {
 String list[] = params.split(",");
 		
-		for (int i=1; i<params.length()-1;i++)
+		for (int i=0; i<params.length();i++)
 		{
 			switch(i)
 			{
 			case 0:
-				name=list[i];
+				name=new String(list[i]);
 				break;
 			case 1:
 				type=Type.getType(Integer.parseInt(list[i]));
@@ -69,6 +70,28 @@ String list[] = params.split(",");
 		}
 	}
 
+	public Attack(String str, gameGlobal g)
+	{
+		Attack a = g.getAttack(str);
+		
+		name = new String (a.name);
+		desc = new String (a.desc);
+		type = a.type;
+		effect = new ArrayList <Types.AttackEffects> (a.effect);
+		basePP = a.basePP;
+		currentPP = a.currentPP;
+		baseAccuracy = a.baseAccuracy;
+		currentAccuracy = a.currentAccuracy;
+		baseDamage = a.baseDamage;
+		currentDamage = a.currentDamage;
+		cooldownTimer = a.cooldownTimer;
+		currentCooldown = a.currentCooldown;
+		baseFlinchProbability = a.baseFlinchProbability;
+		isSpcAtk = a.isSpcAtk;
+		explicitEffect = a.explicitEffect;
+		priority = a.priority;
+	}
+	
 	public String getName(){
 		return name;
 	}

@@ -20,7 +20,7 @@ public class gameGlobal {
 		for (int x=0; x<pokemonDB.size(); x++)
 		{
 			p=(Pokemon)pokemonDB.get(x);
-			if (p.name.equals(name))
+			if (p.name.toLowerCase().equals(name.toLowerCase()))
 			{
 				return p;
 			}

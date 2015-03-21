@@ -1,5 +1,7 @@
 package gameElements;
 
+import gameEngine.gameGlobal;
+
 import java.util.ArrayList;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -13,6 +15,7 @@ public class Player {
 	public int rank;
 	public int level;
 	public ArrayList<Pokemon> party = new ArrayList<Pokemon>();
+	public String type;
 
 	public int posx, posy;
 	public int map;
@@ -25,15 +28,11 @@ public class Player {
 
 	public int id;
 	
-	private BufferedImage[] sprites;
+	private Sprites spriteDB;
 
-	public Player(String params, BufferedImage[] sprites) {
-		this.sprites = new BufferedImage[sprites.length];
+	public Player(String params, Sprites sDb, gameGlobal g) {
 		
-		for(int i = 0; i < sprites.length; i++){
-			this.sprites[i] = resize(sprites[i], 1280/15, 720/15);
-		}
-		
+		spriteDB=sDb;
 		// Parse from line into base
 		String list[] = params.split(",");
 
@@ -79,16 +78,44 @@ public class Player {
 				if (list[i] == "n/a")
 					continue;
 
-				String partyList[] = list[i].split("\\|");
-
-				for (int loop = 0; loop < partyList.length; loop++) {
-					String pokeParam[] = partyList[loop].split(":");// individual
-																	// parameters
-
-					for (int j = 0; j < pokeParam.length; j++)
-						party.add(new Pokemon(pokeParam[j]));
+				String partyParam[] = list[i].split(":");
+				String title = null;
+				int lvl=0;
+				ArrayList <Attack> att = new ArrayList <Attack>();
+				
+				for (int x=0; x<partyParam.length; x++)
+				{
+					switch (x)
+					{
+					case 0:
+						title=partyParam[x];
+						break;
+					case 1:
+						lvl=Integer.parseInt(partyParam[x]);
+						break;
+					case 2:
+						String attackList[]=partyParam[x].split("\\|");
+						for (int y=0; y<attackList.length; y++)
+						{
+							String param[] = attackList[y].split("%");
+							Attack atk = new Attack(param[0],g);
+							atk.setCurrentPP(Integer.parseInt(param[1]));
+							att.add(atk);
+						}
+						break;
+					}
 				}
-
+				if (title.equals("n/a"))
+					break;
+				
+				Pokemon pk = new Pokemon(title,lvl,g);
+				if (pk.name.equals(""))
+					break;
+				
+				pk.setAttackList(att);
+				
+				party.add(pk);
+				
 				break;
 			case 9:
 				level = Integer.parseInt(list[i]);
@@ -122,10 +149,18 @@ public class Player {
 			case 17:
 				coolDown = Integer.parseInt(list[i]);
 				break;
+			case 18:
+				type=list[i];
+				break;
 			}
 		}
 	}
 	
+	private Pokemon Pokemon(String title, int lvl, gameGlobal g) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	//modified deep copy (certain elements shallow copied)
 	public Player(Player origin)
 	{
@@ -145,11 +180,11 @@ public class Player {
 		
 		this.id=origin.id;
 		
-		this.sprites=origin.sprites;
+		this.spriteDB=origin.spriteDB;
 	}
 	
 	public BufferedImage getSprite(int index){
-		return sprites[index];
+		return spriteDB.getPlayerSprite(index, type);
 	}
 	
 	private BufferedImage resize(BufferedImage image, int width, int height) {

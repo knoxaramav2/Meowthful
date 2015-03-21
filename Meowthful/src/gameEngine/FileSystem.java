@@ -3,6 +3,7 @@ package gameEngine;
 import gameElements.Attack;
 import gameElements.Player;
 import gameElements.Pokemon;
+import gameElements.Sprites;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,11 +23,7 @@ public class FileSystem {
 	//load flags
 	static int _actor=0, _pkmn=1;
 	
-	public static gameGlobal loadGlobals(gameGlobal g, 
-			String baseFile, 
-			String attackFile, 
-			String actorFile, 
-			String spriteFile)
+	public static gameGlobal loadGlobals(gameGlobal g)
 	{
 		BufferedReader br=null;
 		String buffer=null;
@@ -35,24 +32,27 @@ public class FileSystem {
 		String cache = new String();
 	
 		//load each base file into respective database
-		for (int x=0; x<4; x++)
+		for (int x=0; x<5; x++)
 		{
 			try
 			{
 				switch (x)
 				{
 				case 0://baseFile
-					filebuffer=baseFile;
+					filebuffer="src/gameFiles/BaseValues.csv";
 					break;
 				case 1://attackFile
-					filebuffer=attackFile;
+					filebuffer="src/gameFiles/Attacks.csv";
 					break;
 				case 2://actorFile
-					filebuffer=actorFile;
+					filebuffer="src/gameFiles/Actors.csv";
 					break;
 				case 3://sprite sheet
-					g.spriteDB.loadPokeSprites(spriteFile);
+					g.spriteDB.loadPokeSprites("src/gameFiles/spritesheet.png");
 					continue;
+				case 4:
+					g.spriteDB.loadPlayerSprites("src/gameFiles/sprites.png");
+					break;
 				}
 				br = new BufferedReader(new FileReader(filebuffer));
 				boolean firstLine=false;
@@ -64,6 +64,8 @@ public class FileSystem {
 						firstLine=true;
 						continue;
 					}
+					
+					buffer = new String(buffer.toLowerCase());
 						
 					switch (x)
 					{
@@ -76,8 +78,8 @@ public class FileSystem {
 						g.attackListDB.add(a);
 						break;
 					case 2://actorFile
-						//Player pl = new Player(buffer, null);
-						//g.playerList.add(pl);
+						Player pl = new Player(buffer, g.spriteDB,g);
+						g.playerList.add(pl);
 						break;
 					}
 				}

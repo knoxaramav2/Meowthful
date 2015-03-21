@@ -22,17 +22,27 @@ public class Launcher {
 		unownInterpreter iEngine = new unownInterpreter(global, battleManager, system);
 		
 		//load base files (complete)
-		global = FileSystem.loadGlobals(global, 
-				"src/gameFiles/BaseValues.csv",
-				"src/gameFiles/Attacks.csv",
-				"src/gameFiles/Actors.csv", 
-				"src/gameFiles/spritesheet.png");
+		FileSystem.loadGlobals(global);
+		
+		for (int x=0; x<global.playerList.size();x++)
+		{
+			System.out.println(global.playerList.get(x).name);
+			
+			for (int y=0; y<global.playerList.get(x).party.size();y++)
+			{
+				String s = global.playerList.get(x).party.get(y).name;
+				if (s==null)
+					System.out.println("null name");
+				else 
+					System.out.println(s);
+			}
+		}
 		
 		//start graphics
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {//game peripheral loop in renderer class
             	try {
-					Renderer.createAndShowGUI(iEngine);
+					Renderer.createAndShowGUI(iEngine,global);
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

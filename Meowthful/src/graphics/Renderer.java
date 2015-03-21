@@ -1,6 +1,7 @@
 package graphics;
 
 import gameElements.Player;
+import gameEngine.gameGlobal;
 
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -81,11 +82,11 @@ public class Renderer extends JPanel implements ActionListener{
 //		Graphics2D g2d = (Graphics2D) g;
 	}
 
-	public static void createAndShowGUI(unownInterpreter ui) throws IOException {
+	public static void createAndShowGUI(unownInterpreter ui, gameGlobal Gg) throws IOException {
 		// Create and set up the window.
 		BufferedImage[] player = new BufferedImage[1];
 		player[0] = ImageIO.read(new File("src/gameFiles/singlePerson.png"));
-		Player testPlayer = new Player("1,Test Grunt,grunt,zubat:5:40:0:tackle%35|screech%35,n/a,n/a,n/a,n/a,n/a,5,10,1,potion(2),0,5|10,0,0,10", player);
+		Player testPlayer = Gg.getPlayer(0);
 		
 		gameElements.Map map = new gameElements.Map("src/gameFiles/testMap.WORLD");
 		JFrame frame = new JFrame("Meowthful");
