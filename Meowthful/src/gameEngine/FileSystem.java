@@ -3,17 +3,12 @@ package gameEngine;
 import gameElements.Attack;
 import gameElements.Player;
 import gameElements.Pokemon;
-import gameElements.Sprites;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Files;
-import java.util.Properties;
 
 //loads and saves different file types into memory
 public class FileSystem {
@@ -23,6 +18,7 @@ public class FileSystem {
 	//load flags
 	static int _actor=0, _pkmn=1;
 	
+	@SuppressWarnings("unused")
 	public static gameGlobal loadGlobals(gameGlobal g)
 	{
 		BufferedReader br=null;

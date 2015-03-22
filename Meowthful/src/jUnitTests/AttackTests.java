@@ -1,13 +1,10 @@
 package jUnitTests;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-
-import gameElements.Attack;
-import gameElements.Types;
 
 public class AttackTests {
+	@SuppressWarnings("unused")
 	private static final double EPSILON = 10e-07;
+	@SuppressWarnings("unused")
 	private String[] msgs = {"An initialized attack of name \"Hyper Beam\" should have the name \"Hyper Beam\"",
 							 "An initialized attack of type normal should have type normal",
 							 "Changing the attack type to dragon should result in an attack type of dragon",

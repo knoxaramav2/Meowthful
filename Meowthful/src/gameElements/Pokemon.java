@@ -59,10 +59,10 @@ public class Pokemon {
 	public ArrayList<Integer> evolveTo = new ArrayList<Integer>();
 	private int evolveLvl;
 	
-	private ArrayList <Attack> attacks = new <Attack> ArrayList();
+	private ArrayList <Attack> attacks = new ArrayList<Attack>();
 
 	public Pokemon() {
-		String name = new String();
+		name = new String();
 
 		baseHealth = 0;
 		currentHealth = 0;

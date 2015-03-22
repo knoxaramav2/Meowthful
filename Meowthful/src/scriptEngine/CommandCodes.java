@@ -62,6 +62,7 @@ public class CommandCodes{
 	public final static int event			= 96891546;
 	
 	
+	@SuppressWarnings("unused")
 	private int type;
 	
 	//destination defines

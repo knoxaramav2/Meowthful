@@ -1,13 +1,12 @@
 package jUnitTests;
 
-import static org.junit.Assert.*;
-import java.awt.datatransfer.*;
-import java.awt.Toolkit;
-
-import java.util.Scanner;
-
 import gameEngine.BattleManager;
 import gameEngine.gameGlobal;
+
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.util.Scanner;
 
 import org.junit.Test;
 
@@ -27,16 +26,17 @@ public class ScriptTest {
 		//String line = new String(in.nextLine());
 		//System.out.println(line);
 		
-		while (true)
+		while (in.hasNextLine())
 		{
 			String line = new String(in.nextLine());
 			//toClipBoard(""+line.hashCode());
 			ui.interpret(line);
 		}
 		
-		//in.close();
+		in.close();
 	}
 	
+	@SuppressWarnings("unused")
 	private void toClipBoard(String myString)
 	{
 		StringSelection stringSelection = new StringSelection (myString);

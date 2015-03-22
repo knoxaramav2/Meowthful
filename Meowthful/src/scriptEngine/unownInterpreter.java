@@ -5,14 +5,13 @@ import gameElements.Player;
 import gameElements.Pokemon;
 import gameEngine.BattleCache;
 import gameEngine.BattleManager;
-import gameEngine.gameGlobal;
 import gameEngine.Utility;
+import gameEngine.gameGlobal;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import system.data;
 
@@ -77,6 +76,7 @@ public class unownInterpreter {
 	}
 	
 	//player/opponent, to_switch
+	@SuppressWarnings("unused")
 	private boolean changeActivePokemon(Packet p)
 	{
 		//swap out active pokemon
@@ -191,6 +191,8 @@ public class unownInterpreter {
 		{
 			interpret(buffer);
 		}
+		
+		br.close();
 	}
 	
 	public unownInterpreter(gameGlobal g, BattleManager bm, data d)
@@ -254,7 +256,6 @@ public class unownInterpreter {
 	}
 	
 	//distribute or execute messages
-	@SuppressWarnings("static-access")
 	public void execute(Packet p)
 	{
 		switch (p.code.value)

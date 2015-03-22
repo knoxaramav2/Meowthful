@@ -1,13 +1,8 @@
 package jUnitTests;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-import gameElements.Pokemon;
-import gameElements.Types;
 
 public class PokemonTests {
+	@SuppressWarnings("unused")
 	private String[] msgs = {"Initializing a new Pokemon with the name \"Squirtle\" should have the name \"Squirtle\"",
 					 		 "Initializing a new Pokemon with health 60 should have a health of 60",
 							 "Setting a Pokemon's health to 50 should result in a health of 50",

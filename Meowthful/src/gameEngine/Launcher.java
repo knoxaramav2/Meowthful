@@ -1,11 +1,11 @@
 package gameEngine;
+import graphics.Renderer;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 import scriptEngine.unownInterpreter;
 import system.data;
-import graphics.Console;
-import graphics.Renderer;
 
 
 

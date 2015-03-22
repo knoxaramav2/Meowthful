@@ -156,6 +156,7 @@ public class Player {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private Pokemon Pokemon(String title, int lvl, gameGlobal g) {
 		// TODO Auto-generated method stub
 		return null;
@@ -182,9 +183,9 @@ public class Player {
 		
 		this.spriteDB=origin.spriteDB;
 	}
-	
+		
 	public BufferedImage getSprite(int index){
-		return spriteDB.getPlayerSprite(index, type);
+		return resize(spriteDB.getPlayerSprite(index, type), 1280/15, 720/15);
 	}
 	
 	private BufferedImage resize(BufferedImage image, int width, int height) {

@@ -1,8 +1,6 @@
 package system;
 
 import gameElements.Map;
-import gameElements.Player;
-import gameElements.Pokemon;
 
 import java.util.ArrayList;
 

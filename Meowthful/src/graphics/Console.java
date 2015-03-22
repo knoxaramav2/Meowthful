@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import scriptEngine.unownInterpreter;
  
+@SuppressWarnings("serial")
 public class Console extends JPanel implements ActionListener {
     protected JTextField textField;
     protected JTextArea textArea;

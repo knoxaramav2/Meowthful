@@ -24,6 +24,7 @@ import scriptEngine.unownInterpreter;
 
 //make window 720 x 1280
 
+@SuppressWarnings("serial")
 public class Renderer extends JPanel implements ActionListener{
 	/**
 	 * Create the GUI and show it. For thread safety, this method should be
@@ -88,9 +89,9 @@ public class Renderer extends JPanel implements ActionListener{
 		player[0] = ImageIO.read(new File("src/gameFiles/singlePerson.png"));
 		Player testPlayer = Gg.getPlayer(0);
 		
-		gameElements.Map map = new gameElements.Map("src/gameFiles/testMap.WORLD");
+		gameElements.Map map = new gameElements.Map("src/gameFiles/MonkMountain.WORLD");
 		JFrame frame = new JFrame("Meowthful");
-		CustomPanel panel = new CustomPanel(map.getMap(), testPlayer);
+		CustomPanel panel = new CustomPanel(map, testPlayer, null);
 		
 		panel.setConsole(ui);
 		

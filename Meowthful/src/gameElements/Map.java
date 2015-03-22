@@ -5,35 +5,38 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import javax.imageio.ImageIO;
 
 public class Map {
 	private static int width = 1280;
 	private static int height = 720;
+	private MapComponents mapComponents;
 	private BufferedImage map = null;
+	@SuppressWarnings("unused")
 	private int attributeMatrix[] = null;
-	private boolean[][] blocked = new boolean[15][15];
+	private int[][] moveType = new int[15][15];
+	private int[][] specialID = new int[15][15];
+	@SuppressWarnings("unused")
 	private Point loc = null;
+	@SuppressWarnings("unused")
 	private ArrayList <String> scripts = new ArrayList <String>();
 
 	public Map(String fileName) throws IOException {
 		attributeMatrix = new int[1280 * 720];
+		mapComponents = new MapComponents(fileName);
 		// load .World file
 		BufferedImage imgs[][] = new BufferedImage[15][15];
-		Scanner s;
 		GetImage getImage = new GetImage();
 		
 		getImage.loadPokeSprites("src/gameFiles/world_spritesheet.png", 17,17,43,13,1);
-		s = new Scanner(new File(fileName));
 		
 		for(int j = 0; j < 15; j++){
 			for(int i = 0; i < 15; i++){
-				imgs[i][j] = resize(getImage.getPokemonSprite(parseMap(s)), 30, 30);
+				imgs[i][j] = resize(getImage.getPokemonSprite(mapComponents.getMapImageIndex(i, j)), 30, 30);
+				moveType[i][j] = mapComponents.getMoveType(i, j);
+				specialID[i][j] = mapComponents.getSpecialID(i, j);
 			}
 		}
 
@@ -56,6 +59,18 @@ public class Map {
 		return map;
 	}
 	
+	public boolean isBlocked(int x, int y){
+		return moveType[y][x] == 2;
+	}
+	
+	public int getMoveType(int x, int y){
+		return moveType[y][x];
+	}
+	
+	public int getSpecialID(int x, int y){
+		return specialID[y][x];
+	}
+	
 	private BufferedImage resize(BufferedImage image, int width, int height) {
 	    BufferedImage bi = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
 	    Graphics2D g2d = (Graphics2D) bi.createGraphics();
@@ -65,14 +80,6 @@ public class Map {
 	    return bi;
 	}
 	
-	private static int parseMap(Scanner s) throws FileNotFoundException {
-		s.useDelimiter(",");
-		if(s.hasNextInt()){
-			int next = s.nextInt();
-			next /= 10;
-			return next;
-		} else return 160;
-	}
 }
 
 class GetImage {
