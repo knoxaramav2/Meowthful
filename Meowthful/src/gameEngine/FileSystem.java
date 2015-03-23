@@ -66,7 +66,7 @@ public class FileSystem {
 					switch (x)
 					{
 					case 0://baseFile
-						Pokemon p = new Pokemon (buffer);
+						Pokemon p = new Pokemon (buffer,g);
 						g.pokemonDB.add(p);
 						break;
 					case 1://attackFile

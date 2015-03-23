@@ -4,6 +4,7 @@ import gameElements.Types.Type;
 import gameEngine.gameGlobal;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Pokemon {
 
@@ -61,7 +62,9 @@ public class Pokemon {
 	
 	private ArrayList <Attack> attacks = new ArrayList<Attack>();
 
-	public Pokemon() {
+	gameGlobal g;
+	
+	public Pokemon(gameGlobal g) {
 		name = new String();
 
 		baseHealth = 0;
@@ -85,12 +88,12 @@ public class Pokemon {
 		baseSpecialDefense = 0;
 		currentSpecialDefense = 0;
 
-		level = 0;
+		level = 5;
 		baseStatMultiplier = 0;
 		currentStatMultiplier = 0;
 
 		exp = 0;// current exp overall
-		nextLevelExp = 0;// countdown to next level
+		nextLevelExp = 10;// countdown to next level
 
 		type = Types.Type.normal;
 		explicitStatus = Types.ExplicitStatus.none;
@@ -100,11 +103,13 @@ public class Pokemon {
 		
 		number=0;
 		id=0;
+		
+		this.setLevel(level);
 	}
 
 	// loads base pokemon. Specific stats must be loaded seperately
 
-	public Pokemon(String params) {
+	public Pokemon(String params, gameGlobal g) {
 		//parse into base values
 		//set current to base
 		
@@ -173,6 +178,9 @@ public class Pokemon {
 				type=Type.getType(Integer.parseInt(list[i]));
 				break;
 			}
+			
+			level=5;
+			nextLevelExp = (int) Math.pow(100-level, 3)/50;
 		}
 		
 		restoreStats();
@@ -275,7 +283,7 @@ public class Pokemon {
 
 		exp = pk.exp;// current exp overall
 		nextLevelExp = pk.nextLevelExp;// countdown to next level
-
+		
 		type = pk.type;
 		explicitStatus = Types.ExplicitStatus.none;
 		implicitStatus = Types.ImplicitStatus.none;	
@@ -293,6 +301,61 @@ public class Pokemon {
 		attacks = atL;
 	}
 	
+	public boolean isKO()
+	{
+		if (currentHealth>0)
+			return false;
+		return true;
+	}
+	
+	public void evolve()
+	{
+		
+		if (evolveTo.size()==0)
+			return;
+		Random rand = new Random();
+		
+		Pokemon tmp = g.getPokemon(rand.nextInt(evolveTo.get(0))+evolveTo.get(evolveTo.size()-1));
+		if (tmp==null)
+		{
+			System.out.println("Evolution failed: invalid evolve-to");
+			return;
+		}
+		
+		System.out.println(this.name+" evolved into "+tmp.name);
+		
+		this.attackMultiplier=tmp.attackMultiplier;
+		this.defenseMultiplier=tmp.defenseMultiplier;
+		this.specialAttackMultiplier=tmp.specialAttackMultiplier;
+		this.specialDefenseMultiplier=tmp.specialDefenseMultiplier;
+		this.speedMultiplier=tmp.speedMultiplier;
+		this.evasivenessMultiplier=tmp.evasivenessMultiplier;
+		this.healthMultiplier=tmp.healthMultiplier;
+		
+		this.baseAttack=tmp.baseAttack;
+		this.baseDefense=tmp.baseDefense;
+		this.baseEvasiveness=tmp.baseEvasiveness;
+		this.baseHealth=tmp.baseHealth;
+		this.baseSpecialAttack=tmp.baseSpecialAttack;
+		this.baseSpecialDefense=tmp.baseSpecialDefense;
+		this.baseSpeed=tmp.baseSpeed;
+		
+		this.currentAttack=(this.currentAttack+this.baseAttack)/2;
+		this.currentDefense=(this.currentDefense+this.baseDefense)/2;
+		this.currentEvasiveness=(this.currentEvasiveness+this.baseEvasiveness)/2;
+		this.currentHealth=(this.currentHealth+this.baseHealth)/2;
+		this.currentSpecialAttack=(this.currentSpecialAttack+this.baseSpecialAttack)/2;
+		this.currentSpecialDefense=(this.currentSpecialDefense+this.baseSpecialDefense)/2;
+		this.currentSpeed=(this.currentSpeed+this.baseSpeed)/2;
+		
+		this.evolveLvl=tmp.evolveLvl;
+		this.evolveTo=new ArrayList<Integer>(tmp.evolveTo);
+		
+		this.name= new String(tmp.name);
+		
+		this.number=tmp.number;
+	}
+		
 	public void assignId(int ID)
 	{
 		id=ID;
@@ -552,6 +615,7 @@ public class Pokemon {
 	public void levelUp()
 	{
 		setLevel(level+1);
+		
 	}
 	
 	public void setLevel(int value) {
@@ -565,14 +629,6 @@ public class Pokemon {
 		baseDefense = (int) ((baseDefense * defenseMultiplier)+1);
 		baseSpecialAttack = (int) ((baseSpecialAttack * specialAttackMultiplier)+1);
 		baseSpecialDefense = (int) ((baseSpecialDefense * specialDefenseMultiplier)+1);
-		
-		currentHealth = baseHealth;
-		currentSpeed = baseSpeed;
-		currentEvasiveness = baseEvasiveness;
-		currentAttack = baseAttack;
-		currentDefense = baseDefense;
-		currentSpecialAttack = baseSpecialAttack;
-		currentSpecialDefense = baseSpecialDefense;
 	}
 	
 	public void modLevel(int value){
@@ -581,11 +637,50 @@ public class Pokemon {
 	}
 	
 	public void resetLevel(){
-		level = 0;
+		setLevel(5);
 	}
 	
 	public int getEXP(){
 		return exp;
+	}
+	
+	public void increaseEXP(int value)
+	{
+		exp+=value;
+	
+		System.out.println(name+" gained " + value + " experience");
+		
+		if (value>nextLevelExp)
+		{
+			while (value/nextLevelExp>0)
+			{
+				levelUp();
+				value-=nextLevelExp;
+				System.out.println(name+" increased to level "+level);
+				
+				if (level<=50)
+				{
+					nextLevelExp = (int) Math.pow(100-level, 3)/50;
+				}else if (level<=68)
+				{
+					nextLevelExp = (int) Math.pow(150-level, 3)/100;
+				}else if (level<=98)
+				{
+					nextLevelExp = (int) Math.pow((1911-(10*level))/3, 3);
+				}else if (level<=100)
+				{
+					nextLevelExp = (int) Math.pow(160-level, 3)/100;	
+				}
+			}
+			
+			if (evolveLvl<=level)
+			{
+				evolve();
+			}
+		}
+		
+		nextLevelExp-=value;
+		
 	}
 	
 	public void setEXP(int value){

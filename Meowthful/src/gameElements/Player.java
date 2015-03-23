@@ -197,4 +197,12 @@ public class Player {
 	    return bi;
 	}
 
+	public boolean hasReadyPokemon()
+	{
+		for (int x=0; x<party.size(); x++)
+			if (!party.get(x).isKO())
+				return true;
+		
+		return false;
+	}
 }

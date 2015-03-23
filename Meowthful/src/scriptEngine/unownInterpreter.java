@@ -76,10 +76,62 @@ public class unownInterpreter {
 	}
 	
 	//player/opponent, to_switch
-	@SuppressWarnings("unused")
 	private boolean changeActivePokemon(Packet p)
 	{
 		//swap out active pokemon
+		
+		//index to swap
+		if (p.params.size()!=2 && p.params.size()!=3)
+		{
+			reportError("Error: Must have 2 or 3 parameters\n[player] [hotswap]\n[player] [pkmn 1] [pkmn 2]",p.raw);
+			return false;
+		}
+		
+		if (p.params.size()==2)//in battle hotswap
+		{
+		if (!bc.battleActive)
+		{
+			reportError("Error: must be in battle to hotswap",p.raw);
+			return false;
+		}
+		
+		int id=Integer.parseInt(p.params.get(0));
+		int pkIndex=Integer.parseInt(p.params.get(1));
+		Player player=null;
+		
+		if (!(pkIndex>=0 && pkIndex<=5) || !(pkIndex>=0 && pkIndex<=5))
+		{
+			reportError("Error: ",p.raw);
+			return false;
+		}
+		
+		if (bc.p1.id==id)
+			player=bc.p1;
+		else if (bc.p2.id==id)
+			player=bc.p2;
+		else
+		{
+			reportError("Error: Neither actor matches input",p.raw);
+			return false;
+		}
+		
+		if (pkIndex>=player.party.size())
+		{
+			reportError("Error: Invalid selection",p.raw);
+			return false;
+		}
+		
+		Pokemon pkmn = player.party.get(pkIndex);
+		if (pkmn==null)
+		{
+			reportError("Error: Null pokemon",p.raw);
+			return false;
+		}
+		
+		}
+		else {
+			
+		}
 		
 		return true;
 	}
@@ -117,6 +169,12 @@ public class unownInterpreter {
 				return false;
 			}
 			
+			if (!p1.hasReadyPokemon() || !p2.hasReadyPokemon())
+			{
+				reportError("Both sides must have at least one viable pokemon",p.raw);
+				return true;
+			}
+			
 			bc.startSession(p1, p2);
 			
 			break;
@@ -139,13 +197,24 @@ public class unownInterpreter {
 		return true;
 	}
 	
+	private void declareWinner(Player winner, Player loser)
+	{
+		int exchange = (int)(loser.money*0.2)+5;
+		if (loser.money<exchange)
+			exchange=loser.money;
+		loser.money-=exchange;
+		winner.money+=exchange;
+		
+		System.out.println(winner.name + " won $"+exchange);
+	}
+	
 	private void endBattle()
 	{
 		System.out.println("Battle end between " + bc.p1.name + " and " + bc.p2.name);	
 		bc.endSession();
 	}
 	
-	//attack 1, attack 2
+	//attack 1, attack 2 --only supports actor vs. actor battle. No wild
 	private boolean attack(Packet p)
 	{		
 		if (p.params.size()!=2)
@@ -154,8 +223,20 @@ public class unownInterpreter {
 			return false;
 		}
 		
+		if (!bc.battleActive)
+		{
+			reportError("Error: No current battle",p.raw);
+			return false;
+		}
+		
 		Pokemon pk1 = bc.p1.party.get(0);
 		Pokemon pk2 = bc.p2.party.get(0);
+		
+		if (pk1.isKO() || pk2.isKO())
+		{
+			System.out.println("Must swap to useable pokemon");
+			return false;
+		}
 		
 		//get attacks
 		int indx = pk1.getAttackIndex(p.params.get(0));
@@ -176,7 +257,56 @@ public class unownInterpreter {
 		
 		Attack a2 = pk2.getAttack(indx);
 		
+		int h1=pk1.getHealth();
+		int h2=pk2.getHealth();
+		
+		bm.resetWinner();
 		bm.executeRound(pk1, pk2, a1, a2);
+		
+		System.out.println(pk1.name+" took "+(h1-pk1.getHealth()+" damage. Health is "+pk1.getHealth()));
+		System.out.println(pk2.name+" took "+(h2-pk2.getHealth()+" damage. Health is "+pk2.getHealth()));
+		
+		Pokemon winner = bm.getWinner();
+		
+		if (winner!=null)//announce battle change
+		{
+			if (winner==pk1)
+			{
+				pk1.increaseEXP((int)(pk2.getLevel()*9.5)/7);
+				System.out.println(bc.p2.name+"'s "+pk2.name+" fainted\n"+bc.p1.name+"'s "+pk1.name+" is the winner.");
+				if (!bc.p2.hasReadyPokemon())
+				{
+					System.out.println(bc.p2.name+" is out of pokemon");
+					declareWinner(bc.p1,bc.p2);
+					bc.endSession(bc.p1.name);
+					return true;
+				}else
+				{
+					System.out.println("Choose next pokemon");
+					for (int x=0; x<bc.p2.party.size();x++)
+						if (!bc.p2.party.get(x).isKO())
+							System.out.println(bc.p2.party.get(x).name+"\t"+x);
+				}
+			}else
+			{
+				pk2.increaseEXP((int)(pk1.getLevel()*9.5)/7);
+				System.out.println(bc.p1.name+"'s "+pk1.name+" fainted\n"+bc.p2.name+"'s "+pk2.name+" is the winner.");
+				if (!bc.p1.hasReadyPokemon())
+				{
+					System.out.println(bc.p1.name+" is out of pokemon.");
+					declareWinner(bc.p2,bc.p1);
+					bc.endSession(bc.p2.name);
+					return true;
+				}else
+				{
+					System.out.println("Choose next pokemon");
+					for (int x=0; x<bc.p2.party.size();x++)
+						if (!bc.p2.party.get(x).isKO())
+							System.out.println(bc.p2.party.get(x).name+"\t"+x);
+				}
+			}
+			bm.resetWinner();
+		}
 		
 		return true;
 	}
@@ -269,6 +399,9 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.attack:
 			attack(p);
+			break;
+		case CommandCodes.swapParty:
+			changeActivePokemon(p);
 			break;
 			//items
 			

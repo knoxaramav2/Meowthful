@@ -16,7 +16,7 @@ public class gameGlobal {
 	//retrieve copy of base pokemon
 	public Pokemon getPokemon(String name)
 	{
-		Pokemon p = new Pokemon();
+		Pokemon p = new Pokemon(this);
 		for (int x=0; x<pokemonDB.size(); x++)
 		{
 			p=(Pokemon)pokemonDB.get(x);
@@ -68,5 +68,14 @@ public class gameGlobal {
 			}
 		}
 		return null;	
+	}
+
+	public Pokemon getPokemon(int i) {
+		
+		for (int x=0; x<pokemonDB.size(); x++)
+			if (pokemonDB.get(x).getNumber()==i)
+				return pokemonDB.get(x);
+		
+		return null;
 	}
 }
