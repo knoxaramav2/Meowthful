@@ -78,4 +78,9 @@ public class gameGlobal {
 		
 		return null;
 	}
+
+	public Sprites getSpriteSheets()
+	{
+		return spriteDB;
+	}
 }

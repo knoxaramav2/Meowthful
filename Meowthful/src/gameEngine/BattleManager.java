@@ -277,7 +277,8 @@ public class BattleManager {
 			if(criticalHit(attacker)) damageMultiplier *= 2;
 			damageMultiplier *= randomModifier();
 			
-			damageApplied = (int)((((((2*attacker.getLevel()) + 10)/250.0f)*((float)attackPower/defenseStrength)*(attack.getBasePower()))+2)*damageMultiplier);
+			if (attack.getBasePower()>0)
+				damageApplied = (int)((((((2*attacker.getLevel()) + 10)/250.0f)*((float)attackPower/defenseStrength)*(attack.getBasePower()))+2)*damageMultiplier);
 		}
 		
 		return damageApplied;

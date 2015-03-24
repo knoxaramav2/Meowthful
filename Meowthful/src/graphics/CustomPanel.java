@@ -37,12 +37,14 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	private int cellX;
 	private int cellY;
 	private boolean moving;
-	private Console console;
+	public Console console;
+	private Sprites sprites=null;
 
-	public CustomPanel(Map mapClass, Player player, ArrayList<Player> NPCs){			
+	public CustomPanel(Map mapClass, Player player, ArrayList<Player> NPCs, Sprites s){			
 		this.mapClass = mapClass;
 		map = mapClass.getMap();
 		this.player = player;
+		this.sprites=s;
 		curPlayerSprite = player.getSprite(Sprites.forward_idle);
 		
 		playerSpeedX = 5;
@@ -90,10 +92,26 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	}
 
 	public void keyPressed(KeyEvent e){
-		if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) up = true;
-		if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) left = true;
-		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) down = true;
-		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) right = true;
+		if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP)
+			{
+			//curPlayerSprite = sprites.getPlayerSprite(Sprites.backward_idle, "player");
+			up = true;
+			}
+		if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT)
+			{
+			//curPlayerSprite = sprites.getPlayerSprite(Sprites.left_idle, "player");
+			left = true;
+			}
+		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN)
+			{
+			//curPlayerSprite = sprites.getPlayerSprite(Sprites.forward_idle, "player");
+			down = true;
+			}
+		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT)
+			{
+			//curPlayerSprite = sprites.getPlayerSprite(Sprites.right_idle, "player");
+			right = true;
+			}
 		if (e.getKeyCode()==KeyEvent.VK_F1) console.toggleVisible();
 	}
 

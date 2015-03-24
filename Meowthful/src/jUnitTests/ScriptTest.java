@@ -2,6 +2,7 @@ package jUnitTests;
 
 import gameEngine.BattleManager;
 import gameEngine.gameGlobal;
+import graphics.Renderer;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -17,7 +18,8 @@ public class ScriptTest {
 	data system = new data();
 	gameGlobal gm = new gameGlobal();
 	BattleManager bm = new BattleManager();
-	unownInterpreter ui = new unownInterpreter(gm, bm, system);
+	Renderer g = new Renderer();
+	unownInterpreter ui = new unownInterpreter(gm, bm, system, g);
 	
 	@Test
 	public void sendCommand()

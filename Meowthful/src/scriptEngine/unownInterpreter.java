@@ -7,6 +7,7 @@ import gameEngine.BattleCache;
 import gameEngine.BattleManager;
 import gameEngine.Utility;
 import gameEngine.gameGlobal;
+import graphics.Renderer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,6 +26,7 @@ public class unownInterpreter {
 	CommandCodes codes;
 	data system = null;
 	BattleCache bc=new BattleCache();
+	Renderer graphics=null;
 	
 	//super magic happy system fun time
 	
@@ -70,8 +72,14 @@ public class unownInterpreter {
 	private void reportError(String mess, String[]raw)
 	{
 		System.out.print(mess+" : \t");
+		graphics.appendText(mess+" : \t");
+		String t = new String();
 		for (String ele: raw)
+		{
 			System.out.print(ele+" ");
+			t = new String(ele+" ");
+		}
+		graphics.appendText(t);
 		System.out.println("");
 	}
 	
@@ -127,6 +135,13 @@ public class unownInterpreter {
 			reportError("Error: Null pokemon",p.raw);
 			return false;
 		}
+		
+		if (player==bc.p1)
+			bc.p1Active=pkmn;
+		else
+			bc.p2Active=pkmn;
+		
+		System.out.println(player.name + " sends out " + pkmn.name);
 		
 		}
 		else {
@@ -229,8 +244,8 @@ public class unownInterpreter {
 			return false;
 		}
 		
-		Pokemon pk1 = bc.p1.party.get(0);
-		Pokemon pk2 = bc.p2.party.get(0);
+		Pokemon pk1 = bc.p1Active;
+		Pokemon pk2 = bc.p2Active;
 		
 		if (pk1.isKO() || pk2.isKO())
 		{
@@ -325,11 +340,12 @@ public class unownInterpreter {
 		br.close();
 	}
 	
-	public unownInterpreter(gameGlobal g, BattleManager bm, data d)
+	public unownInterpreter(gameGlobal g, BattleManager bm, data d, Renderer graphics)
 	{
 		this.g=g;
 		this.bm=bm;
 		this.system = d;
+		this.graphics=graphics;
 	}
 	
 	public void interpret(String raw)

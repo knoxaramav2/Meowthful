@@ -20,7 +20,8 @@ public class Player {
 	public int posx, posy;
 	public int map;
 	public int orientation;
-
+	public int movePos;
+	
 	public boolean controllable;
 	public boolean trainer;
 	public int AI;
@@ -33,6 +34,7 @@ public class Player {
 	public Player(String params, Sprites sDb, gameGlobal g) {
 		
 		spriteDB=sDb;
+		movePos=0;
 		// Parse from line into base
 		String list[] = params.split(",");
 

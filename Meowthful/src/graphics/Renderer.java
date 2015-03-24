@@ -48,6 +48,7 @@ public class Renderer extends JPanel implements ActionListener{
 	protected JTextField consoleWindow;
 	protected JTextArea consoleFrame;
 	private final static String newLine = "\n";
+	private CustomPanel panel = null;
 	
 	public Renderer()
 	{
@@ -83,7 +84,12 @@ public class Renderer extends JPanel implements ActionListener{
 //		Graphics2D g2d = (Graphics2D) g;
 	}
 
-	public static void createAndShowGUI(unownInterpreter ui, gameGlobal Gg) throws IOException {
+	public void appendText(String text)
+	{
+		panel.console.appendText(text);
+	}
+	
+	public void createAndShowGUI(unownInterpreter ui, gameGlobal Gg) throws IOException {
 		// Create and set up the window.
 		BufferedImage[] player = new BufferedImage[1];
 		player[0] = ImageIO.read(new File("src/gameFiles/singlePerson.png"));
@@ -91,7 +97,7 @@ public class Renderer extends JPanel implements ActionListener{
 		
 		gameElements.Map map = new gameElements.Map("src/gameFiles/MonkMountain.WORLD");
 		JFrame frame = new JFrame("Meowthful");
-		CustomPanel panel = new CustomPanel(map, testPlayer, null);
+		panel = new CustomPanel(map, testPlayer, null, Gg.getSpriteSheets());
 		
 		panel.setConsole(ui);
 		

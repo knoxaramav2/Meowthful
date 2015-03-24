@@ -38,6 +38,14 @@ public class Console extends JPanel implements ActionListener {
         add(scrollPane, c);
     }
  
+    public void appendText(String text)
+    {
+        this.textArea.append(text + newline);
+        this.textField.selectAll();
+        
+        this.textArea.setCaretPosition(textArea.getDocument().getLength());
+    }
+    
     public void toggleVisible()
     {
     	frame.setVisible(!frame.isVisible());

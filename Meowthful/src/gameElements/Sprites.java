@@ -19,11 +19,11 @@ public class Sprites {
 	final int actorSpriteCol=7;
 	final int actorSpriteRow=5;
 	
-	final static int playerSeq = 0;
-	final static int maleGruntSeq=1;
-	final static int femaleGruntSeq=2;
-	final static int bossSeq=3;
-	final static int noneSeq=4;
+	public final static int playerSeq = 0;
+	public final static int maleGruntSeq=1;
+	public final static int femaleGruntSeq=2;
+	public final static int bossSeq=3;
+	public final static int noneSeq=4;
 	
 	public final static int forward_idle = 0;
 	public final static int backward_idle = 1;
@@ -80,20 +80,20 @@ public class Sprites {
 		}
 	}
 
-	BufferedImage getPlayerSprite(int ico, String type)
+	public BufferedImage getPlayerSprite(int ico, String type)
 	{
-		int mult=1;
+		int mult=7;
 		
 		if (type.equals("player"))
-			mult=0;
+			mult*=0;
 		if (type.equals("mGrunt"))
-			mult=1;
+			mult*=1;
 		if (type.equals("fGrunt"))
-			mult=2;
+			mult*=2;
 		if (type.equals("boss"))
-			mult=3;
+			mult*=3;
 		
-		if (mult*ico>34)
+		if (mult+ico>34)
 			return null;
 		
 		return actorSprites[mult*ico];
