@@ -96,6 +96,6 @@ public class Sprites {
 		if (mult+ico>34)
 			return null;
 		
-		return actorSprites[mult*ico];
+		return actorSprites[mult+ico];
 	};
 }

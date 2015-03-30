@@ -94,22 +94,22 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	public void keyPressed(KeyEvent e){
 		if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP)
 			{
-			//curPlayerSprite = sprites.getPlayerSprite(Sprites.backward_idle, "player");
+//			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), 1280/15, 720/15);
 			up = true;
 			}
 		if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT)
 			{
-			//curPlayerSprite = sprites.getPlayerSprite(Sprites.left_idle, "player");
+//			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), 1280/15, 720/15);
 			left = true;
 			}
 		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN)
 			{
-			//curPlayerSprite = sprites.getPlayerSprite(Sprites.forward_idle, "player");
+//			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), 1280/15, 720/15);
 			down = true;
 			}
 		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT)
 			{
-			//curPlayerSprite = sprites.getPlayerSprite(Sprites.right_idle, "player");
+//			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.right_idle, "player"), 1280/15, 720/15);
 			right = true;
 			}
 		if (e.getKeyCode()==KeyEvent.VK_F1) console.toggleVisible();
@@ -129,6 +129,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	public void step(){
 		if(!moving){
 			if(up){
+				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), 1280/15, 720/15);
 				if(!mapClass.isBlocked(cellX, (cellY - 1 > 0 ? cellY - 1 : 0))){
 					moving = true;
 					nextPos = player.posy - 720/15;
@@ -138,6 +139,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 				}
 //				sop("Direction: UP	nextPos: " + nextPos + " moving: " + moving);
 			}else if(down){
+				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), 1280/15, 720/15);
 				if(!mapClass.isBlocked(cellX, (cellY + 1 < 14 ? cellY + 1 : 14))){
 					moving = true;
 					nextPos = player.posy + 720/15;
@@ -147,6 +149,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 				}
 //				sop("Direction: DOWN	nextPos: " + nextPos + " moving: " + moving);
 			}else if(left){
+				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), 1280/15, 720/15);
 				if(!mapClass.isBlocked((cellX - 1 > 0 ? cellX - 1 : 0), cellY)){
 					moving = true;
 					nextPos = player.posx - 1280/15;
@@ -156,6 +159,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 				}
 //				sop("Direction: LEFT	nextPos: " + nextPos + " moving: " + moving);
 			}else if(right){
+				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.right_idle, "player"), 1280/15, 720/15);
 				if(!mapClass.isBlocked((cellX + 1 < 14 ? cellX + 1 : 14), cellY)){
 					moving = true;
 					nextPos = player.posx + 1280/15;
@@ -171,7 +175,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			case 1:
 				if(player.posy == nextPos){
 					moving = false;
-					curPlayerSprite = player.getSprite(Sprites.backward_idle);
+					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), 1280/15, 720/15);
 					printSpecialMessage();
 				}else{
 					player.posy -= playerSpeedY;
@@ -181,7 +185,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			case 2:
 				if(player.posy == nextPos){
 					moving = false;
-					curPlayerSprite = player.getSprite(Sprites.forward_idle);
+					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), 1280/15, 720/15);
 					printSpecialMessage();
 				}else{
 					player.posy += playerSpeedY;
@@ -191,7 +195,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			case 3:
 				if(player.posx == nextPos){
 					moving = false;
-					curPlayerSprite = player.getSprite(Sprites.left_idle);
+					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), 1280/15, 720/15);
 					printSpecialMessage();
 				}else{
 					player.posx -= playerSpeedX;
@@ -201,7 +205,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			case 4:
 				if(player.posx == nextPos){
 					moving = false;
-					curPlayerSprite = player.getSprite(Sprites.right_idle);
+					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.right_idle, "player"), 1280/15, 720/15);
 					printSpecialMessage();
 				}else{
 					player.posx += playerSpeedX;
@@ -234,7 +238,6 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		System.out.println(output);
 	}
 		
-	@SuppressWarnings("unused")
 	private BufferedImage resize(BufferedImage image, int width, int height) {
 	    BufferedImage bi = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
 	    Graphics2D g2d = (Graphics2D) bi.createGraphics();
