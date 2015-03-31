@@ -31,7 +31,7 @@ public class ScriptTest {
 		while (in.hasNextLine())
 		{
 			String line = new String(in.nextLine());
-			//toClipBoard(""+line.hashCode());
+			toClipBoard(""+line.hashCode());
 			ui.interpret(line);
 		}
 		

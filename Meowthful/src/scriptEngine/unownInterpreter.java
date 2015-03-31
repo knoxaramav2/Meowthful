@@ -11,12 +11,18 @@ import graphics.Renderer;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import system.data;
 
-
+class scriptFunction
+{
+	public int eventNumber=0;
+	public ArrayList <Packet> mapScript = new ArrayList <Packet>();
+}
 
 public class unownInterpreter {
 	
@@ -27,6 +33,10 @@ public class unownInterpreter {
 	data system = null;
 	BattleCache bc=new BattleCache();
 	Renderer graphics=null;
+	
+	ArrayList <scriptFunction> subFunctions = new ArrayList <scriptFunction>();
+	scriptFunction temp = null;
+	boolean subParse=false;
 	
 	//super magic happy system fun time
 	
@@ -81,8 +91,7 @@ public class unownInterpreter {
 		}
 		graphics.appendText(t);
 		System.out.println("");
-	}
-	
+	}	
 	//player/opponent, to_switch
 	private boolean changeActivePokemon(Packet p)
 	{
@@ -227,6 +236,89 @@ public class unownInterpreter {
 	{
 		System.out.println("Battle end between " + bc.p1.name + " and " + bc.p2.name);	
 		bc.endSession();
+	}
+	
+	//file system
+	private boolean loadMap(Packet p) throws IOException
+	{
+		//map to load, start position x, y
+		
+		if (p.params.size()!=3)
+		{
+			reportError("Error: Must have 3 parameters (Map, posx, posy)",p.raw);
+			return false;
+		}
+		
+		subFunctions.clear();
+		subParse=false;
+		temp=null;
+		
+		int posx= Integer.parseInt(p.params.get(1));
+		int posy= Integer.parseInt(p.params.get(2));
+		
+		File file = new File(p.params.get(0));
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String buffer=new String();
+		
+		while ((buffer=br.readLine())!=null)
+			interpret(buffer);
+		
+		br.close();
+		
+		Player plr = g.getPlayer(0);
+		plr.posx=posx;
+		plr.posy=posy;
+		
+		//set map
+		
+		//set coordinates
+		
+		return true;
+	}
+	
+	private void startProcedure(Packet p)
+	{
+		if (p.params.size()!=1)
+		{
+			reportError("Error: Must specify event code",p.raw);
+		}
+		
+		int id = Integer.parseInt(p.params.get(0));
+		
+		temp = new scriptFunction();
+		temp.eventNumber=id;
+		
+		subParse=true;
+	}
+	
+	private void endProcedure(Packet p)
+	{
+		subParse=false;
+		subFunctions.add(temp);
+		temp=null;
+	}
+	
+	private void event(Packet p)
+	{
+		if (p.params.size()!=1)
+		{
+			reportError("Error: Must specify event to call",p.raw);
+		}
+		
+		int id = Integer.parseInt(p.params.get(0));
+		
+		for (int x=0; x<subFunctions.size(); x++)
+			if (subFunctions.get(x).eventNumber==id)
+			{
+				scriptFunction sf = subFunctions.get(x);
+				for (int y=0; y<sf.mapScript.size(); y++)
+				{
+					execute(sf.mapScript.get(y));
+				}
+				return;
+			}
+		
+		reportError("Error: Specified event not available",p.raw);
 	}
 	
 	//attack 1, attack 2 --only supports actor vs. actor battle. No wild
@@ -404,6 +496,12 @@ public class unownInterpreter {
 	//distribute or execute messages
 	public void execute(Packet p)
 	{
+		if (subParse)
+		{
+			temp.mapScript.add(p);
+			return;
+		}
+		
 		switch (p.code.value)
 		{
 			//battle
@@ -435,6 +533,22 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.deleteVar:
 			deleteVar(p);
+			break;
+			
+			//File Sys
+		case CommandCodes.loadMap:
+			try {
+				loadMap(p);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			break;
+			
+		case CommandCodes.startProcedure:
+			startProcedure(p);
+			break;
+		case CommandCodes.endProcedure:
+			endProcedure(p);
 			break;
 		default:
 			return;

@@ -57,3 +57,6 @@ getCache,1950242252,resolves to cache value (special function)
 ,,
 teleport,-1360201941,move actor
 event,96891546,alert interpreter to event
+loadMap,336623254,"load scripts and files for map, initiate"
+startProcedure,-1449546607,start in-script sub-procedure
+endProcedure,-1506418632,end in-script sub-procedure

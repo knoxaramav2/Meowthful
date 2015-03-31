@@ -60,7 +60,9 @@ public class CommandCodes{
 	
 	public final static int teleport		= -1360201941;
 	public final static int event			= 96891546;
-	
+	public final static int loadMap			= 336623254;
+	public final static int startProcedure  = -1449546607;
+	public final static int endProcedure	= -1506418632;
 	
 	@SuppressWarnings("unused")
 	private int type;
