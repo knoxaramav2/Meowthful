@@ -1,0 +1,16 @@
+Actors Docs
+
+syntax:
+1: index
+2: name
+3: rank (grunt, private, general, executive, admnin, leader)
+4-8: party : name, level
+9: level:
+10: money:
+11: battleable: (1/0)
+12: items:
+13: startmap:
+14: position: (x|y)
+15: aischeme:
+16: orientation:
+17: battleCoolDown

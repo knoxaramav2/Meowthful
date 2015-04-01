@@ -35,19 +35,19 @@ public class FileSystem {
 				switch (x)
 				{
 				case 0://baseFile
-					filebuffer="src/gameFiles/BaseValues.csv";
+					filebuffer="core/BaseValues.csv";
 					break;
 				case 1://attackFile
-					filebuffer="src/gameFiles/Attacks.csv";
+					filebuffer="core/Attacks.csv";
 					break;
 				case 2://actorFile
-					filebuffer="src/gameFiles/Actors.csv";
+					filebuffer="core/Actors.csv";
 					break;
 				case 3://sprite sheet
-					g.spriteDB.loadPokeSprites("src/gameFiles/spritesheet.png");
+					g.spriteDB.loadPokeSprites("core/spritesheet.png");
 					continue;
 				case 4:
-					g.spriteDB.loadPlayerSprites("src/gameFiles/sprites.png");
+					g.spriteDB.loadPlayerSprites("core/sprites.png");
 					break;
 				}
 				br = new BufferedReader(new FileReader(filebuffer));

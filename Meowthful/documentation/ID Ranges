@@ -1,0 +1,16 @@
+RANGES AND ALLOCATIONS
+
+All in-game objects, including actors and items, must have individual id numbers
+Each time of object must request an id within its range
+
+runtime objects requested during gameplay. All saved references loaded and 
+allocated during startup
+
+ACTORS
+1-1000 (0 reserved for player)
+
+ITEMS
+1001-3000
+
+MISC
+3001-9000

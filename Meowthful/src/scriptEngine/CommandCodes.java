@@ -63,6 +63,7 @@ public class CommandCodes{
 	public final static int loadMap			= 336623254;
 	public final static int startProcedure  = -1449546607;
 	public final static int endProcedure	= -1506418632;
+	public final static int placeActor		= -294163154;
 	
 	@SuppressWarnings("unused")
 	private int type;

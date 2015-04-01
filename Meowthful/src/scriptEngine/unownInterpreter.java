@@ -11,7 +11,7 @@ import graphics.Renderer;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -321,6 +321,11 @@ public class unownInterpreter {
 		reportError("Error: Specified event not available",p.raw);
 	}
 	
+	private void placeActor (Packet p)
+	{
+		
+	}
+	
 	//attack 1, attack 2 --only supports actor vs. actor battle. No wild
 	private boolean attack(Packet p)
 	{		
@@ -533,6 +538,12 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.deleteVar:
 			deleteVar(p);
+			break;
+		case CommandCodes.event:
+			event(p);
+			break;
+		case CommandCodes.placeActor:
+			placeActor(p);
 			break;
 			
 			//File Sys

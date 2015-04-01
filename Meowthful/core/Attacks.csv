@@ -1,0 +1,157 @@
+name,type,base power,accuracy,pp,imp/exp,effects,priority,description
+absorb,6,20,100,25,--,0,1,user recovers half the hp inflicted on the opponent.
+acid,14,40,100,30,--,0,1,may lower opponents special defense.
+acid armor,14,0,101,20,--,0,1,sharply raises user's defense.
+agility,11,0,101,30,--,0,1,sharply raises user's speed.
+amnesia,11,0,101,20,--,0,1,sharply raises user's special defense.
+aurora beam,13,65,100,20,--,0,1,may lower opponent's attack.
+barrage,0,15,85,20,--,0,1,hits 2-5 times in one turn.
+barrier,11,0,101,20,--,0,1,sharply raises user's defense.
+bind,0,15,85,20,--,0,1,traps opponent for 4-5 turns.
+bite,0,60,100,25,--,0,1,may cause flinching.
+blizzard,13,110,70,5,exp,2,1,may freeze opponent.
+body slam,0,85,100,15,exp,1,1,may paralyze opponent.
+bone club,3,65,85,20,--,0,1,may cause flinching.
+bonemerang,3,50,90,10,--,0,1,hits twice in one turn.
+bubble,7,40,100,30,--,0,1,may lower opponent's speed.
+bubble beam,7,65,100,20,--,0,1,may lower opponent's speed.
+clamp,7,35,85,10,imp,6,1,traps opponent for 4-5 turns.
+comet punch,0,18,85,15,--,0,1,hits 2-5 times in one turn.
+confuse ray,10,0,100,10,imp,7,1,confuses opponent.
+confusion,11,50,100,25,imp,7,1,may confuse opponent.
+constrict,0,10,100,35,--,0,1,may lower opponent's speed.
+crabhammer,7,100,90,10,--,0,1,high critical hit ratio.
+cut,0,50,95,30,--,0,1,Slices the opponent with sharp claws.
+defense curl,0,0,101,40,--,0,1,raises user's defense.
+dig,3,80,100,10,--,0,1,"digs underground on first turn, attacks on second."
+disable,0,0,100,20,--,0,1,opponent can't use its last attack for a few turns.
+dizzy punch,0,70,100,10,imp,7,1,may confuse opponent.
+double kick,2,30,100,30,--,0,1,hits twice in one turn.
+double slap,0,15,85,10,--,0,1,hits 2-5 times in one turn.
+double team,0,0,101,15,--,0,1,raises user's evasiveness.
+double-edge,0,120,100,15,--,0,1,user recieves recoil damage.
+dragon rage,12,0,100,10,--,0,1,always inflicts 40 hp.
+dream eater,11,100,100,15,--,0,1,user recovers half the hp inflicted on the opponent.
+drill peck,1,80,100,20,--,0,1,"A strong, spinning-peck attack."
+earthquake,3,100,100,10,--,0,1,power doubled if opponent underground from using dig.
+egg bomb,0,100,75,10,--,0,1,An egg is forcibly hurled at the foe.
+ember,8,40,100,25,exp,3,1,may burn the opponent.
+explosion,0,250,100,5,--,0,1,user faints.
+fire blast,8,110,85,5,exp,3,1,may burn the opponent.
+fire punch,8,75,100,15,exp,3,1,may burn the opponent.
+fire spin,8,35,85,15,imp,6,1,traps opponent for 4-5 turns.
+fissure,3,0,30,5,--,0,1,one hit ko if it hits.
+flamethrower,8,90,100,15,exp,3,1,may burn the opponent.
+flash,0,0,100,20,--,0,1,lowers opponent's accuracy.
+fly,1,90,95,15,--,0,1,"flies up on first turn, attacks on second."
+focus energy,0,0,101,30,--,0,1,increases critical hit ratio.
+fury attack,0,15,85,20,--,0,1,hits 2-5 times in one turn.
+fury swipes,0,18,80,15,--,0,1,hits 2-5 times in one turn.
+glare,0,0,100,30,exp ,1,1,paralyzes opponent.
+growl,0,0,100,40,--,0,1,lowers opponent's attack.
+growth,0,0,101,40,--,0,1,raises user's attack and special attack.
+guillotine,0,0,30,5,--,0,1,one hit ko if it hits.
+gust,1,40,100,35,--,0,1,hits pokemon using fly with 2x power.
+harden,0,0,101,30,--,0,1,raises user's defense.
+haze ,13,0,101,30,--,0,1,resets all stat changes.
+headbutt,0,70,100,15,--,0,1,may cause flinching.
+high jump kick,2,130,90,10,--,0,1,"if it misses, the user loses half their hp."
+horn attack,0,65,100,25,--,0,1,An attack using a horn to jab.
+horn drill,0,0,30,5,--,0,1,one hit ko if it hits.
+hydro pump,7,110,80,5,--,0,1,Fires a powerful blast of water.
+hyper beam,0,150,90,5,--,0,1,user must recharge next turn.
+hyper fang,0,80,90,15,--,0,1,may cause flinching.
+hypnosis,11,0,60,20,exp,4,1,puts the opponent to sleep.
+ice beam,13,90,100,10,exp,2,1,may freeze opponent.
+ice punch,13,75,100,15,exp,2,1,may freeze opponent.
+jump kick,2,100,95,10,--,0,1,"if it misses, the user loses half their hp."
+karate chop,2,50,100,25,--,0,1,high critical hit ratio.
+kinesis,11,0,80,15,--,0,1,lower's the opponent's accuracy.
+leech life,5,20,100,15,--,0,1,user recovers half the hp inflicted on the opponent.
+leech seed,6,0,90,10,imp,8,1,user steals hp from the opponent each turn.
+leer,0,0,100,30,--,0,1,lowers opponent's defense.
+lick,10,30,100,30,exp,1,1,may paralyze opponent.
+light screen,11,0,101,30,--,0,1,halves damage from special attacks for 5 turns.
+lovely kiss,0,0,75,10,exp,4,1,puts the opponent to sleep.
+meditate,11,0,101,40,--,0,1,raises user's attack and special attack.
+mega drain,6,40,100,15,--,0,1,user recovers half the hp inflicted on the opponent.
+mega kick,0,10,75,5,--,0,1,A particularly strong kick.
+mega punch,0,80,85,20,--,0,1,A particularly strong punch.
+metronome,0,0,101,10,--,0,1,user performs any attack in the game at random.
+mimic,0,0,101,10,--,0,1,copies the opponents last move.
+minimize,0,0,101,10,--,0,1,sharply raises user's evasiveness.
+mirror move,1,0,101,20,--,0,1,copies the opponents last move.
+mist,13,0,101,30,--,0,1,user's stats cannot be changes for a period of time.
+night shade,10,0,100,15,--,0,1,inflicts damage equal to the user's level.
+pay day,0,40,100,20,--,0,1,a small amount of money is gained after the battle ends.
+peck,1,35,100,35,--,0,1,A jab with a beak.
+pin missile,5,25,85,20,--,0,1,hits 2-5 times in one turn.
+poison gas,14,0,90,40,exp,5,1,poisons the opponent.
+poison powder,14,0,75,35,exp,5,1,poisons the opponent.
+poison sting,14,15,100,35,exp,5,1,may poison the opponent.
+pound,0,40,100,35,--,0,1,Attack by pounding on enemy.
+psybeam,11,65,100,20,imp,7,1,may confuse opponent.
+psychic,11,90,100,10,--,0,1,may lower opponent's special defense.
+quick attack,0,40,100,30,--,0,2,user attacks first.
+razor leaf,6,55,95,25,--,0,1,high critical hit ratio.
+razor wind,0,80,100,10,--,0,1,"charges  on first turn, attacks on second."
+recover,0,0,101,10,--,0,1,user recovers half its maximum hp.
+reflect,11,0,101,20,--,0,1,halves damage from physical attacks for five turns.
+rest,11,0,101,10,exp,4,1,"user sleeps for 2 turns, but regains full health."
+roar,0,0,101,20,--,0,1,"opponent switches. in wild, battle ends."
+rock slide,4,75,0,10,--,0,1,may cause flinching.
+rock throw,4,50,90,15,--,0,1,Hurls rocks at foe.
+rolling kick,2,60,85,15,--,0,1,may cause flinching.
+sand attack,3,0,100,15,--,0,1,lowers opponent's accuracy.
+scratch,0,40,100,35,--,0,1,Uses talons or claws to attack foe.
+screech,0,0,85,40,--,0,1,sharply lowers opponent's defense.
+seismic toss,2,0,100,20,--,0,1,inflicts damage equal to user level.
+self-destruct,0,200,100,5,--,0,1,user faints.
+sharpen,0,0,101,30,--,0,1,raises user's attack.
+sing,0,0,55,15,exp,4,1,puts the opponent to sleep.
+sky attack,1,140,90,5,--,0,1,"charges on first turn, attacks on second."
+slam,0,80,75,20,--,0,1,Throws body at opponent.
+slash,0,70,100,20,--,0,1,high critical hit ratio.
+sleep powder,6,0,75,15,exp,4,1,puts the opponent to sleep.
+sludge,14,65,100,20,exp,5,1,may poison the opponent.
+smog,14,30,70,20,exp,5,1,may poison the opponent.
+smokescreen,0,0,100,20,--,0,1,lowers opponent's accuracy.
+soft-boiled,0,0,101,10,--,0,1,user recovers half its max hp.
+solar beam,6,120,100,10,--,0,1,"charges on first turn, attacks on second."
+sonic boom,0,0,90,20,--,0,1,always inflicts 20 hp.
+spike cannon,0,20,100,15,--,0,1,hits 2-5 times in one turn.
+splash,0,25000,101,40,--,0,1,"Second only to doing ""The Worm"""
+spore,6,0,100,15,exp,4,1,puts the opponent to sleep.
+stomp,0,65,100,20,--,0,1,may cause flinching.
+strength,0,80,100,15,--,0,1,Summons an enormous amount of strength
+string shot,5,0,95,40,--,0,1,lowers opponents speed.
+struggle,0,50,100,10000,--,0,1,only useable when all pp are gone. hurts user.
+stun spore,6,0,75,30,exp,1,1,paralyzes opponent.
+submission,2,80,80,25,--,0,1,user recieves recoil damage.
+substitute,0,0,101,10,--,0,2,uses hp to create a decoy that takes hits.
+super fang,0,0,90,10,--,0,1,takes off half the opponent's hp.
+supersonic,0,0,55,20,imp,7,1,confuses opponent.
+surf,7,90,100,15,--,0,1,Creates a huge wave.
+swift,0,60,101,20,--,0,1,always hits.
+sword dance,0,0,101,20,--,0,1,sharply raise user's attack.
+tackle,0,50,100,35,--,0,1,Uses body to attack.
+tail whip,0,0,100,30,--,0,1,lowers opponent's defense.
+take down,0,90,85,20,--,0,1,user recieves recoil damage.
+teleport,11,0,101,20,--,0,1,flee from wild battles.
+thunder,9,110,70,10,exp,1,1,may paralyze opponent.
+thunder punch,9,75,100,15,exp,1,1,may paralyze opponent.
+thunder shock,9,40,100,30,exp,1,1,may paralyze opponent.
+thunder wave,9,0,100,20,exp,1,1,paralyzes opponent.
+thunderbolt,9,90,100,15,exp,1,1,may paralyze opponent.
+toxic,14,0,90,10,exp,5,1,badly poisons the target.
+transform ,0,0,101,10,--,0,1,user copies form and attacks of opponent.
+tri attack,0,80,100,10,exp,1|2|3,1,"may paralyze, burn or freeze opponent."
+twineedle,5,25,100,20,exp,5,1,hits twice in one turn. May poison opponent.
+vice grip,0,55,100,30,--,0,1,Grips the enemy hard.
+vine whip,6,45,100,25,--,0,1,Uses vines to beat the enemy.
+water gun,7,40,100,25,--,0,1,Squirts water at the opponent.
+waterfall,7,80,100,15,--,0,1,may cause flinching.
+whirlwind,0,0,101,20,--,0,1,"opponent switches. in wild, battle ends."
+wing attack,1,60,100,35,--,0,1,Attacks enemy with wings.
+withdraw,7,0,101,40,--,0,1,raises user's defense.
+wrap,0,15,90,20,imp ,6,1,traps opponent for 4-5 turns.
