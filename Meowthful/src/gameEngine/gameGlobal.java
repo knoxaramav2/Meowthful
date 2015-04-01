@@ -56,6 +56,10 @@ public class gameGlobal {
 		return null;
 	}
 	
+	public int getPlayerCount(){
+		return playerList.size();
+	}
+	
 	public Attack getAttack(String name)
 	{
 		Attack p = null;

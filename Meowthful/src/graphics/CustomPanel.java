@@ -1,6 +1,7 @@
 package graphics;
 
 import gameElements.Map;
+import gameElements.MapCalculator;
 import gameElements.Player;
 import gameElements.Sprites;
 
@@ -12,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -39,11 +42,12 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	private boolean moving;
 	public Console console;
 	private Sprites sprites=null;
+	private MapCalculator mc;
 
-	public CustomPanel(Map mapClass, Player player, ArrayList<Player> NPCs, Sprites s){			
+	public CustomPanel(Map mapClass, ArrayList<Player> characters, Sprites s) throws FileNotFoundException{			
 		this.mapClass = mapClass;
 		map = mapClass.getMap();
-		this.player = player;
+		this.player = characters.get(0);
 		this.sprites=s;
 		curPlayerSprite = player.getSprite(Sprites.forward_idle);
 		
@@ -64,7 +68,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		lastDirection = 0;
 		moving = false;
 		
-		this.NPCs = NPCs;
+		mc = new MapCalculator();
 		
 		Timer timer = new Timer(1000/60, this);
 		timer.start();
@@ -88,7 +92,12 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
-		step();
+		try {
+			step();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void keyPressed(KeyEvent e){
@@ -126,7 +135,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		
 	}
 
-	public void step(){
+	public void step() throws IOException{
 		if(!moving){
 			if(up){
 				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), 1280/15, 720/15);
@@ -137,7 +146,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 					cellY = cellY - 1 < 0 ? 0 : cellY - 1;
 					lastDirection = 1;
 				}
-//				sop("Direction: UP	nextPos: " + nextPos + " moving: " + moving);
+				sop("Direction: UP	nextPos: " + nextPos + " moving: " + moving);
 			}else if(down){
 				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), 1280/15, 720/15);
 				if(!mapClass.isBlocked(cellX, (cellY + 1 < 14 ? cellY + 1 : 14))){
@@ -147,7 +156,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 					cellY = cellY + 1 > 14 ? 14 : cellY + 1;
 					lastDirection = 2;
 				}
-//				sop("Direction: DOWN	nextPos: " + nextPos + " moving: " + moving);
+				sop("Direction: DOWN	nextPos: " + nextPos + " moving: " + moving);
 			}else if(left){
 				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), 1280/15, 720/15);
 				if(!mapClass.isBlocked((cellX - 1 > 0 ? cellX - 1 : 0), cellY)){
@@ -157,7 +166,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 					cellX = cellX - 1 < 0 ? 0 : cellX - 1;
 					lastDirection = 3;
 				}
-//				sop("Direction: LEFT	nextPos: " + nextPos + " moving: " + moving);
+				sop("Direction: LEFT	nextPos: " + nextPos + " moving: " + moving);
 			}else if(right){
 				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.right_idle, "player"), 1280/15, 720/15);
 				if(!mapClass.isBlocked((cellX + 1 < 14 ? cellX + 1 : 14), cellY)){
@@ -167,7 +176,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 					cellX = cellX + 1 > 14 ? 14 : cellX + 1;
 					lastDirection = 4;
 				}
-//				sop("Direction: RIGHT	nextPos: " + nextPos + " moving: " + moving);
+				sop("Direction: RIGHT	nextPos: " + nextPos + " moving: " + moving);
 			}
 		}else{
 			
@@ -220,10 +229,29 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		}
 	}
 	
-	private void printSpecialMessage(){
+	public void swapMap(int teleporterID) throws IOException{
+		player.posx = mc.getNewMapX(mapClass.getMapFileName(), teleporterID);
+		player.posy = mc.getNewMapY(mapClass.getMapFileName(), teleporterID);
+		cellX = mc.getNewMapCellX(mapClass.getMapFileName(), teleporterID);
+		cellY = mc.getNewMapCellY(mapClass.getMapFileName(), teleporterID);
+		switch(mc.getNewDirection(mapClass.getMapFileName(), teleporterID)){
+		case 1:
+			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), 1280/15, 720/15);
+			break;
+			
+		case 2:
+			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), 1280/15, 720/15);			
+			break;
+		}
+		mapClass = new Map(mc.getNewMapPath(mapClass.getMapFileName(), teleporterID));
+		map = mapClass.getMap();
+	}
+	
+	private void printSpecialMessage() throws IOException{
 		switch(mapClass.getMoveType(cellX, cellY)){
 		case 3:
 			sop("Entered Teleporter: " + mapClass.getSpecialID(cellX, cellY));
+			swapMap(mapClass.getSpecialID(cellX, cellY));
 			break;
 			
 		case 4:

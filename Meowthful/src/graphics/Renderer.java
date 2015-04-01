@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -93,11 +94,15 @@ public class Renderer extends JPanel implements ActionListener{
 		// Create and set up the window.
 		BufferedImage[] player = new BufferedImage[1];
 		player[0] = ImageIO.read(new File("src/gameFiles/singlePerson.png"));
-		Player testPlayer = Gg.getPlayer(0);
+		ArrayList<Player> players = new ArrayList<Player>();
+		for(int i = 0; i < Gg.getPlayerCount(); i++){
+			Player p = Gg.getPlayer(i);
+			players.add(p);
+		}
 		
-		gameElements.Map map = new gameElements.Map("src/gameFiles/MonkMountain.WORLD");
+		gameElements.Map map = new gameElements.Map("src/gameFiles/MonkMountainV2.WORLD");
 		JFrame frame = new JFrame("Meowthful");
-		panel = new CustomPanel(map, testPlayer, null, Gg.getSpriteSheets());
+		panel = new CustomPanel(map, players, Gg.getSpriteSheets());
 		
 		panel.setConsole(ui);
 		

@@ -1,12 +1,12 @@
 package gameElements;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 
 public class Map {
@@ -14,18 +14,15 @@ public class Map {
 	private static int height = 720;
 	private MapComponents mapComponents;
 	private BufferedImage map = null;
-	@SuppressWarnings("unused")
-	private int attributeMatrix[] = null;
+	private String filename = null;
 	private int[][] moveType = new int[15][15];
 	private int[][] specialID = new int[15][15];
-	@SuppressWarnings("unused")
-	private Point loc = null;
 	@SuppressWarnings("unused")
 	private ArrayList <String> scripts = new ArrayList <String>();
 
 	public Map(String fileName) throws IOException {
-		attributeMatrix = new int[1280 * 720];
-		mapComponents = new MapComponents(fileName);
+		filename = fileName;
+		mapComponents = new MapComponents(filename);
 		// load .World file
 		BufferedImage imgs[][] = new BufferedImage[15][15];
 		GetImage getImage = new GetImage();
@@ -69,6 +66,10 @@ public class Map {
 	
 	public int getSpecialID(int x, int y){
 		return specialID[y][x];
+	}
+	
+	public String getMapFileName(){
+		return filename;
 	}
 	
 	private BufferedImage resize(BufferedImage image, int width, int height) {
