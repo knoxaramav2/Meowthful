@@ -43,8 +43,9 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	public Console console;
 	private Sprites sprites=null;
 	private MapCalculator mc;
+	private unownInterpreter ui;
 
-	public CustomPanel(Map mapClass, ArrayList<Player> characters, Sprites s) throws FileNotFoundException{			
+	public CustomPanel(Map mapClass, ArrayList<Player> characters, Sprites s, unownInterpreter ui) throws FileNotFoundException{			
 		this.mapClass = mapClass;
 		map = mapClass.getMap();
 		this.player = characters.get(0);
@@ -69,6 +70,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		moving = false;
 		
 		mc = new MapCalculator();
+		this.ui = ui;
 		
 		Timer timer = new Timer(1000/60, this);
 		timer.start();
@@ -251,7 +253,8 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		switch(mapClass.getMoveType(cellX, cellY)){
 		case 3:
 			sop("Entered Teleporter: " + mapClass.getSpecialID(cellX, cellY));
-			swapMap(mapClass.getSpecialID(cellX, cellY));
+			ui.interpret("loadMap " + mc.getNewMapPath(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + 
+					" " + mc.getNewMapCellX(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + " " + mc.getNewMapCellY(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)));
 			break;
 			
 		case 4:
