@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class Map {
-	private static int width = 1280;
+	private static int width = 720;
 	private static int height = 720;
 	private MapComponents mapComponents;
 	private BufferedImage map = null;

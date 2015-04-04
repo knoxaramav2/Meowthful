@@ -24,6 +24,9 @@ import scriptEngine.unownInterpreter;
 
 @SuppressWarnings("serial")
 public class CustomPanel extends JPanel implements KeyListener, ActionListener{
+	private static final int WIDTH = 720/15;
+	private static final int HEIGHT = 720/15;
+	
 	private BufferedImage map;
 	private BufferedImage curPlayerSprite;
 	private Map mapClass;
@@ -50,17 +53,17 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		map = mapClass.getMap();
 		this.player = characters.get(0);
 		this.sprites=s;
-		curPlayerSprite = player.getSprite(Sprites.forward_idle);
+		curPlayerSprite = resize(player.getSprite(Sprites.forward_idle), WIDTH, HEIGHT);
 		
-		playerSpeedX = 5;
+		playerSpeedX = 4;
 		playerSpeedY = 4;
 		addKeyListener(this);
 		setFocusable(true);
 		
 		up = down = left = right = false;
 		
-		player.posx = 595;
-		player.posy = 336;
+		player.posx = 7*WIDTH;
+		player.posy = 7*HEIGHT;
 		
 		cellX = 7;
 		cellY = 7;
@@ -88,7 +91,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		g.drawImage(curPlayerSprite, player.posx, player.posy, null);
 		if(NPCs != null){
 			for(Player p : NPCs){
-				g.drawImage(p.getSprite(Sprites.forward_idle), p.posx, p.posy, null);
+				g.drawImage(resize(p.getSprite(Sprites.forward_idle), WIDTH, HEIGHT), p.posx, p.posy, null);
 			}
 		}
 	}
@@ -103,26 +106,10 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	}
 
 	public void keyPressed(KeyEvent e){
-		if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP)
-			{
-//			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), 1280/15, 720/15);
-			up = true;
-			}
-		if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT)
-			{
-//			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), 1280/15, 720/15);
-			left = true;
-			}
-		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN)
-			{
-//			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), 1280/15, 720/15);
-			down = true;
-			}
-		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT)
-			{
-//			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.right_idle, "player"), 1280/15, 720/15);
-			right = true;
-			}
+		if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) up = true;
+		if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) left = true;
+		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) down = true;
+		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) right = true;
 		if (e.getKeyCode()==KeyEvent.VK_F1) console.toggleVisible();
 	}
 
@@ -133,48 +120,46 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) right = false;		
 	}
 
-	public void keyTyped(KeyEvent e){
-		
-	}
+	public void keyTyped(KeyEvent e){}
 
 	public void step() throws IOException{
 		if(!moving){
 			if(up){
-				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), 1280/15, 720/15);
+				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), WIDTH, HEIGHT);
 				if(!mapClass.isBlocked(cellX, (cellY - 1 > 0 ? cellY - 1 : 0))){
 					moving = true;
-					nextPos = player.posy - 720/15;
+					nextPos = player.posy - HEIGHT;
 					if(nextPos < 0) nextPos = 0;
 					cellY = cellY - 1 < 0 ? 0 : cellY - 1;
 					lastDirection = 1;
 				}
 				sop("Direction: UP	nextPos: " + nextPos + " moving: " + moving);
 			}else if(down){
-				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), 1280/15, 720/15);
+				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), WIDTH, HEIGHT);
 				if(!mapClass.isBlocked(cellX, (cellY + 1 < 14 ? cellY + 1 : 14))){
 					moving = true;
-					nextPos = player.posy + 720/15;
-					if(nextPos >= map.getHeight()) nextPos = map.getHeight() - 720/15;
+					nextPos = player.posy + HEIGHT;
+					if(nextPos >= map.getHeight()) nextPos = map.getHeight() - HEIGHT;
 					cellY = cellY + 1 > 14 ? 14 : cellY + 1;
 					lastDirection = 2;
 				}
 				sop("Direction: DOWN	nextPos: " + nextPos + " moving: " + moving);
 			}else if(left){
-				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), 1280/15, 720/15);
+				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), WIDTH, HEIGHT);
 				if(!mapClass.isBlocked((cellX - 1 > 0 ? cellX - 1 : 0), cellY)){
 					moving = true;
-					nextPos = player.posx - 1280/15;
+					nextPos = player.posx - WIDTH;
 					if(nextPos < 0) nextPos = 0;
 					cellX = cellX - 1 < 0 ? 0 : cellX - 1;
 					lastDirection = 3;
 				}
 				sop("Direction: LEFT	nextPos: " + nextPos + " moving: " + moving);
 			}else if(right){
-				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.right_idle, "player"), 1280/15, 720/15);
+				curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.right_idle, "player"), WIDTH, HEIGHT);
 				if(!mapClass.isBlocked((cellX + 1 < 14 ? cellX + 1 : 14), cellY)){
 					moving = true;
-					nextPos = player.posx + 1280/15;
-					if(nextPos >= 1190) nextPos = 1190;
+					nextPos = player.posx + WIDTH;
+					if(nextPos >= map.getWidth()) nextPos = map.getWidth() - WIDTH;
 					cellX = cellX + 1 > 14 ? 14 : cellX + 1;
 					lastDirection = 4;
 				}
@@ -186,7 +171,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			case 1:
 				if(player.posy == nextPos){
 					moving = false;
-					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), 1280/15, 720/15);
+					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), WIDTH, HEIGHT);
 					printSpecialMessage();
 				}else{
 					player.posy -= playerSpeedY;
@@ -196,7 +181,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			case 2:
 				if(player.posy == nextPos){
 					moving = false;
-					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), 1280/15, 720/15);
+					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), WIDTH, HEIGHT);
 					printSpecialMessage();
 				}else{
 					player.posy += playerSpeedY;
@@ -206,7 +191,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			case 3:
 				if(player.posx == nextPos){
 					moving = false;
-					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), 1280/15, 720/15);
+					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), WIDTH, HEIGHT);
 					printSpecialMessage();
 				}else{
 					player.posx -= playerSpeedX;
@@ -216,7 +201,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			case 4:
 				if(player.posx == nextPos){
 					moving = false;
-					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.right_idle, "player"), 1280/15, 720/15);
+					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), WIDTH, HEIGHT);
 					printSpecialMessage();
 				}else{
 					player.posx += playerSpeedX;
@@ -226,7 +211,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 				default:;
 			}
 
-//			sop("X: " + player.posx + "		Y:" + player.posy + "	CellX: " + cellX + "	CellY: " + cellY);			
+			sop("X: " + player.posx + "		Y:" + player.posy + "	CellX: " + cellX + "	CellY: " + cellY);			
 			repaint();
 		}
 	}
@@ -238,11 +223,11 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		cellY = mc.getNewMapCellY(mapClass.getMapFileName(), teleporterID);
 		switch(mc.getNewDirection(mapClass.getMapFileName(), teleporterID)){
 		case 1:
-			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), 1280/15, 720/15);
+			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, "player"), WIDTH, HEIGHT);
 			break;
 			
 		case 2:
-			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), 1280/15, 720/15);			
+			curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), WIDTH, HEIGHT);			
 			break;
 		}
 		mapClass = new Map(mc.getNewMapPath(mapClass.getMapFileName(), teleporterID));
@@ -253,8 +238,9 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		switch(mapClass.getMoveType(cellX, cellY)){
 		case 3:
 			sop("Entered Teleporter: " + mapClass.getSpecialID(cellX, cellY));
-			ui.interpret("loadMap " + mc.getNewMapPath(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + 
-					" " + mc.getNewMapCellX(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + " " + mc.getNewMapCellY(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)));
+			swapMap(mapClass.getSpecialID(cellX, cellY));
+//			ui.interpret("loadMap " + mc.getNewMapPath(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + 
+//					" " + mc.getNewMapCellX(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + " " + mc.getNewMapCellY(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)));
 			break;
 			
 		case 4:
@@ -276,7 +262,5 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	    g2d.drawImage(image, 0, 0, width, height, null);
 	    g2d.dispose();
 	    return bi;
-	}
-
-	
+	}	
 }

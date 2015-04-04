@@ -103,15 +103,17 @@ public class Renderer extends JPanel implements ActionListener{
 		gameElements.Map map = new gameElements.Map("src/gameFiles/MonkMountainV2.WORLD");
 		JFrame frame = new JFrame("Meowthful");
 		panel = new CustomPanel(map, players, Gg.getSpriteSheets(), ui);
-		
 		panel.setConsole(ui);
 		
-		frame.setSize(1280, 750);
+		BattlePanel bp = new BattlePanel(6);
+		
+		frame.setSize(720, 750);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//frame.add(new Renderer());
 		frame.add(panel);
+//		frame.add(bp);
 
 		// Display the window.
 		//frame.pack();
