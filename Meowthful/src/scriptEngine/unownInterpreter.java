@@ -256,9 +256,11 @@ public class unownInterpreter {
 		int posx= Integer.parseInt(p.params.get(1));
 		int posy= Integer.parseInt(p.params.get(2));
 		
-		File file = new File(p.params.get(0));
+		String [] mapLoad = p.params.get(0).split("\\.");
+		mapLoad[0] = new String(mapLoad[0]+".scpt");
+		File file = new File(mapLoad[0]);
 		BufferedReader br = new BufferedReader(new FileReader(file));
-		String buffer=new String();
+		String buffer=new String(mapLoad[0]);
 		
 		while ((buffer=br.readLine())!=null)
 			interpret(buffer);
