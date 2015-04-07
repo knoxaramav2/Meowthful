@@ -49,7 +49,7 @@ public class Renderer extends JPanel implements ActionListener{
 	protected JTextField consoleWindow;
 	protected JTextArea consoleFrame;
 	private final static String newLine = "\n";
-	private CustomPanel panel = null;
+	public CustomPanel panel = null;
 	
 	public Renderer()
 	{

@@ -238,9 +238,9 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		switch(mapClass.getMoveType(cellX, cellY)){
 		case 3:
 			sop("Entered Teleporter: " + mapClass.getSpecialID(cellX, cellY));
-			swapMap(mapClass.getSpecialID(cellX, cellY));
-//			ui.interpret("loadMap " + mc.getNewMapPath(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + 
-//					" " + mc.getNewMapCellX(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + " " + mc.getNewMapCellY(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)));
+			//swapMap(mapClass.getSpecialID(cellX, cellY));
+			ui.interpret("loadMap " + mc.getNewMapPath(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + 
+					" " + mc.getNewMapCellX(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + " " + mc.getNewMapCellY(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY))+" "+mapClass.getSpecialID(cellX, cellY));
 			break;
 			
 		case 4:

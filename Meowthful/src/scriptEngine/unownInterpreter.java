@@ -243,9 +243,9 @@ public class unownInterpreter {
 	{
 		//map to load, start position x, y
 		
-		if (p.params.size()!=3)
+		if (p.params.size()!=4)
 		{
-			reportError("Error: Must have 3 parameters (Map, posx, posy)",p.raw);
+			reportError("Error: Must have 3 parameters (Map, posx, posy, teleport id)",p.raw);
 			return false;
 		}
 		
@@ -270,7 +270,7 @@ public class unownInterpreter {
 		plr.posy=posy;
 		
 		//set map
-		
+		graphics.panel.swapMap(Integer.parseInt(p.params.get(3)));
 		//set coordinates
 		
 		return true;
@@ -448,7 +448,7 @@ public class unownInterpreter {
 	public void interpret(String raw)
 	{
 		//creates command code with parameters. No tokenizing
-		Packet p = new Packet(raw.split(" |\\+|\\,|/|\\-|\\*|\\%"));
+		Packet p = new Packet(raw.split(" "));
 		if (p.code==null)
 			return;
 		
