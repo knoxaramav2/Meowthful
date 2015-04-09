@@ -100,7 +100,7 @@ public class Renderer extends JPanel implements ActionListener{
 			players.add(p);
 		}
 		
-		gameElements.Map map = new gameElements.Map("src/gameFiles/MonkMountainV2.WORLD");
+		gameElements.Map map = new gameElements.Map("src/gameFiles/lavaArena.WORLD");
 		JFrame frame = new JFrame("Meowthful");
 		panel = new CustomPanel(map, players, Gg.getSpriteSheets(), ui);
 		panel.setConsole(ui);
