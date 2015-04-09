@@ -201,7 +201,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			case 4:
 				if(player.posx == nextPos){
 					moving = false;
-					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), WIDTH, HEIGHT);
+					curPlayerSprite = resize(sprites.getPlayerSprite(Sprites.right_idle, "player"), WIDTH, HEIGHT);
 					printSpecialMessage();
 				}else{
 					player.posx += playerSpeedX;

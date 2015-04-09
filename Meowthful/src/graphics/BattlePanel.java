@@ -20,7 +20,7 @@ public class BattlePanel extends JPanel{
 	public BattlePanel(int index) throws IOException{
 		ArenaParser ap = new ArenaParser();
 		
-		ap.loadArenaSprites("src/gameFiles/battlearenasforparsing.png", 240, 112, 4, 4, 0);
+		ap.loadArenaSprites("core/battle arenas.png", 240, 112, 4, 4, 0);
 
 		bg = resize(ap.getArenaSprite(index), WIDTH, HEIGHT);
 	}
