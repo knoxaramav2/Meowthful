@@ -30,7 +30,6 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	private BufferedImage map;
 	private BufferedImage curPlayerSprite;
 	private Map mapClass;
-	private ArrayList<Player> NPCs;
 	private Player player;
 	private int playerSpeedX;
 	private int playerSpeedY;
@@ -47,6 +46,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	private Sprites sprites=null;
 	private MapCalculator mc;
 	private unownInterpreter ui;
+	private ArrayList <Player> actors = new ArrayList <Player>();
 
 	public CustomPanel(Map mapClass, ArrayList<Player> characters, Sprites s, unownInterpreter ui) throws FileNotFoundException{			
 		this.mapClass = mapClass;
@@ -89,10 +89,10 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		super.paintComponent(g);
 		g.drawImage(map, 0, 0, null);
 		g.drawImage(curPlayerSprite, player.posx, player.posy, null);
-		if(NPCs != null){
-			for(Player p : NPCs){
-				g.drawImage(resize(p.getSprite(Sprites.forward_idle), WIDTH, HEIGHT), p.posx, p.posy, null);
-			}
+		for(Player p : actors){
+			int orientation=0;
+			
+			g.drawImage(resize(p.getSprite(Sprites.forward_idle), WIDTH, HEIGHT), p.posx, p.posy, null);
 		}
 	}
 
@@ -232,6 +232,22 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		}
 		mapClass = new Map(mc.getNewMapPath(mapClass.getMapFileName(), teleporterID));
 		map = mapClass.getMap();
+		actors.clear();
+	}
+	
+	public void addActor(Player p)
+	{
+		
+		if (p.id==player.id)
+			return;
+		
+		for (int x=0; x<actors.size(); x++)
+			if(actors.get(x).id==p.id)
+				return;
+			
+		actors.add(p);
+		revalidate();
+		repaint();
 	}
 	
 	private void printSpecialMessage() throws IOException{

@@ -17,7 +17,7 @@ public class MapCalculator {
 	private ArrayList<String> newDirection = new ArrayList<String>();	
 	
 	public MapCalculator() throws FileNotFoundException{
-		Scanner s = new Scanner(new File("src/gameFiles/MapCalculator.csv"));
+		Scanner s = new Scanner(new File("core/MapCalculator.csv"));
 		s.useDelimiter(",");
 
 		for(int i = 0; i < 9; i++){

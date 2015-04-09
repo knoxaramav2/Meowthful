@@ -27,7 +27,7 @@ public class Map {
 		BufferedImage imgs[][] = new BufferedImage[15][15];
 		GetImage getImage = new GetImage();
 		
-		getImage.loadPokeSprites("src/gameFiles/world_spritesheet.png", 17,17,43,13,1);
+		getImage.loadPokeSprites("core/world_spritesheet.png", 17,17,43,13,1);
 		
 		for(int j = 0; j < 15; j++){
 			for(int i = 0; i < 15; i++){

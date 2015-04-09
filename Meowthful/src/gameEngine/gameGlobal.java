@@ -50,10 +50,18 @@ public class gameGlobal {
 			p=(Player)playerList.get(x);
 			if (p.id==id)
 			{
-				return p;
+				return (Player)playerList.get(x);
 			}
 		}
 		return null;
+	}
+	
+	public boolean isPlayerDefined(int id)
+	{
+		for (int x=0; x<playerList.size(); x++)
+		if (playerList.get(x).id==id)
+			return true;
+		return false;
 	}
 	
 	public int getPlayerCount(){

@@ -61,3 +61,5 @@ loadMap,336623254,"load scripts and files for map, initiate"
 startProcedure,-1449546607,start in-script sub-procedure
 endProcedure,-1506418632,end in-script sub-procedure
 placeActor,-294163154,places actor at map and location
+loadScript,-231490223,load map script
+callFunction,1449071702,call map function

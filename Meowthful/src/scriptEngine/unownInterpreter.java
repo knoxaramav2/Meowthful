@@ -11,6 +11,7 @@ import graphics.Renderer;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 //import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -245,7 +246,7 @@ public class unownInterpreter {
 		
 		if (p.params.size()!=4)
 		{
-			reportError("Error: Must have 3 parameters (Map, posx, posy, teleport id)",p.raw);
+			reportError("Error: Must have 3 parameters (Map.WORLD, posx, posy, teleport id)",p.raw);
 			return false;
 		}
 		
@@ -256,26 +257,50 @@ public class unownInterpreter {
 		int posx= Integer.parseInt(p.params.get(1));
 		int posy= Integer.parseInt(p.params.get(2));
 		
-		String [] mapLoad = p.params.get(0).split("\\.");
-		mapLoad[0] = new String(mapLoad[0]+".scpt");
-		File file = new File(mapLoad[0]);
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		String buffer=new String(mapLoad[0]);
-		
-		while ((buffer=br.readLine())!=null)
-			interpret(buffer);
-		
-		br.close();
-		
 		Player plr = g.getPlayer(0);
 		plr.posx=posx;
 		plr.posy=posy;
 		
 		//set map
 		graphics.panel.swapMap(Integer.parseInt(p.params.get(3)));
-		//set coordinates
+		
+		//load map script
+		String scpt = p.params.get(0).split("\\.")[0]+".scpt";
+		interpret("loadScript "+scpt);
 		
 		return true;
+	}
+	
+	private void loadScript(Packet p)
+	{
+	if (p.params.size()!=1)
+	{
+		reportError("Error: Must have 1 parameter: Script.scpt",p.raw);
+		return;
+	}
+		
+		String mapLoad = new String(p.params.get(0));
+		File file = new File(mapLoad);
+		BufferedReader br;
+		String line=new String();
+		try {
+			br = new BufferedReader(new FileReader(file));
+			while ((line=br.readLine())!=null)
+				interpret(line);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	private void callFunction(Packet p)
+	{
+		
 	}
 	
 	private void startProcedure(Packet p)
@@ -325,8 +350,25 @@ public class unownInterpreter {
 	
 	private void placeActor (Packet p)
 	{
+		if (p.params.size()!=3)
+		{
+			reportError("Error: Must have 3 parameters: id, x, y",p.raw);
+			return;
+		}
+		
+		int id = Integer.parseInt(p.params.get(0));
+		
+		if (!g.isPlayerDefined(id))
+		{
+			reportError("Error: Player ID undefined",p.raw);
+			return;
+		}
+		g.getPlayer(id).posx=Integer.parseInt(p.params.get(1));
+		g.getPlayer(id).posy=Integer.parseInt(p.params.get(2));
+		graphics.panel.addActor(g.getPlayer(id));
 		
 	}
+	
 	
 	//attack 1, attack 2 --only supports actor vs. actor battle. No wild
 	private boolean attack(Packet p)
@@ -556,7 +598,12 @@ public class unownInterpreter {
 				e.printStackTrace();
 			}
 			break;
-			
+		case CommandCodes.loadScript:
+			loadScript(p);
+			break;
+		case CommandCodes.callFunction:
+			callFunction(p);
+			break;
 		case CommandCodes.startProcedure:
 			startProcedure(p);
 			break;

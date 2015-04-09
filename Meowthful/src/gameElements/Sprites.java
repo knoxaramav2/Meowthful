@@ -124,20 +124,22 @@ public class Sprites {
 
 	public BufferedImage getPlayerSprite(int ico, String type)
 	{
-		int mult=7;
+		int mult=1;
+		
+		type = new String(type.toLowerCase());
 		
 		if (type.equals("player"))
-			mult*=0;
-		if (type.equals("mGrunt"))
-			mult*=1;
-		if (type.equals("fGrunt"))
-			mult*=2;
+			mult=0;
+		if (type.equals("mgrunt"))
+			mult=1;
+		if (type.equals("fgrunt"))
+			mult=2;
 		if (type.equals("boss"))
-			mult*=3;
+			mult=3;
 		
-		if (mult+ico>34)
+		if ((10*mult)+ico>40)
 			return null;
 			
-		return actorSprites[mult+ico];
+		return actorSprites[(10*mult)+ico];
 	};
 }

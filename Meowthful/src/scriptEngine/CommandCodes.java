@@ -64,6 +64,8 @@ public class CommandCodes{
 	public final static int startProcedure  = -1449546607;
 	public final static int endProcedure	= -1506418632;
 	public final static int placeActor		= -294163154;
+	public final static int loadScript		= -231490223;
+	public final static int callFunction	= 1449071702;
 	
 	@SuppressWarnings("unused")
 	private int type;
