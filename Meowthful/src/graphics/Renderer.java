@@ -93,14 +93,14 @@ public class Renderer extends JPanel implements ActionListener{
 	public void createAndShowGUI(unownInterpreter ui, gameGlobal Gg) throws IOException {
 		// Create and set up the window.
 		BufferedImage[] player = new BufferedImage[1];
-		player[0] = Gg.getPlayer(0).getSprite(0);
+		player[0] = ImageIO.read(new File("src/gameFiles/singlePerson.png"));
 		ArrayList<Player> players = new ArrayList<Player>();
 		for(int i = 0; i < Gg.getPlayerCount(); i++){
 			Player p = Gg.getPlayer(i);
 			players.add(p);
 		}
 		
-		gameElements.Map map = new gameElements.Map("maps/MonkMountainV2.WORLD");
+		gameElements.Map map = new gameElements.Map("src/gameFiles/lavaArena.WORLD");
 		JFrame frame = new JFrame("Meowthful");
 		panel = new CustomPanel(map, players, Gg.getSpriteSheets(), ui);
 		panel.setConsole(ui);
