@@ -369,6 +369,15 @@ public class unownInterpreter {
 		
 	}
 	
+	private void loadGame(Packet p)
+	{
+		
+	}
+	
+	private void saveGame(Packet p)
+	{
+		
+	}
 	
 	//attack 1, attack 2 --only supports actor vs. actor battle. No wild
 	private boolean attack(Packet p)
@@ -609,6 +618,12 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.endProcedure:
 			endProcedure(p);
+			break;
+		case CommandCodes.saveGame:
+			saveGame(p);
+			break;
+		case CommandCodes.loadGame:
+			loadGame(p);
 			break;
 		default:
 			return;

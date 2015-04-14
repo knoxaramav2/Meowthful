@@ -47,17 +47,18 @@ public class Player {
 				name = list[i];
 				break;
 			case 2:
+				list[i]=new String(list[i].toLowerCase());
 				if (list[i].equals("grunt"))
 					rank = 0;
-				if (list[i].equals("Private"))
+				if (list[i].equals("private"))
 					rank = 1;
-				if (list[i].equals("General"))
+				if (list[i].equals("general"))
 					rank = 2;
-				if (list[i].equals("Executive"))
+				if (list[i].equals("executive"))
 					rank = 3;
-				if (list[i].equals("Admin"))
+				if (list[i].equals("admin"))
 					rank = 4;
-				if (list[i].equals("Leader"))
+				if (list[i].equals("leader"))
 					rank = 5;
 				break;
 			case 3:

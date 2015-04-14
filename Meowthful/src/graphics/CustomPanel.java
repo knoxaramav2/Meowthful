@@ -4,6 +4,7 @@ import gameElements.Map;
 import gameElements.MapCalculator;
 import gameElements.Player;
 import gameElements.Sprites;
+import gameEngine.FileSystem;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;

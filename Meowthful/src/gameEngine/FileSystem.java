@@ -5,10 +5,16 @@ import gameElements.Player;
 import gameElements.Pokemon;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 //loads and saves different file types into memory
 public class FileSystem {
@@ -99,6 +105,91 @@ public class FileSystem {
 		}
 		
 		return g;
+	}
+
+	public static boolean loadGame(gameGlobal g, String file)
+	{
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			
+			String line = new String();
+			int mode=0;
+			
+			while ((line=br.readLine())!=null)
+			{
+				
+			}
+		} catch (FileNotFoundException e) {
+			return false;
+		} catch (IOException e) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	public static boolean saveGame(gameGlobal g, String file)
+	{
+		try {
+			PrintWriter writer = new PrintWriter(file, "UTF-8");
+			
+			writer.println("Meta~");//begin meta block
+			writer.println(new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()).toString());//time stamp
+			writer.println("~Meta");//end meta block
+			writer.println("Actors~");//begin actor block
+			
+			for (Player p:g.playerList)
+			{
+				writer.print(p.id+",");
+				writer.print(p.name+",");
+				switch(p.rank)
+				{
+				case 0:writer.print("grunt,");break;
+				case 1:writer.print("private,");break;
+				case 2:writer.print("general,");break;
+				case 3:writer.print("executive,");break;
+				case 4:writer.print("admin,");break;
+				case 5:writer.print("leader,");break;
+				}
+				
+				int pkmn=0;
+				for (Pokemon k:p.party)
+				{
+					writer.print(k.name+":");
+					writer.print(k.getLevel()+":");
+					boolean first=true;
+					for (Attack a:k.getAttackList())
+					{
+						if (first)
+							first=false;
+						else
+							writer.print("|");
+						writer.print(a.name+"%");
+						writer.print(a.getCurrentPP());
+					}
+					writer.print(",");
+					pkmn++;
+				}
+				for (int i=pkmn; i<6; i++)
+					writer.print("n/a,");
+				
+				writer.print(p.level+",");
+				writer.print(p.money+",");
+				writer.print(p.trainer+",");
+				writer.print(p.map+",");
+				writer.print(p.AI+",");
+				writer.print(p.orientation+",");
+				writer.print(p.coolDown+",");
+				writer.println(p.type);
+			}
+			
+			writer.println("~Actors");//end actor block
+		} catch (FileNotFoundException e) {
+			return false;
+		} catch (UnsupportedEncodingException e) {
+			return false;
+		}
+		return true;
 	}
 }
 
