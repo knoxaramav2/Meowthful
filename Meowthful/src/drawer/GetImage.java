@@ -10,8 +10,8 @@ import javax.imageio.ImageIO;
 
 public class GetImage {
 	// basic pokemon sprites
-	final int pokeSpriteCol = 43;
-	final int pokeSpriteRow = 13;
+	final int pokeSpriteCol = 61;
+	final int pokeSpriteRow = 28;
 	BufferedImage[] sprites = new BufferedImage[pokeSpriteCol * pokeSpriteRow];
 
 	public void loadPokeSprites(String filename, int pokeSpriteWidth, int pokeSpriteHeight, int pokeSpriteCol, int pokeSpriteRow, int buffer) throws IOException {

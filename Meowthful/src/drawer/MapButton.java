@@ -32,24 +32,24 @@ public class MapButton extends JButton implements ActionListener{
 		setBackground(Color.RED);
 		addActionListener(this);
 		
-		terrainInt = 559;
+		terrainInt = 1708;
 		moveInt = 0;
 	
 //		moveType = new JLabel("Move: 0", JLabel.LEFT);
 		
 //		add(moveType);
 		
-		image.loadPokeSprites("src/gameFiles/world_spritesheet.png",17,17,43,13,1);
-		setIcon(new ImageIcon(resize(image.getPokemonSprite(559), MainNullLayout.CELL_SIDE, MainNullLayout.CELL_SIDE)));
+		image.loadPokeSprites("core/world sprites.png",16,16,61,28,0);
+		setIcon(new ImageIcon(resize(image.getPokemonSprite(1708), MainNullLayout.CELL_SIDE, MainNullLayout.CELL_SIDE)));
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(blockType <= 559){
+		if(blockType <= 1708){
 			terrainInt = blockType;
 			setIcon(new ImageIcon(resize(image.getPokemonSprite(blockType), MainNullLayout.CELL_SIDE, MainNullLayout.CELL_SIDE)));
 			System.out.println("Terrain Type Set: " + terrainInt);
 		}else{
-			moveInt = blockType % 559;
+			moveInt = blockType % 1708;
 			System.out.println("Movement Type Set: " + moveInt);
 		}		
 //		moveType.setText("Move: " + moveInt);

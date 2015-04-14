@@ -1,22 +1,26 @@
 package drawer;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class MainNullLayout {
-	public static final int CELL_SIDE = 32;
+	public static final int CELL_SIDE = 23;
 	
 	public static void main(String[] args) throws IOException{
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
 		
 		JFrame frame = new JFrame("Map Creator");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(null);
 		
 		MapButton[][] buttons = new MapButton[15][15];
-		TerrainButton[][] terrainButtons = new TerrainButton[43][13];
+		TerrainButton[][] terrainButtons = new TerrainButton[61][28];
 		MoveButton[] moveButtons = new MoveButton[4];
 		JLabel mapLabel = new JLabel("Map", JLabel.CENTER);
 		JLabel terrainLabel = new JLabel("Terrain", JLabel.CENTER);
@@ -29,21 +33,21 @@ public class MainNullLayout {
 		mapLabel.setForeground(Color.RED);
 		mapLabel.setOpaque(true);
 		mapLabel.setBackground(Color.YELLOW);
-		frame.add(mapLabel);
+		panel.add(mapLabel);
 		
-		terrainLabel.setLocation(0, 16*CELL_SIDE);
+/*		terrainLabel.setLocation(0, 16*CELL_SIDE);
 		terrainLabel.setSize(43*CELL_SIDE, CELL_SIDE);
 		terrainLabel.setForeground(Color.BLACK);
 		terrainLabel.setOpaque(true);
 		terrainLabel.setBackground(Color.WHITE);
 		frame.add(terrainLabel);
-
-		moveLabel.setLocation(43*CELL_SIDE, 17*CELL_SIDE);
+*/
+		moveLabel.setLocation(17*CELL_SIDE, 0);
 		moveLabel.setSize(3*CELL_SIDE, CELL_SIDE);
 		moveLabel.setForeground(Color.GREEN);
 		moveLabel.setOpaque(true);
 		moveLabel.setBackground(Color.BLUE);
-		frame.add(moveLabel);
+		panel.add(moveLabel);
 		
 /*		renderedLabel.setLocation(31*CELL_SIDE, 0);
 		renderedLabel.setSize(15*CELL_SIDE, CELL_SIDE);
@@ -54,25 +58,38 @@ public class MainNullLayout {
 */		
 		renderedMap.setLocation(31*CELL_SIDE, CELL_SIDE);
 		renderedMap.setSize(15*CELL_SIDE, 15*CELL_SIDE);
-		frame.add(renderedMap);
+		panel.add(renderedMap);
 		
 		for(int i = 0; i < 15; i++){
 			for(int j = 0; j < 15; j++){
 				buttons[i][j] = new MapButton();
 				buttons[i][j].setLocation(i*CELL_SIDE, CELL_SIDE*(j+1));
 				buttons[i][j].setSize(CELL_SIDE,CELL_SIDE);
-				frame.add(buttons[i][j]);
+				panel.add(buttons[i][j]);
 			}
 		}
 		
 		int index = 1;
 		
-		for(int j = 0; j < 13; j++){	
-			for(int i = 0; i < 43; i++){
+/*		for(int j = 0; j < 17; j++){	
+			for(int i = 0; i < 39; i++){
 				terrainButtons[i][j] = new TerrainButton(index, buttons[0][0]);
-				terrainButtons[i][j].setLocation((i*CELL_SIDE), (CELL_SIDE*15)+(CELL_SIDE*(j+2)));
+				terrainButtons[i][j].setLocation(((i+16)*CELL_SIDE), (CELL_SIDE*(j)));
 				terrainButtons[i][j].setSize(CELL_SIDE, CELL_SIDE);
-				frame.add(terrainButtons[i][j]);
+				panel.add(terrainButtons[i][j]);
+				index++;
+			}
+			index += 22;
+		}
+*/
+		index = 1;
+		
+		for(int j = 0; j < 28; j++){	
+			for(int i = 0; i < 61; i++){
+				terrainButtons[i][j] = new TerrainButton(index, buttons[0][0]);
+				terrainButtons[i][j].setLocation(((i)*CELL_SIDE), 17*CELL_SIDE + (CELL_SIDE*(j)));
+				terrainButtons[i][j].setSize(CELL_SIDE, CELL_SIDE);
+				panel.add(terrainButtons[i][j]);
 				index++;
 			}
 		}
@@ -81,19 +98,25 @@ public class MainNullLayout {
 		
 		for(int i = 0; i < 4; i++){
 			moveButtons[i] = new MoveButton(index, buttons[0][0]);
-			moveButtons[i].setLocation(43*CELL_SIDE, CELL_SIDE*((3*i)+18));
+			moveButtons[i].setLocation(17*CELL_SIDE, CELL_SIDE + CELL_SIDE*((3*i)));
 			moveButtons[i].setSize(CELL_SIDE*3,CELL_SIDE*3);
-			frame.add(moveButtons[i]);
+			panel.add(moveButtons[i]);
 			index++;
 		}
 
 		SaveButton save = new SaveButton(buttons, renderedMap);
-		save.setLocation(43*CELL_SIDE, 16*CELL_SIDE);
+		save.setLocation(61*CELL_SIDE, 28*CELL_SIDE);
 		save.setSize(3*CELL_SIDE, CELL_SIDE);
-		frame.add(save);		
+		panel.add(save);		
+
+		panel.setSize(new Dimension( 1920,1080));
+		JScrollPane scrollFrame = new JScrollPane(panel);
+		panel.setAutoscrolls(true);
+		scrollFrame.setSize(new Dimension( 1900	,1000));
+		frame.add(scrollFrame);
 		
-		frame.setSize(47*CELL_SIDE, 1000);
+		frame.setSize(1920, 1080);
 		frame.setResizable(true);
-		frame.setVisible(true);
+		frame.setVisible(true);		
 	}
 }

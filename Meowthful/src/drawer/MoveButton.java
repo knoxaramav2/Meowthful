@@ -27,7 +27,7 @@ public class MoveButton extends JButton implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
-		button.setBlockType(559+index);
+		button.setBlockType(1708+index);
 	}
 	
 	public void paintComponent(Graphics g){
