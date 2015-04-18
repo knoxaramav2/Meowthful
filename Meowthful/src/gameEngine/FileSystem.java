@@ -16,13 +16,15 @@ import java.io.Writer;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
+import scriptEngine.unownInterpreter;
+
 //loads and saves different file types into memory
 public class FileSystem {
 	File a;
 	FileReader in;
 	
 	//load flags
-	static int _actor=0, _pkmn=1;
+	final static int _actor=0, _pkmn=1, _meta=2;
 	
 	@SuppressWarnings("unused")
 	public static gameGlobal loadGlobals(gameGlobal g)
@@ -107,8 +109,8 @@ public class FileSystem {
 		return g;
 	}
 
-	public static boolean loadGame(gameGlobal g, String file)
-	{
+	public static boolean loadGame(gameGlobal g, String file, unownInterpreter u)
+	{	
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			
@@ -117,7 +119,28 @@ public class FileSystem {
 			
 			while ((line=br.readLine())!=null)
 			{
+				if (line.length()==0)
+					continue;
 				
+				//check for regions
+				if (line.equals("Meta~"))
+					mode=_meta;
+				else if (line.equals("Actors~"))
+					mode=_actor;
+				else if (line.equals("~Meta") || line.equals("~Actors"))
+					mode=0;
+				
+				else switch (mode)
+				{
+				case _meta:
+					
+					break;
+				case _actor:
+					Player p = new Player(line, g.spriteDB, g);
+					g.playerList.add(p);
+					break;
+				}
+					
 			}
 		} catch (FileNotFoundException e) {
 			return false;
@@ -184,11 +207,15 @@ public class FileSystem {
 			}
 			
 			writer.println("~Actors");//end actor block
+			
+			writer.close();
 		} catch (FileNotFoundException e) {
 			return false;
 		} catch (UnsupportedEncodingException e) {
 			return false;
 		}
+		
+		
 		return true;
 	}
 }
