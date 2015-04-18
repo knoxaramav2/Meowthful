@@ -22,6 +22,7 @@ public class Player {
 	public int orientation;
 	public int movePos;
 	
+	public boolean moving;
 	public boolean controllable;
 	public boolean trainer;
 	public int AI;
