@@ -27,11 +27,11 @@ public class Map {
 		BufferedImage imgs[][] = new BufferedImage[15][15];
 		GetImage getImage = new GetImage();
 		
-		getImage.loadPokeSprites("core/world_spritesheet.png", 17,17,43,13,1);
+		getImage.loadPokeSprites("core/world sprites.png", 16,16,61,28,0);
 		
 		for(int j = 0; j < 15; j++){
 			for(int i = 0; i < 15; i++){
-				imgs[i][j] = resize(getImage.getPokemonSprite(mapComponents.getMapImageIndex(i, j)), 30, 30);
+				imgs[i][j] = resize(getImage.getPokemonSprite(mapComponents.getMapImageIndex(i, j)), 720/15, 720/15);
 				moveType[i][j] = mapComponents.getMoveType(i, j);
 				specialID[i][j] = mapComponents.getSpecialID(i, j);
 			}
@@ -85,8 +85,8 @@ public class Map {
 
 class GetImage {
 	// basic pokemon sprites
-	final int pokeSpriteCol = 43;
-	final int pokeSpriteRow = 13;
+	final int pokeSpriteCol = 61;
+	final int pokeSpriteRow = 28;
 	BufferedImage[] sprites = new BufferedImage[pokeSpriteCol * pokeSpriteRow];
 
 	public void loadPokeSprites(String filename, int pokeSpriteWidth, int pokeSpriteHeight, int pokeSpriteCol, int pokeSpriteRow, int buffer) throws IOException {
