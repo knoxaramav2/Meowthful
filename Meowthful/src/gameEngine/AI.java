@@ -2,6 +2,7 @@ package gameEngine;
 
 import gameElements.Attack;
 import gameElements.Player;
+import gameElements.Pokemon;
 
 /*
  * Handles game AI's from battle to movement
@@ -16,12 +17,17 @@ public class AI {
 	public static int MapAI_Mode_4	=	4;//walk 4 spaces vertically
 	public static int MapAI_Mode_5	=	5;//free move
 	
-	public static void actorMove(Player actor, int mode)
-	{
-		
+	int step_cycle=0;
+	
+	public void actorMove(int mode, boolean[] pos)
+	{	
+		pos[0]=false;
+		pos[1]=true;
+		pos[2]=false;
+		pos[3]=false;
 	}
 	
-	public static Attack battleAI(Player p1, Player p2)
+	public static Attack battleAI(Player p1, Player p2, Pokemon pk1, Pokemon pk2)
 	{
 		
 		return null;

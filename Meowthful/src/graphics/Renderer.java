@@ -34,17 +34,6 @@ public class Renderer extends JPanel implements ActionListener{
 	 * @throws IOException
 	 */
 
-	BufferedImage mapUL = null;
-	BufferedImage mapUM = null;
-	BufferedImage mapUR = null;
-
-	BufferedImage mapML = null;
-	BufferedImage mapMM = null;
-	BufferedImage mapMR = null;
-
-	BufferedImage mapLL = null;
-	BufferedImage mapLM = null;
-	BufferedImage mapLR = null;
 	
 	protected JTextField consoleWindow;
 	protected JTextArea consoleFrame;
@@ -85,6 +74,12 @@ public class Renderer extends JPanel implements ActionListener{
 //		Graphics2D g2d = (Graphics2D) g;
 	}
 
+	public void AI()
+	{
+		if (panel!=null)
+			panel.updateAI();
+	}
+	
 	public void appendText(String text)
 	{
 		panel.console.appendText(text);
