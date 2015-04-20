@@ -1,1 +1,1 @@
-placeActor 1 100 100
+placeActor 3 100 100
