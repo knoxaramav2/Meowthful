@@ -246,7 +246,7 @@ public class unownInterpreter {
 		
 		if (p.params.size()!=4)
 		{
-			reportError("Error: Must have 3 parameters (Map.WORLD, posx, posy, teleport id)",p.raw);
+			reportError("Error: Must have 4 parameters (Map.WORLD, posx, posy, teleport id)",p.raw);
 			return false;
 		}
 		
@@ -262,7 +262,8 @@ public class unownInterpreter {
 		plr.posy=posy;
 		
 		//set map
-		graphics.panel.swapMap(Integer.parseInt(p.params.get(3)));
+		graphics.panel.swapMap(Integer.parseInt(p.params.get(3)), g.getPlayer(0));
+		graphics.panel.addActor(g.getPlayer(0));
 		
 		//load map script
 		String scpt = p.params.get(0).split("\\.")[0]+".scpt";
@@ -288,10 +289,10 @@ public class unownInterpreter {
 			while ((line=br.readLine())!=null)
 				interpret(line);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			reportError("Error: Script not found",p.raw);
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			reportError("Error: IO Exception",p.raw);
 			e.printStackTrace();
 		}
 		
@@ -363,10 +364,29 @@ public class unownInterpreter {
 			reportError("Error: Player ID undefined",p.raw);
 			return;
 		}
-		g.getPlayer(id).posx=Integer.parseInt(p.params.get(1));
-		g.getPlayer(id).posy=Integer.parseInt(p.params.get(2));
+		g.getPlayer(id).posx=48*Integer.parseInt(p.params.get(1));
+		g.getPlayer(id).posy=48*Integer.parseInt(p.params.get(2));
 		graphics.panel.addActor(g.getPlayer(id));
 		
+	}
+	
+	private void moveActor (Packet p)//implement
+	{
+		if (p.params.size()!=3)
+		{
+			reportError("Error: Must have 3 parameters: id, x, y",p.raw);
+			return;
+		}
+		
+		int id = Integer.parseInt(p.params.get(0));
+		
+		if (!g.isPlayerDefined(id))
+		{
+			reportError("Error: Player ID undefined",p.raw);
+			return;
+		}
+		g.getPlayer(id).posx=48*Integer.parseInt(p.params.get(1));
+		g.getPlayer(id).posy=48*Integer.parseInt(p.params.get(2));
 	}
 	
 	private void loadGame(Packet p)
@@ -597,6 +617,9 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.placeActor:
 			placeActor(p);
+			break;
+		case CommandCodes.moveActor:
+			moveActor(p);
 			break;
 			
 			//File Sys

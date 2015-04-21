@@ -34,17 +34,6 @@ public class Renderer extends JPanel implements ActionListener{
 	 * @throws IOException
 	 */
 
-	BufferedImage mapUL = null;
-	BufferedImage mapUM = null;
-	BufferedImage mapUR = null;
-
-	BufferedImage mapML = null;
-	BufferedImage mapMM = null;
-	BufferedImage mapMR = null;
-
-	BufferedImage mapLL = null;
-	BufferedImage mapLM = null;
-	BufferedImage mapLR = null;
 	
 	protected JTextField consoleWindow;
 	protected JTextArea consoleFrame;
@@ -69,6 +58,12 @@ public class Renderer extends JPanel implements ActionListener{
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 		add(scroll,c);
+	}
+	
+	public void AI()
+	{
+		if (panel!=null)
+			panel.updateAI();
 	}
 	
 	public void actionPerformed(ActionEvent evt)
@@ -102,7 +97,7 @@ public class Renderer extends JPanel implements ActionListener{
 		
 		gameElements.Map map = new gameElements.Map("maps/Island1Exterior.WORLD");
 		JFrame frame = new JFrame("Meowthful");
-		panel = new CustomPanel(map, players, Gg.getSpriteSheets(), ui);
+		panel = new CustomPanel(map, Gg.getSpriteSheets(), ui);
 		panel.setConsole(ui);
 		
 		BattlePanel bp = new BattlePanel(6);

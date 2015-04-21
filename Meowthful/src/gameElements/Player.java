@@ -17,6 +17,8 @@ public class Player extends AI{
 	public int level;
 	public ArrayList<Pokemon> party = new ArrayList<Pokemon>();
 	public String type;
+	
+	public BufferedImage sprite;
 
 	public int posx, posy;
 	public int map;
@@ -163,6 +165,10 @@ public class Player extends AI{
 				break;
 			}
 		}
+		
+		sprite = sDb.getPlayerSprite(Sprites.forward_idle, type);
+		
+		System.out.println("Loaded "+name+" "+id);
 	}
 	
 	@SuppressWarnings("unused")
@@ -215,8 +221,10 @@ public class Player extends AI{
 		return false;
 	}
 
-	public void AI_Move()
+	public void AI_Move(boolean next)
 	{
-		actorMove(AI, moveSwitch);
+		if (AI==0)
+			return;
+		actorMove(AI, moveSwitch, next);
 	}
 }

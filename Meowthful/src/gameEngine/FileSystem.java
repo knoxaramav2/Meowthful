@@ -42,20 +42,20 @@ public class FileSystem {
 			{
 				switch (x)
 				{
-				case 0://baseFile
-					filebuffer="core/BaseValues.csv";
-					break;
-				case 1://attackFile
-					filebuffer="core/Attacks.csv";
-					break;
-				case 2://actorFile
-					filebuffer="core/Actors.csv";
-					break;
-				case 3://sprite sheet
+				case 0://sprite sheet
 					g.spriteDB.loadPokeSprites("core/spritesheet.png");
 					continue;
-				case 4:
+				case 1:
 					g.spriteDB.loadPlayerSprites("core/sprites.png");
+					continue;
+				case 2://baseFile
+					filebuffer="core/BaseValues.csv";
+					break;
+				case 3://attackFile
+					filebuffer="core/Attacks.csv";
+					break;
+				case 4://actorFile
+					filebuffer="core/Actors.csv";
 					break;
 				}
 				br = new BufferedReader(new FileReader(filebuffer));
@@ -73,15 +73,15 @@ public class FileSystem {
 						
 					switch (x)
 					{
-					case 0://baseFile
+					case 2://baseFile
 						Pokemon p = new Pokemon (buffer,g);
 						g.pokemonDB.add(p);
 						break;
-					case 1://attackFile
+					case 3://attackFile
 						Attack a = new Attack (buffer);
 						g.attackListDB.add(a);
 						break;
-					case 2://actorFile
+					case 4://actorFile
 						Player pl = new Player(buffer, g.spriteDB,g);
 						g.playerList.add(pl);
 						break;

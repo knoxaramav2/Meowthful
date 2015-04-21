@@ -66,6 +66,7 @@ public class CommandCodes{
 	public final static int placeActor		= -294163154;
 	public final static int loadScript		= -231490223;
 	public final static int callFunction	= 1449071702;
+	public final static int moveActor		= 1040267428;
 	
 	@SuppressWarnings("unused")
 	private int type;
