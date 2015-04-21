@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import gameEngine.AI;
 
-public class Player {
+public class Player extends AI{
 	// Player, AI
 
 	public String name;
@@ -21,6 +22,8 @@ public class Player {
 	public int map;
 	public int orientation;
 	public int movePos;
+	public int nextPos;
+	public boolean moveSwitch [];
 	
 	public boolean moving;
 	public boolean controllable;
@@ -36,6 +39,8 @@ public class Player {
 		
 		spriteDB=sDb;
 		movePos=0;
+		nextPos=0;
+		moveSwitch = new boolean [] {false, false, false, false};
 		// Parse from line into base
 		String list[] = params.split(",");
 
@@ -208,5 +213,10 @@ public class Player {
 				return true;
 		
 		return false;
+	}
+
+	public void AI_Move()
+	{
+		actorMove(AI, moveSwitch);
 	}
 }
