@@ -221,10 +221,10 @@ public class Player extends AI{
 		return false;
 	}
 
-	public void AI_Move(boolean next)
+	public void AI_Move(boolean next, int t)
 	{
 		if (AI==0)
 			return;
-		actorMove(AI, moveSwitch, next);
+		actorMove(AI, moveSwitch, next, t);
 	}
 }

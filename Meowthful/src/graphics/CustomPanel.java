@@ -238,7 +238,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	{
 		for(Player p : actors){
 			try {
-				p.AI_Move(p.moving);
+				p.AI_Move(!p.moving, (int)(System.currentTimeMillis()/1000));
 				step(p,p.moveSwitch[0],p.moveSwitch[1],p.moveSwitch[2],p.moveSwitch[3],true);
 			} catch (IOException e) {
 				e.printStackTrace();

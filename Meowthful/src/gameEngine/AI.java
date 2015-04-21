@@ -18,9 +18,19 @@ public class AI {
 	public final static int MapAI_Mode_5	=	5;//free move
 	
 	int step_cycle=0;
+	int time=0;
 	
-	public void actorMove(int mode, boolean[] pos, boolean next)
+	//0 = up, 1 = down, 2 = left, 3 = right
+	
+	public void actorMove(int mode, boolean[] pos, boolean next, int t)
 	{	
+		if (time==0)
+			time=t;
+		if (time==t || !next)
+			return;
+			
+		time=t;
+
 		switch (mode)
 		{
 		case MapAI_Mode_1:
@@ -36,16 +46,42 @@ public class AI {
 			pos[3]=false;
 			break;
 		case MapAI_Mode_3:
-			pos[0]=false;
-			pos[1]=false;
-			pos[2]=false;
-			pos[3]=false;
+			if (step_cycle++<3)
+			{
+				pos[0]=false;
+				pos[1]=false;
+				pos[2]=true;
+				pos[3]=false;
+			}
+			else 
+				if (step_cycle<6)
+				{
+					pos[0]=false;
+					pos[1]=false;
+					pos[2]=false;
+					pos[3]=true;
+				}
+				else
+					step_cycle=0;
 			break;
 		case MapAI_Mode_4:
-			pos[0]=false;
-			pos[1]=false;
-			pos[2]=false;
-			pos[3]=false;
+			if (step_cycle++<3)
+			{
+				pos[0]=true;
+				pos[1]=false;
+				pos[2]=false;
+				pos[3]=false;
+			}
+			else 
+				if (step_cycle++<6)
+				{
+					pos[0]=false;
+					pos[1]=true;
+					pos[2]=false;
+					pos[3]=false;
+				}
+				else
+					step_cycle=0;
 			break;
 		case MapAI_Mode_5:
 			pos[0]=false;
