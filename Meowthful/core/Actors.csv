@@ -3,3 +3,18 @@ id,name,rank,party,,,,,,level,money,battleable,Items,startmap,position,aischeme,
 1,Jeff,grunt,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,n/a,5,10,1,potion%2,1,5|15,1,3,10,mGrunt
 2,Henry,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,4,12,1,n/a,1,5|20,3,2,12,mGrunt
 3,Nameless Drone,grunt,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,n/a,6,13,1,n/a,1,10|30,4,0,9,fGrunt
+4,Popeye The Sailorman,grunt,n/a,n/a,n/a,n/a,n/a,n/a,5,9,0,potion%2,1,0|0,1,0,0,mGrunt
+5,Eric the Bike Man,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,5,10,1,n/a,1,0|0,1,2,10,mGrunt
+6,Private Parts,grunt,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,n/a,6,11,1,n/a,1,0|0,4,1,9,mGrunt
+7,Sharkeisha,grunt,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,n/a,5,12,1,potion%2,1,0|0,3,3,12,fGrunt
+8,Sarah Jurasicca Parker,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,4,13,1,n/a,1,0|0,1,0,10,fGrunt
+9,Mr. Dr. Professor Daniels,admin,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,8,15,1,potion%2,1,0|0,1,0,13,boss
+10,Man Dressed Like A Bat,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,7,13,1,potion%2,1,0|0,1,0,9,mGrunt
+11,Dean Winchester,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,6,14,1,potion%2,1,0|0,4,0,10,mGrunt
+12,Hannah Montana,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,7,13,1,potion%2,1,0|0,1,3,11,fGrunt
+13,Sanic,grunt,n/a,n/a,n/a,n/a,n/a,n/a,7,14,0,potion%2,1,0|0,1,0,0,mGrunt
+14,The Dragonborn,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,8,15,1,potion%2,1,0|0,1,0,12,mGrunt
+15,Princess Peach,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,n/a,7,14,1,potion%2,1,0|0,1,3,11,fGrunt
+16,Your mom,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,8,12,1,potion%2,1,0|0,4,0,9,fGrunt
+17,Woody Woodpecker,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,8,15,1,potion%2,1,0|0,3,3,10,mGrunt
+18,Sir Mr. Dr. Professor Daniels Esquire II,boss,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,11,17,1,potion%2,1,0|0,1,0,13,boss
