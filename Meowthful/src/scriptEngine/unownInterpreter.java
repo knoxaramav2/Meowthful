@@ -435,7 +435,7 @@ public class unownInterpreter {
 		} else if (p.params.get(0).equals("main"))
 		{
 			graphics.switchFrame(graphics.MENU_FRAME);
-		} else if (p.params.get(0).equals("game"))
+		} else if (p.params.get(0).equals("world"))
 		{
 			graphics.switchFrame(graphics.WORLD_FRAME);
 		} else if (p.params.get(0).equals("battle"))

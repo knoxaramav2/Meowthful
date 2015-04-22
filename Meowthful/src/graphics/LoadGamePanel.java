@@ -13,9 +13,11 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,23 +30,63 @@ public class LoadGamePanel extends JPanel implements ActionListener, MouseListen
 	public static final int SCREEN_WIDTH = 720;
 	public static final int SCREEN_HEIGHT = 720;
 	BufferedImage bi;
+	BufferedImage [] pkballs = new BufferedImage[5];
+	File[] listOfFiles;
+	JButton buttons[];
 	
 	private unownInterpreter ui;
 	
 	public LoadGamePanel(unownInterpreter ui){
 		this.ui = ui;
+		
+		setLayout(null);
+		
 		try {
 		    bi = ImageIO.read(new File("core/loadGameMenu.png"));
+		    BufferedImage pkTemp = ImageIO.read(new File("core/pokeballs.png"));
+		    
+		    for (int i=0; i<5; i++)
+		    	pkballs[i]=pkTemp.getSubimage(i*60, 0, 60, 60);
 		} catch (IOException e) {
 		}
+		
+		File folder = new File("saves");
+		listOfFiles = folder.listFiles();
+		
+		buttons = new JButton[listOfFiles.length];
+		
+		Random rand = new Random();
+
+	    for (int i = 0; i < listOfFiles.length; i++) {
+	      if (listOfFiles[i].isFile()) {
+	        System.out.println("File " + listOfFiles[i].getName());
+	        JButton temp = new JButton(new ImageIcon(pkballs[rand.nextInt(listOfFiles.length-1)]));
+	        temp.setActionCommand("select "+listOfFiles[i].toString());
+	        temp.setBorderPainted(false);
+	        temp.setText(listOfFiles[i].toString());
+	        temp.setBounds(20, (60*i) + 120, 520, 60);
+	        temp.addActionListener(this);
+	        buttons[i]=temp;
+	        add(temp);
+	        
+	      } else if (listOfFiles[i].isDirectory()) {
+	        System.out.println("Directory " + listOfFiles[i].getName());
+	      }
+	    }
 
 	}
 	
     public void actionPerformed(ActionEvent e) {
-        if ("new".equals(e.getActionCommand())) {
-        	ui.interpret("newGameDialogue");
-        } else if ("load".equals(e.getActionCommand())) {
-        	ui.interpret("loadGameDialogue");
+        String line = e.getActionCommand();
+        String [] params = line.split(" ");
+        
+        if (params.length!=2)
+        	return;
+        
+        if (params[0].equals("select"))
+        {
+        	ui.interpret("loadGame "+params[1]);
+        	ui.interpret("setWindow world");
         }
     }
 	
