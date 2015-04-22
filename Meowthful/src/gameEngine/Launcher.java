@@ -40,13 +40,6 @@ public class Launcher {
             }
         });
 		
-		//game loop
-		while (system.active)
-		{
-			Thread.sleep(100);
-			graphics.AI();//update map AI
-		}
-		
 	}
 
 }

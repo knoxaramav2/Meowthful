@@ -31,9 +31,6 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	private Map mapClass;
 	private int playerSpeedX;
 	private int playerSpeedY;
-	private int lastDirection;
-	private int cellX;
-	private int cellY;
 	public Console console;
 	private Sprites sprites=null;
 	private MapCalculator mc;
@@ -49,11 +46,6 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		playerSpeedY = 4;
 		addKeyListener(this);
 		setFocusable(true);
-		
-		cellX = 7;
-		cellY = 7;
-	
-		lastDirection = 0;
 		
 		mc = new MapCalculator();
 		this.ui = ui;
@@ -78,15 +70,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
-		try {
-			Player p = getActor(0);
-			if (p==null)
-				return;
-			step(p, p.moveSwitch[0], p.moveSwitch[1], p.moveSwitch[2], p.moveSwitch[3], false);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		updateAI();
 	}
 
 	public void keyPressed(KeyEvent e){
@@ -95,7 +79,8 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) p.moveSwitch[2] = true;
 		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) p.moveSwitch[1] = true;
 		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) p.moveSwitch[3] = true;
-		if (e.getKeyCode()==KeyEvent.VK_F1) console.toggleVisible();
+		if(e.getKeyCode() == KeyEvent.VK_F1) console.toggleVisible();
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) interact(getActor(0));  
 	}
 
 	public void keyReleased(KeyEvent e){
@@ -106,59 +91,74 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) p.moveSwitch[3] = false;		
 	}
 
-	public void keyTyped(KeyEvent e){}
+	public void keyTyped(KeyEvent e){Player p = getActor(0);
+	if (p==null)
+		return;
+	try {
+		step(p, false);
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}}
 	
-	public void step(Player player, boolean up, boolean down, boolean left, boolean right, boolean isAI) throws IOException{
+	public void step(Player player, boolean isAI) throws IOException{
+		int cID = player.id;
 		if(!player.moving){
-			if(up){
+			if(player.moveSwitch[0]){
 				player.sprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, player.type), WIDTH, HEIGHT);
-				if(!mapClass.isBlocked(cellX, (cellY - 1 > 0 ? cellY - 1 : 0)) && !isActorBlocked()){
+				if(!mapClass.isBlocked(player.getCellX(), (player.getCellY() - 1 > 0 ? player.getCellY() - 1 : 0)) && !isActorBlocked(player)){
 					player.moving = true;
 					player.nextPos = player.posy - HEIGHT;
 					if(player.nextPos < 0) player.nextPos = 0;
-					cellY = cellY - 1 < 0 ? 0 : cellY - 1;
-					lastDirection = 1;
+					//player.setCellY(player.getCellY() - 1 < 0 ? 0 : player.getCellY() - 1);
+					player.orientation = 1;
 				}
-				sop("Direction: UP	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
-			}else if(down){
+				
+				//sop("Direction: UP	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
+			}else if(player.moveSwitch[1]){
 				player.sprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, player.type), WIDTH, HEIGHT);
-				if(!mapClass.isBlocked(cellX, (cellY + 1 < 14 ? cellY + 1 : 14)) && !isActorBlocked()){
+				if(!mapClass.isBlocked(player.getCellX(), (player.getCellY() + 1 < 14 ? player.getCellY() + 1 : 14)) && !isActorBlocked(player)){
 					player.moving = true;
 					player.nextPos = player.posy + HEIGHT;
 					if(player.nextPos >= map.getHeight()) player.nextPos = map.getHeight() - HEIGHT;
-					cellY = cellY + 1 > 14 ? 14 : cellY + 1;
-					lastDirection = 2;
+					//player.setCellY(player.getCellY() + 1 > 14 ? 14 : player.getCellY() + 1);
+					player.orientation = 2;
 				}
-				sop("Direction: DOWN	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
-			}else if(left){
+				
+				//sop("Direction: DOWN	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
+			}else if(player.moveSwitch[2]){
 				player.sprite = resize(sprites.getPlayerSprite(Sprites.left_idle, player.type), WIDTH, HEIGHT);
-				if(!mapClass.isBlocked((cellX - 1 > 0 ? cellX - 1 : 0), cellY) && !isActorBlocked()){
+				if(!mapClass.isBlocked((player.getCellX() - 1 > 0 ? player.getCellX() - 1 : 0), player.getCellY()) && !isActorBlocked(player)){
 					player.moving = true;
 					player.nextPos = player.posx - WIDTH;
 					if(player.nextPos < 0) player.nextPos = 0;
-					cellX = cellX - 1 < 0 ? 0 : cellX - 1;
-					lastDirection = 3;
+					//player.setCellX(player.getCellX() - 1 < 0 ? 0 : player.getCellX() - 1);
+					player.orientation = 3;
 				}
-				sop("Direction: LEFT	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
-			}else if(right){
+				
+				//sop("Direction: LEFT	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
+			}else if(player.moveSwitch[3]){
 				player.sprite = resize(sprites.getPlayerSprite(Sprites.right_idle, player.type), WIDTH, HEIGHT);
-				if(!mapClass.isBlocked((cellX + 1 < 14 ? cellX + 1 : 14), cellY) && !isActorBlocked()){
+				if(!mapClass.isBlocked((player.getCellX() + 1 < 14 ? player.getCellX() + 1 : 14), player.getCellY()) && !isActorBlocked(player)){
 					player.moving = true;
 					player.nextPos = player.posx + WIDTH;
 					if(player.nextPos >= map.getWidth()) player.nextPos = map.getWidth() - WIDTH;
-					cellX = cellX + 1 > 14 ? 14 : cellX + 1;
-					lastDirection = 4;
+					//player.setCellX(player.getCellX() + 1 > 14 ? 14 : player.getCellX() + 1);
+					player.orientation = 4;
 				}
-				sop("Direction: RIGHT	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
+				
+				//sop("Direction: RIGHT	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
 			}
+			if (cID!=player.id)
+				System.out.println("ID Switch\n");
 		}else{
 			
-			switch(lastDirection){
+			switch(player.orientation){
 			case 1:
 				if(player.posy == player.nextPos){
 					player.moving = false;
 					player.sprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, player.type), WIDTH, HEIGHT);
-					printSpecialMessage();
+					printSpecialMessage(player);
 				}else{
 					player.posy -= playerSpeedY;
 				}
@@ -168,7 +168,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 				if(player.posy == player.nextPos){
 					player.moving = false;
 					player.sprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, player.type), WIDTH, HEIGHT);
-					printSpecialMessage();
+					printSpecialMessage(player);
 				}else{
 					player.posy += playerSpeedY;
 				}
@@ -178,7 +178,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 				if(player.posx == player.nextPos){
 					player.moving = false;
 					player.sprite = resize(sprites.getPlayerSprite(Sprites.left_idle, player.type), WIDTH, HEIGHT);
-					printSpecialMessage();
+					printSpecialMessage(player);
 				}else{
 					player.posx -= playerSpeedX;
 				}
@@ -188,7 +188,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 				if(player.posx == player.nextPos){
 					player.moving = false;
 					player.sprite = resize(sprites.getPlayerSprite(Sprites.right_idle, player.type), WIDTH, HEIGHT);
-					printSpecialMessage();
+					printSpecialMessage(player);
 				}else{
 					player.posx += playerSpeedX;
 				}
@@ -196,18 +196,23 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 				
 				default:;
 			}
-
-			sop("X: " + player.posx + "		Y:" + player.posy + "	CellX: " + cellX + "	CellY: " + cellY);			
+			if (cID!=player.id)
+				System.out.println("ID Switch\n");
+			//sop("X: " + player.posx + "		Y:" + player.posy + "	CellX: " + cellX + "	CellY: " + cellY);			
 			repaint();
 		}
 	}
 
+	public void interact(Player p)
+	{
+		
+	}
 	
 	public void swapMap(int teleporterID, Player player) throws IOException{
-		player.posx = mc.getNewMapX(mapClass.getMapFileName(), teleporterID);
-		player.posy = mc.getNewMapY(mapClass.getMapFileName(), teleporterID);
-		cellX = mc.getNewMapCellX(mapClass.getMapFileName(), teleporterID);
-		cellY = mc.getNewMapCellY(mapClass.getMapFileName(), teleporterID);
+		player.posx = mc.getNewMapCellX(mapClass.getMapFileName(), teleporterID);
+		player.posy = mc.getNewMapCellY(mapClass.getMapFileName(), teleporterID);
+		player.setCellX(mc.getNewMapCellX(mapClass.getMapFileName(), teleporterID));
+		player.setCellY(mc.getNewMapCellY(mapClass.getMapFileName(), teleporterID));
 		switch(mc.getNewDirection(mapClass.getMapFileName(), teleporterID)){
 		case 1:
 			for (Player p: actors)
@@ -228,7 +233,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	
 	public void addActor(Player p) {
 		for (int x = 0; x < actors.size(); x++) if (actors.get(x).id == p.id) return;
-
+		p.sprite = resize(sprites.getPlayerSprite(p.orientation, p.type), WIDTH, HEIGHT);
 		actors.add(p);
 		revalidate();
 		repaint();
@@ -239,24 +244,24 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		for(Player p : actors){
 			try {
 				p.AI_Move(!p.moving, (int)(System.currentTimeMillis()/1000));
-				step(p,p.moveSwitch[0],p.moveSwitch[1],p.moveSwitch[2],p.moveSwitch[3],true);
+				step(p,true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	private void printSpecialMessage() throws IOException{
-		switch(mapClass.getMoveType(cellX, cellY)){
+	private void printSpecialMessage(Player p) throws IOException{
+		switch(mapClass.getMoveType(p.getCellX(), p.getCellY())){
 		case 3:
-			sop("Entered Teleporter: " + mapClass.getSpecialID(cellX, cellY));
+			sop("Entered Teleporter: " + mapClass.getSpecialID(p.getCellX(), p.getCellY()));
 			//swapMap(mapClass.getSpecialID(cellX, cellY));
-			ui.interpret("loadMap " + mc.getNewMapPath(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + 
-					" " + mc.getNewMapCellX(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY)) + " " + mc.getNewMapCellY(mapClass.getMapFileName(), mapClass.getSpecialID(cellX, cellY))+" "+mapClass.getSpecialID(cellX, cellY));
+			ui.interpret("loadMap " + mc.getNewMapPath(mapClass.getMapFileName(), mapClass.getSpecialID(p.getCellX(), p.getCellY())) + 
+					" " + mc.getNewMapCellX(mapClass.getMapFileName(), mapClass.getSpecialID(p.getCellX(), p.getCellY())) + " " + mc.getNewMapCellY(mapClass.getMapFileName(), mapClass.getSpecialID(p.getCellX(), p.getCellY()))+" "+mapClass.getSpecialID(p.getCellX(), p.getCellY()));
 			break;
 			
 		case 4:
-			sop("Entered Event Zone: " + mapClass.getSpecialID(cellX, cellY));			
+			sop("Entered Event Zone: " + mapClass.getSpecialID(p.getCellX(), p.getCellY()));			
 			break;
 			
 			default:;
@@ -267,8 +272,44 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		System.out.println(output);
 	}
 
-	private boolean isActorBlocked()
+	private boolean isActorBlocked(Player p)
 	{
+		if (p.moveSwitch[0])//up
+			for (Player pl: actors)
+			{
+				if (pl.id==p.id)
+					continue;
+				if (pl.posy<p.posy && pl.posx==p.posx)
+					if (p.posy-pl.posy<=48)
+						return true;
+			}
+		if (p.moveSwitch[1])//down
+			for (Player pl: actors)
+			{
+				if (pl.id==p.id)
+					continue;
+				if (pl.posy>p.posy && pl.posx==p.posx)
+					if (pl.posy-p.posy<=48)
+						return true;
+			}
+		if (p.moveSwitch[2])//left
+			for (Player pl: actors)
+			{
+				if (pl.id==p.id)
+					continue;
+				if (pl.posy==p.posy && pl.posx<p.posx)
+					if (p.posx-pl.posx<=48)
+						return true;
+			}
+		if (p.moveSwitch[3])//right
+			for (Player pl: actors)
+			{
+				if (pl.id==p.id)
+					continue;
+				if (pl.posy==p.posy && pl.posx>p.posx)
+					if (pl.posx-p.posx<=48)
+						return true;
+			}
 		
 		return false;
 	}

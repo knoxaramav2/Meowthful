@@ -171,6 +171,26 @@ public class Player extends AI{
 		System.out.println("Loaded "+name+" "+id);
 	}
 	
+	public int getCellX()
+	{
+		return posx/48;
+	}
+	
+	public int getCellY()
+	{
+		return posy/48;
+	}
+	
+	public void setCellX(int x)
+	{
+		posx=x*48;
+	}
+	
+	public void setCellY(int y)
+	{
+		posy=y*48;
+	}
+	
 	@SuppressWarnings("unused")
 	private Pokemon Pokemon(String title, int lvl, gameGlobal g) {
 		// TODO Auto-generated method stub

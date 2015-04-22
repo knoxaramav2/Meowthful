@@ -25,19 +25,13 @@ public class MapCalculator {
 			String dummy = s.next();
 		}
 		
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 6; i++){
 			String next = s.next();
 			curMapNames.add(next);
 			next = s.next();
 			teleporterID.add(next);
 			next = s.next();
-			eventZoneID.add(next);
-			next = s.next();
 			newMapName.add(next);
-			next = s.next();
-			newMapX.add(next);
-			next = s.next();
-			newMapY.add(next);
 			next = s.next();
 			newMapCellX.add(next);
 			next = s.next();
@@ -59,30 +53,10 @@ public class MapCalculator {
 		return null;
 	}
 	
-	public int getNewMapX(String oldFileName, int teleporterID){
-		for(int i = 0; i < curMapNames.size(); i++){
-			if(curMapNames.get(i).equals("\r\n" + oldFileName) && Integer.parseInt(this.teleporterID.get(i)) == teleporterID){
-				return Integer.parseInt(newMapX.get(i));
-			}
-		}
-		
-		return -1;		
-	}
-
-	public int getNewMapY(String oldFileName, int teleporterID){
-		for(int i = 0; i < curMapNames.size(); i++){
-			if(curMapNames.get(i).equals("\r\n" + oldFileName) && Integer.parseInt(this.teleporterID.get(i)) == teleporterID){
-				return Integer.parseInt(newMapY.get(i));
-			}
-		}
-		
-		return -1;		
-	}
-	
 	public int getNewMapCellX(String oldFileName, int teleporterID){
 		for(int i = 0; i < curMapNames.size(); i++){
 			if(curMapNames.get(i).equals("\r\n" + oldFileName) && Integer.parseInt(this.teleporterID.get(i)) == teleporterID){
-				return Integer.parseInt(newMapCellX.get(i));
+				return 48*Integer.parseInt(newMapCellX.get(i));
 			}
 		}
 		
@@ -92,7 +66,7 @@ public class MapCalculator {
 	public int getNewMapCellY(String oldFileName, int teleporterID){
 		for(int i = 0; i < curMapNames.size(); i++){
 			if(curMapNames.get(i).equals("\r\n" + oldFileName) && Integer.parseInt(this.teleporterID.get(i)) == teleporterID){
-				return Integer.parseInt(newMapCellY.get(i));
+				return 48*Integer.parseInt(newMapCellY.get(i));
 			}
 		}
 		

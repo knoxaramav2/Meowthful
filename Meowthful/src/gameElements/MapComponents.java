@@ -10,6 +10,8 @@ public class MapComponents {
 	private int[][] specialID;
 	
 	public MapComponents(String filename) throws FileNotFoundException{
+		if (filename==null)
+			return;
 		Scanner s = new Scanner(new File(filename));
 		s.useDelimiter(",");
 		
