@@ -57,6 +57,9 @@ public class CommandCodes{
 	public final static int loadGame		= 1845207544;
 	public final static int deleteVar		= -358718084;
 	public final static int getCache		= 1950242252;
+	public final static int newGameDialogue	= -1664350806;
+	public final static int loadGameDialogue= -452958224;
+	public final static int setWindow		= 693646066;
 	
 	public final static int teleport		= -1360201941;
 	public final static int event			= 96891546;

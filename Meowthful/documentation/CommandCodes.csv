@@ -54,6 +54,9 @@ saveGame,-2073003249,save game
 loadGame,1845207544,load game
 deleteVar,-358718084,delete variable
 getCache,1950242252,resolves to cache value (special function)
+newGameDialogue,-1664350806,brings up new Game window
+loadGameDialogue,-452958224,brings up load Game window
+setWindow,693646066,set to requested window type
 ,,
 teleport,-1360201941,move actor
 event,96891546,alert interpreter to event

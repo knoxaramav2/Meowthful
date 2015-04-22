@@ -24,51 +24,22 @@ import javax.swing.JTextField;
 import scriptEngine.unownInterpreter;
 
 @SuppressWarnings("serial")
-public class MainMenuPanel extends JPanel implements ActionListener, MouseListener{
+public class NewGamePanel extends JPanel implements ActionListener, MouseListener{
 	public static final int SCREEN_WIDTH = 720;
 	public static final int SCREEN_HEIGHT = 720;
 	BufferedImage bi;
 	
-	private JButton bNew, bLoad;
-	private JTextField fileField;
-	private JLabel label;
-	private String textString;
-	
 	private unownInterpreter ui;
 	
-	public MainMenuPanel(unownInterpreter ui){
+	public NewGamePanel(unownInterpreter ui){
 		this.ui = ui;
 		try {
-		    bi = ImageIO.read(new File("core/mainMenu.png"));
+		    bi = ImageIO.read(new File("core/newGameMenu.png"));
 		} catch (IOException e) {
 		}
-		
-		textString = new String();
-		
-		setLayout(null);
-		
-		bNew = new JButton("New Game");
-		bNew.setActionCommand("new");
-		bNew.setOpaque(false);
-		bNew.setContentAreaFilled(false);
-		bNew.setBorderPainted(false);
-		bNew.setForeground(Color.GREEN);
-		bNew.setBounds(170, 370, 100, 30);
-		
-		bLoad = new JButton("Load Game");
-		bLoad.setActionCommand("load");
-		bLoad.setOpaque(false);
-		bLoad.setContentAreaFilled(false);
-		bLoad.setBorderPainted(false);
-		bLoad.setForeground(Color.GREEN);
-		bLoad.setBounds(450, 370, 100, 30);
-		
-		bNew.addActionListener(this);
-		bLoad.addActionListener(this);
-		
-		add(bNew,BorderLayout.LINE_START);
-		add(bLoad,BorderLayout.LINE_END);
 
+		revalidate();
+		repaint();
 	}
 	
     public void actionPerformed(ActionEvent e) {

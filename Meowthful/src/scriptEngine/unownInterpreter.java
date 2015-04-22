@@ -399,6 +399,54 @@ public class unownInterpreter {
 		
 	}
 	
+	private void loadGameDialogue(Packet p)
+	{
+		if (p.params.size()!=0)
+		{
+			reportError("Error: Function has no parameters",p.raw);
+		}
+		
+		graphics.switchFrame(Renderer.LOAD_FRAME);
+	}
+	
+	private void newGameDialogue(Packet p)
+	{
+		if (p.params.size()!=0)
+		{
+			reportError("Error: Function has no parameters",p.raw);
+		}
+		
+		graphics.switchFrame(Renderer.NEW_FRAME);
+	}
+	
+	private void setWindow(Packet p)
+	{
+		if (p.params.size()!=1)
+		{
+			reportError("Error: Function has 1 parameter",p.raw);
+		}
+		
+		if (p.params.get(0).equals("new"))
+		{
+			graphics.switchFrame(graphics.NEW_FRAME);
+		} else if (p.params.get(0).equals("load"))
+		{
+			graphics.switchFrame(graphics.LOAD_FRAME);
+		} else if (p.params.get(0).equals("main"))
+		{
+			graphics.switchFrame(graphics.MENU_FRAME);
+		} else if (p.params.get(0).equals("game"))
+		{
+			graphics.switchFrame(graphics.WORLD_FRAME);
+		} else if (p.params.get(0).equals("battle"))
+		{
+			graphics.switchFrame(graphics.BATTLE_FRAME);
+		} else
+		{
+			reportError("Error: Parameters are: new, load, main, game, battle",p.raw);
+		}
+	}
+	
 	//attack 1, attack 2 --only supports actor vs. actor battle. No wild
 	private boolean attack(Packet p)
 	{		
@@ -647,6 +695,15 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.loadGame:
 			loadGame(p);
+			break;
+		case CommandCodes.loadGameDialogue:
+			loadGameDialogue(p);
+			break;
+		case CommandCodes.newGameDialogue:
+			newGameDialogue(p);
+			break;
+		case CommandCodes.setWindow:
+			setWindow(p);
 			break;
 		default:
 			return;

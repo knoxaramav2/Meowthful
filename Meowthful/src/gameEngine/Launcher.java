@@ -32,7 +32,7 @@ public class Launcher {
             	try {
 					//Renderer.createAndShowGUI(iEngine,global);
 					graphics.createAndShowGUI(iEngine, global);
-					iEngine.interpret("loadScript maps/Island1Exterior.scpt");
+					//iEngine.interpret("loadScript maps/Island1Exterior.scpt");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
