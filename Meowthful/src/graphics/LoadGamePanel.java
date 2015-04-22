@@ -39,6 +39,7 @@ public class LoadGamePanel extends JPanel implements ActionListener, MouseListen
 	public LoadGamePanel(unownInterpreter ui){
 		this.ui = ui;
 		
+		setFocusable(true);
 		setLayout(null);
 		
 		try {
@@ -86,7 +87,6 @@ public class LoadGamePanel extends JPanel implements ActionListener, MouseListen
         if (params[0].equals("select"))
         {
         	ui.interpret("loadGame "+params[1]);
-        	ui.interpret("setWindow world");
         }
     }
 	

@@ -41,6 +41,7 @@ public class NewGamePanel extends JPanel implements ActionListener, KeyListener{
 	public NewGamePanel(unownInterpreter ui){
 		this.ui = ui;
 		
+		setFocusable(true);
 		setLayout(null);
 		
 		try {

@@ -2,6 +2,7 @@ package gameEngine;
 import gameElements.Player;
 import graphics.Renderer;
 
+import java.awt.KeyboardFocusManager;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class Launcher {
 				}
             }
         });
+		
 		
 	}
 

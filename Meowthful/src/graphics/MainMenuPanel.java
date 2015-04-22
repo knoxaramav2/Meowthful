@@ -45,6 +45,7 @@ public class MainMenuPanel extends JPanel implements ActionListener, MouseListen
 		
 		textString = new String();
 		
+		setFocusable(true);
 		setLayout(null);
 		
 		bNew = new JButton("New Game");

@@ -391,12 +391,13 @@ public class unownInterpreter {
 	
 	private void loadGame(Packet p)
 	{
-		
+		interpret("loadScript maps/Island1Exterior.scpt");
+		interpret("setWindow world");
 	}
 	
 	private void saveGame(Packet p)
 	{
-		
+		interpret("loadScript maps/Island1Exterior.scpt");
 	}
 	
 	private void loadGameDialogue(Packet p)
@@ -405,7 +406,6 @@ public class unownInterpreter {
 		{
 			reportError("Error: Function has no parameters",p.raw);
 		}
-		
 		graphics.switchFrame(Renderer.LOAD_FRAME);
 	}
 	

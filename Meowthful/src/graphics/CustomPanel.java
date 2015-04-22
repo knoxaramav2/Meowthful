@@ -7,6 +7,7 @@ import gameElements.Sprites;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.KeyboardFocusManager;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +37,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	private MapCalculator mc;
 	private unownInterpreter ui;
 	private ArrayList <Player> actors = new ArrayList <Player>();
+	private KeyboardFocusManager manager;
 
 	public CustomPanel(Map mapClass, Sprites s, unownInterpreter ui) throws FileNotFoundException{			
 		this.mapClass = mapClass;
@@ -49,9 +51,15 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		
 		mc = new MapCalculator();
 		this.ui = ui;
-		
+	
 		Timer timer = new Timer(1000/60, this);
 		timer.start();
+	}
+	
+	public void focus()
+	{
+		//addKeyListener(this);
+		setFocusable(true);
 	}
 	
 	public void setConsole(unownInterpreter ui)

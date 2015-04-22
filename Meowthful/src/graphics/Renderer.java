@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 //import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -48,6 +49,8 @@ public class Renderer extends JPanel implements ActionListener{
 	public NewGamePanel		newGame = null;
 	public LoadGamePanel 	loadGame = null;
 	public CardLayout 		deck = null;
+	
+	int panelMode = 0;
 	
 	public final static int WORLD_FRAME = 1;
 	public final static int MENU_FRAME	= 2;
@@ -149,13 +152,24 @@ public class Renderer extends JPanel implements ActionListener{
 		master.setVisible(true);
 	}
 
+	public int getMode()
+	{
+		return panelMode;
+	}
+	
 	public void switchFrame(int mode)
-	{                            	
+	{                
+		panelMode=mode;
+		
 		switch (mode)
 		{
 		case WORLD_FRAME:
 			deck.show(base, "world");
 			System.out.println("Switched to world");
+			if (panel.requestFocusInWindow())
+				System.out.println("Success");
+			else
+				System.out.println("Failure");
 			break;
 		case MENU_FRAME:
 			deck.show(base, "menu");
@@ -174,9 +188,26 @@ public class Renderer extends JPanel implements ActionListener{
 			System.out.println("Switched to new");
 			break;
 		}
-		
+	
 		this.setVisible(true);
 		this.revalidate();
         this.repaint();
+	}
+
+	public void pushKey(KeyEvent key)
+	{
+		switch (panelMode)
+		{
+		case WORLD_FRAME:
+			break;
+		case MENU_FRAME:
+			break;
+		case BATTLE_FRAME:
+			break;
+		case LOAD_FRAME:
+			break;
+		case NEW_FRAME:
+			break;
+		}
 	}
 }
