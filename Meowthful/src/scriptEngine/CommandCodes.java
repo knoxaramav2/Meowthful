@@ -75,6 +75,8 @@ public class CommandCodes{
 	public final static int idleSpeech		= 1655375318;
 	public final static int failSpeech		= 61439392;
 	public final static int successSpeech	= 913565381;
+	public final static int ifCondition		= 3357;//command just 'if'
+	public final static int subProc			= -1868646986;
 	
 	@SuppressWarnings("unused")
 	private int type;

@@ -21,6 +21,7 @@ import system.data;
 
 class scriptFunction
 {
+	String title=null;
 	public int eventNumber=0;
 	public ArrayList <Packet> mapScript = new ArrayList <Packet>();
 }
@@ -239,6 +240,49 @@ public class unownInterpreter {
 		bc.endSession();
 	}
 	
+	private void subProc(Packet p)
+	{
+		if (p.params.size()!=1)
+		{
+			reportError("Error: Must have function name or event id",p.raw);
+			return;
+		}
+		
+		for (int i=0; i>subFunctions.size(); i++)
+		{
+			if (subFunctions.get(i).title==p.params.get(0) || subFunctions.get(i).eventNumber==Integer.parseInt(p.params.get(0)))
+				for (int x=0; x<subFunctions.get(i).mapScript.size(); x++)
+					execute(subFunctions.get(i).mapScript.get(x));
+		}
+	}
+	
+	private void ifCondition(Packet p)
+	{
+		if (p.params.size()!=4)
+		{
+			reportError("Error: Must be in form: [p1] [CONDITION] [p2] [function]",p.raw);
+			return;
+		}
+		
+		if (p.params.get(1).length()>1)
+		{
+			reportError("Error: 2nd parameter must be conditional operator",p.raw);
+			return;
+		}
+		
+		if (p.params.get(1).equals("<"))
+			if (Integer.parseInt(p.params.get(0)) < Integer.parseInt(p.params.get(2)))
+				interpret("subProc "+p.params.get(3));
+		
+		if (p.params.get(1).equals(">"))
+			if (Integer.parseInt(p.params.get(0)) > Integer.parseInt(p.params.get(2)))
+				interpret("subProc "+p.params.get(3));
+		
+		if (p.params.get(1).equals("="))
+			if (p.params.get(0).equals(p.params.get(2)))
+				interpret("subProc "+p.params.get(3));
+	}
+	
 	//file system
 	private boolean loadMap(Packet p) throws IOException
 	{
@@ -308,15 +352,17 @@ public class unownInterpreter {
 	
 	private void startProcedure(Packet p)
 	{
-		if (p.params.size()!=1)
+		if (p.params.size()!=2)
 		{
-			reportError("Error: Must specify event code",p.raw);
+			reportError("Error: Must specify event code and function title",p.raw);
 		}
 		
 		int id = Integer.parseInt(p.params.get(0));
+		String title = p.params.get(1);
 		
 		temp = new scriptFunction();
 		temp.eventNumber=id;
+		temp.title=title;
 		
 		subParse=true;
 	}
@@ -385,17 +431,59 @@ public class unownInterpreter {
 	
 	private void idleSpeech (Packet p)
 	{
+		if (p.params.size()!=1)
+		{
+			reportError("Error: Must have id",p.raw);
+			return;
+		}
 		
+		Player pl = g.getPlayer(Integer.parseInt(p.params.get(0)));
+		
+		if (pl.idleDialogue==null)
+		{
+			reportError("Error: No Dialogue Set",p.raw);
+			return;
+		}
+		
+		System.out.println(pl.idleDialogue);
 	}
 	
 	private void failSpeech (Packet p)
 	{
+		if (p.params.size()!=1)
+		{
+			reportError("Error: Must have id",p.raw);
+			return;
+		}
 		
+		Player pl = g.getPlayer(Integer.parseInt(p.params.get(0)));
+		
+		if (pl.failureDialogue==null)
+		{
+			reportError("Error: No Dialogue Set",p.raw);
+			return;
+		}
+		
+		System.out.println(pl.failureDialogue);
 	}
 	
 	private void successSpeech (Packet p)
 	{
+		if (p.params.size()!=1)
+		{
+			reportError("Error: Must have id",p.raw);
+			return;
+		}
 		
+		Player pl = g.getPlayer(Integer.parseInt(p.params.get(0)));
+		
+		if (pl.successDialogue==null)
+		{
+			reportError("Error: No Dialogue Set",p.raw);
+			return;
+		}
+		
+		System.out.println(pl.successDialogue);
 	}
 	
 	private void placeActor (Packet p)
@@ -663,6 +751,8 @@ public class unownInterpreter {
 			String param = p.params.get(x);
 			//check for identifier
 			String check = new String(param.substring(1, param.length()));
+			if (check.length()==0)
+				continue;
 			char c = p.params.get(0).charAt(0);
 			switch (c)
 			{
@@ -703,7 +793,7 @@ public class unownInterpreter {
 	//distribute or execute messages
 	public void execute(Packet p)
 	{
-		if (subParse)
+		if (subParse && p.code.value!=-1506418632)
 		{
 			temp.mapScript.add(p);
 			return;
@@ -734,6 +824,9 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.print:
 			print(p);
+			break;
+		case CommandCodes.ifCondition:
+			ifCondition(p);
 			break;
 		case CommandCodes.setVar:
 			setVar(p);
@@ -788,6 +881,9 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.endProcedure:
 			endProcedure(p);
+			break;
+		case CommandCodes.subProc:
+			subProc(p);
 			break;
 		case CommandCodes.saveGame:
 			saveGame(p);

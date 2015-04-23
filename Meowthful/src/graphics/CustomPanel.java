@@ -286,6 +286,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			break;
 			
 		case 4:
+			ui.interpret("event "+mapClass.getSpecialID(p.getCellX(), p.getCellY()));
 			sop("Entered Event Zone: " + mapClass.getSpecialID(p.getCellX(), p.getCellY()));			
 			break;
 			
