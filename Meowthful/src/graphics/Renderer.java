@@ -174,18 +174,34 @@ public class Renderer extends JPanel implements ActionListener{
 		case MENU_FRAME:
 			deck.show(base, "menu");
 			System.out.println("Switched to menu");
+			if (menu.requestFocusInWindow())
+				System.out.println("Success");
+			else
+				System.out.println("Failure");
 			break;
 		case BATTLE_FRAME:
 			deck.show(base, "battle");
 			System.out.println("Switched to battle");
+			if (battle.requestFocusInWindow())
+				System.out.println("Success");
+			else
+				System.out.println("Failure");
 			break;
 		case LOAD_FRAME:
 			deck.show(base, "load");
 			System.out.println("Switched to load");
+			if (loadGame.requestFocusInWindow())
+				System.out.println("Success");
+			else
+				System.out.println("Failure");
 			break;
 		case NEW_FRAME:
 			deck.show(base, "new");
 			System.out.println("Switched to new");
+			if (newGame.requestFocusInWindow())
+				System.out.println("Success");
+			else
+				System.out.println("Failure");
 			break;
 		}
 	

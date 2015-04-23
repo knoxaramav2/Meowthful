@@ -17,6 +17,8 @@ import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -61,6 +63,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		//addKeyListener(this);
 		setFocusable(true);
 	}
+
 	
 	public void setConsole(unownInterpreter ui)
 	{
@@ -88,7 +91,8 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) p.moveSwitch[1] = true;
 		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) p.moveSwitch[3] = true;
 		if(e.getKeyCode() == KeyEvent.VK_F1) console.toggleVisible();
-		if(e.getKeyCode() == KeyEvent.VK_ENTER) interact(getActor(0));  
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+			interact(getForwardActor(getActor(0)));  
 	}
 
 	public void keyReleased(KeyEvent e){
@@ -213,7 +217,10 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 
 	public void interact(Player p)
 	{
-		
+		if (p==null)
+			sop("Empty");
+		else
+			sop(p.name);
 	}
 	
 	public void swapMap(int teleporterID, Player player) throws IOException{
@@ -249,12 +256,15 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	
 	public void updateAI()
 	{
-		for(Player p : actors){
+		for (int i=0; i<actors.size(); i++){
 			try {
-				p.AI_Move(!p.moving, (int)(System.currentTimeMillis()/1000));
-				step(p,true);
+				actors.get(i).AI_Move(!actors.get(i).moving, (int)(System.currentTimeMillis()/1000));
+				step(actors.get(i),true);
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (ConcurrentModificationException e)
+			{
+				System.exit(1);
 			}
 		}
 	}
@@ -319,7 +329,50 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 						return true;
 			}
 		
+		if (getForwardActor(p)!=null)
+			return true;
+		
 		return false;
+	}
+	
+	private Player getForwardActor(Player p)
+	{
+		for (Player pl: actors)
+		{
+			if (p==pl)
+				continue;
+			
+			if (p.orientation==1)//up
+				 if (p.posx==pl.posx || p.getCellX() == pl.getCellX())//if same x axis
+				 {
+					 int diff = p.posy-pl.posy;
+					 if (diff>0 && diff<48)
+						 return pl;
+				 }
+			 else if (p.orientation==2)//down
+				 if (p.posx==pl.posx || p.getCellX() == pl.getCellX())//if same x axis
+				 {
+					 int diff = pl.posy-p.posy;
+					 if (diff>0 && diff<48)
+						 return pl;
+				 }
+			 else if (p.orientation==3)//left
+				 if (p.posy==pl.posy || p.getCellY() == pl.getCellY())//if same y axis
+				 {
+					 int diff = p.posx-pl.posx;
+					 if (diff>0 && diff<48)
+						 return pl;
+				 }
+			 else if (p.orientation==4)//right
+				 if (p.posy==pl.posy || p.getCellY() == pl.getCellY())//if same y axis
+				 {
+					 int diff = pl.posx-p.posx;
+					 if (diff>0 && diff<48)
+						 return pl;
+				 }
+		}
+		
+		return null;
 	}
 	
 	private Player getActor(int id)

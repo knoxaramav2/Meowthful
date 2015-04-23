@@ -115,8 +115,10 @@ public class NewGamePanel extends JPanel implements ActionListener, KeyListener{
 		if (!charVal)
 			return;
 		
+		ui.interpret("setWindow world");
+		ui.interpret("placeActor 0 7 7");
+		ui.interpret("loadScript maps/Island1Exterior.scpt");
 		ui.interpret("saveGame "+val+".sav");
-    	ui.interpret("setWindow world");
 	}
 
 	@Override

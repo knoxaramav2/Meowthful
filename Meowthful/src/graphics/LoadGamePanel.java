@@ -86,6 +86,7 @@ public class LoadGamePanel extends JPanel implements ActionListener, MouseListen
         
         if (params[0].equals("select"))
         {
+        	ui.interpret("placeActor 0 7 7");
         	ui.interpret("loadGame "+params[1]);
         }
     }

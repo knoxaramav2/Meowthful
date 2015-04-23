@@ -1,7 +1,10 @@
 package gameElements;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,60 +20,67 @@ public class MapCalculator {
 	private ArrayList<String> newDirection = new ArrayList<String>();	
 	
 	public MapCalculator() throws FileNotFoundException{
-		Scanner s = new Scanner(new File("core/MapCalculator.csv"));
-		s.useDelimiter(",");
-
-		for(int i = 0; i < 9; i++){
-			@SuppressWarnings("unused")
-			String dummy = s.next();
-		}
+		BufferedReader br = new BufferedReader(new FileReader("core/MapCalculator.csv"));
 		
-		for(int i = 0; i < 6; i++){
-			String next = s.next();
-			curMapNames.add(next);
-			next = s.next();
-			teleporterID.add(next);
-			next = s.next();
-			newMapName.add(next);
-			next = s.next();
-			newMapCellX.add(next);
-			next = s.next();
-			newMapCellY.add(next);
-			next = s.next();
-			newDirection.add(next);
-		}
+		String line = new String();
+		boolean header=true;
 		
-		s.close();
+		try {
+			while ((line=br.readLine())!=null)
+			{
+				if (header)
+				{
+					header=false;
+					continue;
+				}
+				String [] params = line.split(",");
+				for (int i=0; i<6; i++)
+				{
+					switch (i)
+					{
+					case 0: curMapNames.add(params[i]); break;
+					case 1: teleporterID.add(params[i]); break;
+					case 2: newMapName.add(params[i]); break;
+					case 3: newMapCellX.add(params[i]); break;
+					case 4: newMapCellY.add(params[i]); break;
+					case 5: newDirection.add(params[i]); break;
+					}
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public String getNewMapPath(String oldFileName, int teleporterID){		
-		for(int i = 0; i < curMapNames.size(); i++){
-			if(curMapNames.get(i).equals("\r\n" + oldFileName) && Integer.parseInt(this.teleporterID.get(i)) == teleporterID){
-				return newMapName.get(i);
-			}
-		}
+	public String getNewMapPath(String oldFileName, int tID){		
+		for(int i = 0; i < curMapNames.size(); i++)
+				if (oldFileName.equals(curMapNames.get(i)) && tID == Integer.parseInt(teleporterID.get(i)))
+					return newMapName.get(i);
+
 		
+		System.out.println("Error: No file found");
 		return null;
 	}
 	
-	public int getNewMapCellX(String oldFileName, int teleporterID){
-		for(int i = 0; i < curMapNames.size(); i++){
-			if(curMapNames.get(i).equals("\r\n" + oldFileName) && Integer.parseInt(this.teleporterID.get(i)) == teleporterID){
-				return 48*Integer.parseInt(newMapCellX.get(i));
-			}
-		}
-		
-		return -1;		
+	public int getNewMapCellX(String oldFileName, int tID){
+		for(int i = 0; i < curMapNames.size(); i++)
+			if (oldFileName.equals(curMapNames.get(i)) && tID == Integer.parseInt(teleporterID.get(i)))
+				return Integer.parseInt(newMapCellX.get(i));
+
+	
+	System.out.println("Error: No file found");
+	return 0;	
 	}
 
-	public int getNewMapCellY(String oldFileName, int teleporterID){
-		for(int i = 0; i < curMapNames.size(); i++){
-			if(curMapNames.get(i).equals("\r\n" + oldFileName) && Integer.parseInt(this.teleporterID.get(i)) == teleporterID){
-				return 48*Integer.parseInt(newMapCellY.get(i));
-			}
-		}
-		
-		return -1;		
+	public int getNewMapCellY(String oldFileName, int tID){
+		for(int i = 0; i < curMapNames.size(); i++)
+			if (oldFileName.equals(curMapNames.get(i)) && tID == Integer.parseInt(teleporterID.get(i)))
+				return Integer.parseInt(newMapCellX.get(i));
+
+	
+	System.out.println("Error: No file found");
+	return 0;		
 	}
 	
 	public int getNewDirection(String oldFileName, int teleporterID){

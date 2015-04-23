@@ -263,11 +263,11 @@ public class unownInterpreter {
 		
 		//set map
 		graphics.panel.swapMap(Integer.parseInt(p.params.get(3)), g.getPlayer(0));
-		graphics.panel.addActor(g.getPlayer(0));
 		
 		//load map script
 		String scpt = p.params.get(0).split("\\.")[0]+".scpt";
 		interpret("loadScript "+scpt);
+		graphics.panel.addActor(g.getPlayer(0));
 		
 		return true;
 	}
@@ -291,9 +291,11 @@ public class unownInterpreter {
 		} catch (FileNotFoundException e) {
 			reportError("Error: Script not found",p.raw);
 			e.printStackTrace();
+			return;
 		} catch (IOException e) {
 			reportError("Error: IO Exception",p.raw);
 			e.printStackTrace();
+			return;
 		}
 		
 		
@@ -391,13 +393,10 @@ public class unownInterpreter {
 	
 	private void loadGame(Packet p)
 	{
-		interpret("loadScript maps/Island1Exterior.scpt");
-		interpret("setWindow world");
 	}
 	
 	private void saveGame(Packet p)
 	{
-		interpret("loadScript maps/Island1Exterior.scpt");
 	}
 	
 	private void loadGameDialogue(Packet p)

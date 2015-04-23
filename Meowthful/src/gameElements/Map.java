@@ -27,11 +27,11 @@ public class Map {
 		BufferedImage imgs[][] = new BufferedImage[15][15];
 		GetImage getImage = new GetImage();
 		
-		getImage.loadPokeSprites("core/world sprites.png", 16,16,61,28,0);
+		getImage.loadMapSprites("core/world sprites.png", 16,16,61,28,0);
 		
 		for(int j = 0; j < 15; j++){
 			for(int i = 0; i < 15; i++){
-				imgs[i][j] = resize(getImage.getPokemonSprite(mapComponents.getMapImageIndex(i, j)), 720/15, 720/15);
+				imgs[i][j] = GetImage.getPokemonSprite(mapComponents.getMapImageIndex(i, j));
 				moveType[i][j] = mapComponents.getMoveType(i, j);
 				specialID[i][j] = mapComponents.getSpecialID(i, j);
 			}
@@ -57,6 +57,10 @@ public class Map {
 	}
 	
 	public boolean isBlocked(int x, int y){
+		
+		if (x<0 || y <0 || x>14 || y>14)
+			return false;
+		
 		return moveType[y][x] == 2;
 	}
 	
@@ -85,11 +89,11 @@ public class Map {
 
 class GetImage {
 	// basic pokemon sprites
-	final int pokeSpriteCol = 61;
-	final int pokeSpriteRow = 28;
-	BufferedImage[] sprites = new BufferedImage[pokeSpriteCol * pokeSpriteRow];
+	final static int pokeSpriteCol = 61;
+	final static int pokeSpriteRow = 28;
+	static BufferedImage[] sprites = new BufferedImage[pokeSpriteCol * pokeSpriteRow];
 
-	public void loadPokeSprites(String filename, int pokeSpriteWidth, int pokeSpriteHeight, int pokeSpriteCol, int pokeSpriteRow, int buffer) throws IOException {
+	public void loadMapSprites(String filename, int pokeSpriteWidth, int pokeSpriteHeight, int pokeSpriteCol, int pokeSpriteRow, int buffer) throws IOException {
 		BufferedImage baseImage = ImageIO.read(new File(filename));
 		
 		for (int i = 0; i < pokeSpriteRow; i++) {
@@ -99,7 +103,11 @@ class GetImage {
 		}
 	}
 
-	public BufferedImage getPokemonSprite(int id) {
+	public static BufferedImage getPokemonSprite(int id) {
+		if (sprites[(id - 1)]==null)
+		{
+			System.out.println("Failure at id: "+id);
+		}
 		return sprites[(id - 1)];
 	}
 }

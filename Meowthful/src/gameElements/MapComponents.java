@@ -34,6 +34,10 @@ public class MapComponents {
 	}
 	
 	public int getMapImageIndex(int x, int y){
+		
+		if (x>14 || y>14 || x<0 || y<0)
+			return 0;
+		
 		return  mapImageIndex[x][y];
 	}
 	
