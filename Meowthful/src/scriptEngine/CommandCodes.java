@@ -70,6 +70,11 @@ public class CommandCodes{
 	public final static int loadScript		= -231490223;
 	public final static int callFunction	= 1449071702;
 	public final static int moveActor		= 1040267428;
+	public final static int setSpeech		= 585326564;
+	public final static int baseSpeech		= -821830893;
+	public final static int idleSpeech		= 1655375318;
+	public final static int failSpeech		= 61439392;
+	public final static int successSpeech	= 913565381;
 	
 	@SuppressWarnings("unused")
 	private int type;

@@ -351,6 +351,53 @@ public class unownInterpreter {
 		reportError("Error: Specified event not available",p.raw);
 	}
 	
+	private void interact(Packet p)
+	{
+		//id, event type
+		if (p.params.get(1).equals("baseSpeech"))
+			interpret("baseSpeech "+Integer.parseInt(p.params.get(0)));
+		else if (p.params.get(1).equals("idleSpeech"))
+			interpret("baseSpeech "+Integer.parseInt(p.params.get(0)));
+		else if (p.params.get(1).equals("failSpeech"))
+			interpret("baseSpeech "+Integer.parseInt(p.params.get(0)));
+		else if (p.params.get(1).equals("successSpeech"))
+			interpret("baseSpeech "+Integer.parseInt(p.params.get(0)));
+	}
+	
+	private void baseSpeech(Packet p)
+	{
+		if (p.params.size()!=1)
+		{
+			reportError("Error: Must have id",p.raw);
+			return;
+		}
+		
+		Player pl = g.getPlayer(Integer.parseInt(p.params.get(0)));
+		
+		if (pl.baseDialogue==null)
+		{
+			reportError("Error: No Dialogue Set",p.raw);
+			return;
+		}
+		
+		System.out.println(pl.baseDialogue);
+	}
+	
+	private void idleSpeech (Packet p)
+	{
+		
+	}
+	
+	private void failSpeech (Packet p)
+	{
+		
+	}
+	
+	private void successSpeech (Packet p)
+	{
+		
+	}
+	
 	private void placeActor (Packet p)
 	{
 		if (p.params.size()!=3)
@@ -389,6 +436,41 @@ public class unownInterpreter {
 		}
 		g.getPlayer(id).posx=48*Integer.parseInt(p.params.get(1));
 		g.getPlayer(id).posy=48*Integer.parseInt(p.params.get(2));
+	}
+	
+	private void setSpeech (Packet p)
+	{
+		if (p.params.size()<3)
+		{
+			reportError("Error: Must be in form: mode, id, text",p.raw);
+			return;
+		}
+		
+		Player player = g.getPlayer(Integer.parseInt(p.params.get(1)));
+		if (player==null)
+		{
+			reportError("Error: Parameter 2 must be valid player id",p.raw);
+			return;
+		}
+		
+		String s = new String(p.params.get(2));
+		for (int i=3; i<p.params.size(); i++)
+			s= new String(s+" "+p.params.get(i));
+		
+		if (p.params.get(0).equals("base"))
+			player.baseDialogue = new String(s);
+		else if (p.params.get(0).equals("fail"))
+			player.failureDialogue = new String(s);
+		else if (p.params.get(0).equals("success"))
+			player.successDialogue = new String(s);
+		else if (p.params.get(0).equals("idle"))
+			player.idleDialogue = new String(s);
+		else
+		{
+			reportError("Error: Must be valid mode (base, fail, success, idle)",p.raw);
+			return;
+		}
+			
 	}
 	
 	private void loadGame(Packet p)
@@ -667,6 +749,24 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.moveActor:
 			moveActor(p);
+			break;
+		case CommandCodes.interact:
+			interact(p);
+			break;
+		case CommandCodes.setSpeech:
+			setSpeech(p);
+			break;
+		case CommandCodes.baseSpeech:
+			baseSpeech(p);
+			break;
+		case CommandCodes.idleSpeech:
+			idleSpeech(p);	
+			break;
+		case CommandCodes.failSpeech:
+			failSpeech(p);
+			break;
+		case CommandCodes.successSpeech:
+			successSpeech(p);
 			break;
 			
 			//File Sys

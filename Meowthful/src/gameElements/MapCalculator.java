@@ -76,7 +76,7 @@ public class MapCalculator {
 	public int getNewMapCellY(String oldFileName, int tID){
 		for(int i = 0; i < curMapNames.size(); i++)
 			if (oldFileName.equals(curMapNames.get(i)) && tID == Integer.parseInt(teleporterID.get(i)))
-				return Integer.parseInt(newMapCellX.get(i));
+				return Integer.parseInt(newMapCellY.get(i));
 
 	
 	System.out.println("Error: No file found");

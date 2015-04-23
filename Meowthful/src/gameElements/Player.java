@@ -32,6 +32,11 @@ public class Player extends AI{
 	public boolean trainer;
 	public int AI;
 	public int coolDown;
+	
+	public String baseDialogue;//pre-event speech
+	public String successDialogue;//succesful/ option 1 speech
+	public String failureDialogue;//failure/ option 2 speech
+	public String idleDialogue;//pos-event speech
 
 	public int id;
 	
@@ -246,5 +251,19 @@ public class Player extends AI{
 		if (AI==0)
 			return;
 		actorMove(AI, moveSwitch, next, t);
+	}
+
+	public int getProximal(Player p)
+	{
+		if (this.getCellY()-p.getCellY()==1)
+			return 1;
+		if (this.getCellY()-p.getCellY()==-1)
+			return 2;
+		if (this.getCellX()-p.getCellX()==1)
+			return 3;
+		if (this.getCellX()-p.getCellX()==-1)
+			return 4;
+		
+		return -1;
 	}
 }
