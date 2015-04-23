@@ -1,6 +1,5 @@
 package graphics;
 
-import gameElements.Player;
 import gameElements.Pokemon;
 
 import java.awt.BasicStroke;
@@ -12,6 +11,7 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -33,64 +33,92 @@ public class BattlePanel extends JPanel{
 	private ArenaParser ap;
 	private PokeParser pp;
 	private BattleChoicePanel bcp;
+	private double poke1HealthFactor;
+	private double poke2HealthFactor;
+	private ArrayList<Pokemon> party;
 	
-	public BattlePanel(int index, Pokemon userFirst, Pokemon oppFirst, Player player, unownInterpreter ui) throws IOException{
+	public BattlePanel(unownInterpreter ui) throws IOException{
 		healthBar = ImageIO.read(new File("core/HealthBar.png"));
 		healthBar = resize(healthBar, 3*healthBar.getWidth(), (int)(45*healthBar.getHeight()/10.0));
 		ap = new ArenaParser();
 		pp = new PokeParser();
 
 		this.ui = ui;
-		userPoke = userFirst;
-		otherPoke = oppFirst;
-		
-		userPoke.setHealth(userPoke.getBaseHealth()/2);
-		
+				
 		ap.loadArenaSprites("core/battlearenasforparsing.png", 240, 112, 4, 4, 0);
 		pp.loadPokeSprites("core/PokeFrontBack.png");
 		
-		bg = resize(ap.getArenaSprite(index), WIDTH, HEIGHT);
-		poke1 = pp.getBackPokeSprite(userPoke.getNumber());
-		poke1 = resize(poke1, 3*poke1.getWidth(), (int)(45*poke1.getHeight()/7.0));
-		poke2 = pp.getFrontPokeSprite(otherPoke.getNumber());
-		poke2 = resize(poke2, 3*poke2.getWidth(), (int)(45*poke2.getHeight()/7.0));
+		poke1HealthFactor = 1;
+		poke2HealthFactor = 1;
+		
+		poke1 = null;
+		poke2 = null;
+		bg = null;
+		
+		userPoke = null;
+		otherPoke = null;
+		
+		party = null;
 		
 		setLayout(null);
 		
-		bcp = new BattleChoicePanel(userFirst, player);
+		bcp = new BattleChoicePanel();
 		bcp.setLocation(bg.getWidth() - healthBar.getWidth()-10, bg.getHeight() - 120);
 		bcp.setSize(healthBar.getWidth() + 10, 120);
 		add(bcp);
+	}
+	
+	public void setMap(int index){
+		bg = resize(ap.getArenaSprite(index), WIDTH, HEIGHT);
+		repaint();
 	}
 	
 	public void setUserPokemon(Pokemon p){
 		userPoke = p;
 		poke1 = pp.getBackPokeSprite(userPoke.getNumber());
 		poke1 = resize(poke1, 3*poke1.getWidth(), (int)(45*poke1.getHeight()/7.0));
+		bcp.initButtons(p.getAttackList(), party);
+		repaint();
 	}
 	
 	public void setOpponentPokemon(Pokemon p){
 		otherPoke = p;
 		poke2 = pp.getFrontPokeSprite(otherPoke.getNumber());
 		poke2 = resize(poke2, 3*poke2.getWidth(), (int)(45*poke2.getHeight()/7.0));
+		repaint();
+	}
+	
+	public void setPokeHealthPercentage(int pokemon, double percentage){
+		switch(pokemon){
+		case 1:
+			poke1HealthFactor = percentage;
+			break;
+			
+		case 2:
+			poke2HealthFactor = percentage;
+			break;
+			
+			default:;
+		}
+	}
+	
+	public void setParty(ArrayList<Pokemon> party){
+		this.party = party;
 	}
 
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		g.drawImage(bg, 0, 0, null);
-		g.drawImage(poke1, 70, 405, null);
-		g.drawImage(poke2, 445, 90, null);
-		g.drawImage(healthBar, 100, 100, null);
-		g.drawImage(healthBar, bg.getWidth() - healthBar.getWidth()-10, bg.getHeight() - healthBar.getHeight() - 120, null);
-		
-		double poke1Factor = userPoke.getHealth()/(double)userPoke.getBaseHealth();
-		double poke2Factor = otherPoke.getHealth()/(double)otherPoke.getBaseHealth();
+		if(!(bg == null)) g.drawImage(bg, 0, 0, null);
+		if(!(bg == null)) if(!(poke1 == null)) g.drawImage(poke1, 70, 405, null);
+		if(!(bg == null)) if(!(poke2 == null)) g.drawImage(poke2, 445, 90, null);
+		if(!(bg == null)) if(!(healthBar == null)) g.drawImage(healthBar, 100, 100, null);
+		if(!(bg == null)) if(!(healthBar == null)) g.drawImage(healthBar, bg.getWidth() - healthBar.getWidth()-10, bg.getHeight() - healthBar.getHeight() - 120, null);
 		
 		Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.GREEN);
+		g2.setColor(Color.GREEN);
 		g2.setStroke(new BasicStroke(15));
-        g2.draw(new Line2D.Float(161, 143, 161 + (int)(129*poke2Factor), 143));
-        g2.draw(new Line2D.Float(555, 544, 555 + (int)(129*poke1Factor), 544));
+		if(!(bg == null)) if(!(poke2 == null)) g2.draw(new Line2D.Float(161, 143, 161 + (int)(129*poke2HealthFactor), 143));
+		if(!(bg == null)) if(!(poke1 == null)) g2.draw(new Line2D.Float(555, 544, 555 + (int)(129*poke1HealthFactor), 544));
 	}
 
 	

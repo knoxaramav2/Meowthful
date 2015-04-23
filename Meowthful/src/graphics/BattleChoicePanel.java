@@ -1,11 +1,12 @@
 package graphics;
 
-import gameElements.Player;
+import gameElements.Attack;
 import gameElements.Pokemon;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -20,13 +21,14 @@ public class BattleChoicePanel extends JPanel implements ActionListener{
 	private JButton   back;
 	private int       viewMenu;
 	
-	public BattleChoicePanel(Pokemon p, Player player){
+	public BattleChoicePanel(){
 		setLayout(new GridLayout(2, 4));
+
+		poke = null;
 		
-		poke = p;	
 		viewMenu = 0;
-		attacks = new JButton[poke.getAttackList().size()];
-		party = new JButton[player.party.size()];
+		attacks = null;
+		party = null;
 		
 		attack = new JButton("Attack");
 		attack.addActionListener(this);
@@ -36,16 +38,24 @@ public class BattleChoicePanel extends JPanel implements ActionListener{
 		
 		back = new JButton("Back");
 		back.addActionListener(this);
-		
-		for(int i = 0; i < poke.getAttackList().size(); i++){
-			attacks[i] = new JButton(poke.getAttack(i).name);
-			attacks[i].addActionListener(this);
-		}
-		
-		for(int i = 0; i < party.length; i++) party[i] = new JButton(player.party.get(i).name);
-		
+				
 		add(attack);
 		add(switchPokemon);
+	}
+	
+	public void initButtons(ArrayList<Attack> attacks, ArrayList<Pokemon> party){
+		this.attacks = new JButton[attacks.size()];
+		this.party = new JButton[party.size()];
+		
+		for(int i = 0; i < this.attacks.length; i++){
+			this.attacks[i] = new JButton(attacks.get(i).getName());
+			this.attacks[i].addActionListener(this);
+		}
+		
+		for(int i = 0; i < this.party.length; i++){
+			this.party[i] = new JButton(party.get(i).name);
+			this.party[i].addActionListener(this);
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -53,7 +63,7 @@ public class BattleChoicePanel extends JPanel implements ActionListener{
 			removeAll();
 			revalidate();
 			repaint();
-			for(int i = 0; i < attacks.length; i++) add(attacks[i]);
+			if(attacks != null) for(int i = 0; i < attacks.length; i++) add(attacks[i]);
 			add(back);
 			viewMenu = 1;
 		}else if(e.getSource() == back){
@@ -67,7 +77,7 @@ public class BattleChoicePanel extends JPanel implements ActionListener{
 			removeAll();
 			revalidate();
 			repaint();
-			for(int i = 0; i < party.length; i++) add(party[i]);
+			if(party != null) for(int i = 0; i < party.length; i++) add(party[i]);
 			add(back);
 			viewMenu = 2;
 		}else if(viewMenu == 1){
