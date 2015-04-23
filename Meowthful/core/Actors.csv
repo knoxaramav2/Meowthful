@@ -18,3 +18,11 @@ id,name,rank,party,,,,,,level,money,battleable,Items,startmap,position,aischeme,
 16,Your mom,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,8,12,1,potion%2,1,0|0,4,0,9,fGrunt
 17,Woody Woodpecker,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,n/a,8,15,1,potion%2,1,0|0,3,3,10,mGrunt
 18,Sir Mr. Dr. Professor Daniels Esquire II,boss,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,11,17,1,potion%2,1,0|0,1,0,13,boss
+19,Man-Bear-Pig,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,,n/a,10,14,1,potion%2,1,0|0,1,1,10,mGrunt
+20,Alexis Texas,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,11,15,1,potion%2,1,0|0,4,0,12,fGrunt
+21,Khajiit,grunt,n/a,n/a,n/a,n/a,n/a,n/a,10,14,0,n/a,1,0|0,1,0,13,fGrunt
+22,Corporal Canada,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,9,13,1,potion%2,1,0|0,1,0,10,mGrunt
+23,Mr. Mexico,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,10,14,1,potion%2,1,0|0,4,0,9,mGrunt
+24,LEEROOOOOOOOOOY JENKINS,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,11,15,1,potion%2,1,0|0,3,2,11,mGrunt
+25,Woman Dressed Liked A Cat,grunt,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,n/a,n/a,10,14,1,potion%2,1,0|0,1,2,10,fGrunt
+26,Admiral Supreme Overlord Sir Mr. Dr. Professor Daniels Esquire M.D. PhD XXVII,boss,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,zubat:5:tackle%35|screech%35,14,18,1,potion%2,1,0|0,1,0,14,boss
