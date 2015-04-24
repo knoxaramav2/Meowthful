@@ -5,6 +5,7 @@ import gameElements.MapCalculator;
 import gameElements.Player;
 import gameElements.Sprites;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
@@ -18,9 +19,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.Iterator;
 
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 import scriptEngine.unownInterpreter;
@@ -40,12 +41,19 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	private unownInterpreter ui;
 	private ArrayList <Player> actors = new ArrayList <Player>();
 	private KeyboardFocusManager manager;
-
+	private boolean canMove;
+	private JTextArea area;
+	private boolean battleAfter;
+	private int plId;
+	
 	public CustomPanel(Map mapClass, Sprites s, unownInterpreter ui) throws FileNotFoundException{			
 		this.mapClass = mapClass;
 		map = mapClass.getMap();
 		this.sprites=s;
 		
+		setLayout(null);
+		
+		plId = -1;
 		playerSpeedX = 4;
 		playerSpeedY = 4;
 		addKeyListener(this);
@@ -53,7 +61,16 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		
 		mc = new MapCalculator();
 		this.ui = ui;
-	
+		
+		canMove = true;
+		battleAfter = false;
+		
+		area = new JTextArea();
+		area.setLocation(0, 0);
+		area.setSize(WIDTH*15, 96);
+		area.setVisible(false);
+		add(area);
+		
 		Timer timer = new Timer(1000/60, this);
 		timer.start();
 	}
@@ -90,8 +107,21 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) p.moveSwitch[1] = true;
 		if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) p.moveSwitch[3] = true;
 		if(e.getKeyCode() == KeyEvent.VK_F1) console.toggleVisible();
-		if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+		if(canMove && e.getKeyCode() == KeyEvent.VK_ENTER){
 			interact(p);  
+			return;
+		}
+		if(!canMove && e.getKeyCode() == KeyEvent.VK_ENTER){
+			area.setVisible(false);
+			canMove = true;
+			repaint();
+			if(battleAfter){
+				battleAfter = false;
+				ui.interpret("startBattle 0 "+plId);
+			}
+			return;
+		}
+		
 		
 		sop(p.getCellX()+" "+p.getCellY());
 	}
@@ -116,97 +146,100 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	
 	public void step(Player player, boolean isAI) throws IOException{
 		int cID = player.id;
-		if(!player.moving){
-			if(player.moveSwitch[0]){
-				player.sprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, player.type), WIDTH, HEIGHT);
-				if(!mapClass.isBlocked(player.getCellX(), (player.getCellY() - 1 > 0 ? player.getCellY() - 1 : 0)) && !isActorBlocked(player,0)){
-					player.moving = true;
-					player.nextPos = player.posy - HEIGHT;
-					if(player.nextPos < 0) player.nextPos = 0;
-					player.orientation = 1;
-				}
-				
-				//sop("Direction: UP	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
-			}else if(player.moveSwitch[1]){
-				player.sprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, player.type), WIDTH, HEIGHT);
-				if(!mapClass.isBlocked(player.getCellX(), (player.getCellY() + 1 < 14 ? player.getCellY() + 1 : 14)) && !isActorBlocked(player,1)){
-					player.moving = true;
-					player.nextPos = player.posy + HEIGHT;
-					if(player.nextPos >= map.getHeight()) player.nextPos = map.getHeight() - HEIGHT;
-					player.orientation = 2;
-				}
-				
-				//sop("Direction: DOWN	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
-			}else if(player.moveSwitch[2]){
-				player.sprite = resize(sprites.getPlayerSprite(Sprites.left_idle, player.type), WIDTH, HEIGHT);
-				if(!mapClass.isBlocked((player.getCellX() - 1 > 0 ? player.getCellX() - 1 : 0), player.getCellY()) && !isActorBlocked(player,2)){
-					player.moving = true;
-					player.nextPos = player.posx - WIDTH;
-					if(player.nextPos < 0) player.nextPos = 0;
-					player.orientation = 3;
-				}
-				
-				//sop("Direction: LEFT	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
-			}else if(player.moveSwitch[3]){
-				player.sprite = resize(sprites.getPlayerSprite(Sprites.right_idle, player.type), WIDTH, HEIGHT);
-				if(!mapClass.isBlocked((player.getCellX() + 1 < 14 ? player.getCellX() + 1 : 14), player.getCellY()) && !isActorBlocked(player,3)){
-					player.moving = true;
-					player.nextPos = player.posx + WIDTH;
-					if(player.nextPos >= map.getWidth()) player.nextPos = map.getWidth() - WIDTH;
-					//player.setCellX(player.getCellX() + 1 > 14 ? 14 : player.getCellX() + 1);
-					player.orientation = 4;
-				}
-			}
-			if (cID!=player.id)
-				System.out.println("ID Switch\n");
-		}else{
-			switch(player.orientation){
-			case 1:
-				if(player.posy == player.nextPos){
-					player.moving = false;
+		
+		if(canMove){
+			if(!player.moving){
+				if(player.moveSwitch[0]){
 					player.sprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, player.type), WIDTH, HEIGHT);
-					printSpecialMessage(player);
-				}else{
-					player.posy -= playerSpeedY;
-				}
-				break;
-				
-			case 2:
-				if(player.posy == player.nextPos){
-					player.moving = false;
+					if(!mapClass.isBlocked(player.getCellX(), (player.getCellY() - 1 > 0 ? player.getCellY() - 1 : 0)) && !isActorBlocked(player,0)){
+						player.moving = true;
+						player.nextPos = player.posy - HEIGHT;
+						if(player.nextPos < 0) player.nextPos = 0;
+						player.orientation = 1;
+					}
+					
+					//sop("Direction: UP	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
+				}else if(player.moveSwitch[1]){
 					player.sprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, player.type), WIDTH, HEIGHT);
-					printSpecialMessage(player);
-				}else{
-					player.posy += playerSpeedY;
-				}
-				break;
-				
-			case 3:
-				if(player.posx == player.nextPos){
-					player.moving = false;
+					if(!mapClass.isBlocked(player.getCellX(), (player.getCellY() + 1 < 14 ? player.getCellY() + 1 : 14)) && !isActorBlocked(player,1)){
+						player.moving = true;
+						player.nextPos = player.posy + HEIGHT;
+						if(player.nextPos >= map.getHeight()) player.nextPos = map.getHeight() - HEIGHT;
+						player.orientation = 2;
+					}
+					
+					//sop("Direction: DOWN	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
+				}else if(player.moveSwitch[2]){
 					player.sprite = resize(sprites.getPlayerSprite(Sprites.left_idle, player.type), WIDTH, HEIGHT);
-					printSpecialMessage(player);
-				}else{
-					player.posx -= playerSpeedX;
-				}
-				break;
-				
-			case 4:
-				if(player.posx == player.nextPos){
-					player.moving = false;
+					if(!mapClass.isBlocked((player.getCellX() - 1 > 0 ? player.getCellX() - 1 : 0), player.getCellY()) && !isActorBlocked(player,2)){
+						player.moving = true;
+						player.nextPos = player.posx - WIDTH;
+						if(player.nextPos < 0) player.nextPos = 0;
+						player.orientation = 3;
+					}
+					
+					//sop("Direction: LEFT	player.nextPos: " + player.nextPos + " player.moving: " + player.moving);
+				}else if(player.moveSwitch[3]){
 					player.sprite = resize(sprites.getPlayerSprite(Sprites.right_idle, player.type), WIDTH, HEIGHT);
-					printSpecialMessage(player);
-				}else{
-					player.posx += playerSpeedX;
+					if(!mapClass.isBlocked((player.getCellX() + 1 < 14 ? player.getCellX() + 1 : 14), player.getCellY()) && !isActorBlocked(player,3)){
+						player.moving = true;
+						player.nextPos = player.posx + WIDTH;
+						if(player.nextPos >= map.getWidth()) player.nextPos = map.getWidth() - WIDTH;
+						//player.setCellX(player.getCellX() + 1 > 14 ? 14 : player.getCellX() + 1);
+						player.orientation = 4;
+					}
 				}
-				break;
-				
-				default:;
+				if (cID!=player.id)
+					System.out.println("ID Switch\n");
+			}else{
+				switch(player.orientation){
+				case 1:
+					if(player.posy == player.nextPos){
+						player.moving = false;
+						player.sprite = resize(sprites.getPlayerSprite(Sprites.backward_idle, player.type), WIDTH, HEIGHT);
+						printSpecialMessage(player);
+					}else{
+						player.posy -= playerSpeedY;
+					}
+					break;
+					
+				case 2:
+					if(player.posy == player.nextPos){
+						player.moving = false;
+						player.sprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, player.type), WIDTH, HEIGHT);
+						printSpecialMessage(player);
+					}else{
+						player.posy += playerSpeedY;
+					}
+					break;
+					
+				case 3:
+					if(player.posx == player.nextPos){
+						player.moving = false;
+						player.sprite = resize(sprites.getPlayerSprite(Sprites.left_idle, player.type), WIDTH, HEIGHT);
+						printSpecialMessage(player);
+					}else{
+						player.posx -= playerSpeedX;
+					}
+					break;
+					
+				case 4:
+					if(player.posx == player.nextPos){
+						player.moving = false;
+						player.sprite = resize(sprites.getPlayerSprite(Sprites.right_idle, player.type), WIDTH, HEIGHT);
+						printSpecialMessage(player);
+					}else{
+						player.posx += playerSpeedX;
+					}
+					break;
+					
+					default:;
+				}
+				if (cID!=player.id)
+					System.out.println("ID Switch\n");
+				//sop("X: " + player.posx + "		Y:" + player.posy + "	CellX: " + cellX + "	CellY: " + cellY);			
+				repaint();
 			}
-			if (cID!=player.id)
-				System.out.println("ID Switch\n");
-			//sop("X: " + player.posx + "		Y:" + player.posy + "	CellX: " + cellX + "	CellY: " + cellY);			
-			repaint();
 		}
 	}
 
@@ -226,15 +259,21 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			int por=p.orientation;
 			if (p.getProximal(pl)==p.orientation)
 			{
+
 				if (pl.trainer && pl.coolDownTime==0)
 				{
 					ui.interpret("interact "+pl.id+" baseSpeech");
-					ui.interpret("startBattle 0 "+pl.id);
+					dialogueBox(pl, pl.baseDialogue);
+					battleAfter = true;
+					plId = pl.id;
 				}else if (pl.trainer && pl.coolDownTime>0)
 				{
 					ui.interpret("interact "+pl.id+" idleSpeech");
+					dialogueBox(pl, pl.idleDialogue);
+
+				}else{
+					dialogueBox(pl, pl.baseDialogue);
 				}
-				
 				sop("Interaction > "+pl.id);	
 			}
 		}
@@ -316,6 +355,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	}
 	
 	private void printSpecialMessage(Player p) throws IOException{
+		if(p.id!=0) return;
 		switch(mapClass.getMoveType(p.getCellX(), p.getCellY())){
 		case 3:
 			sop("Entered Teleporter: " + mapClass.getSpecialID(p.getCellX(), p.getCellY()));
@@ -397,8 +437,23 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	    return bi;
 	}	
 
-	private void dialogueBox(Player talkedTo, String text)
-	{
+	private void dialogueBox(Player talkedTo, String text){
+		canMove = false;
+		Font font = new Font("Comic Sans MS", Font.BOLD, 30);
+		int y = 0;
 		
+		if(talkedTo.getCellY() < 5) y = HEIGHT*15 - 192;
+		removeAll();
+		area.setFont(font);
+		area.setText(text);
+		area.setLineWrap(true);
+		area.setWrapStyleWord(true);
+		area.setLocation(0, y);
+		area.setSize(WIDTH*15 - 2, 192);
+		area.setVisible(true);
+		area.setFocusable(true);
+		add(area);
+		repaint();
+		sop("This function is called: " + canMove + " y: " + y);
 	}
 }
