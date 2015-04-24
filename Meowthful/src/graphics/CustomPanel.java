@@ -262,6 +262,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 
 				if (pl.trainer && pl.coolDownTime==0)
 				{
+					
 					ui.interpret("interact "+pl.id+" baseSpeech");
 					dialogueBox(pl, pl.baseDialogue);
 					battleAfter = true;
@@ -345,6 +346,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			try {
 				actors.get(i).AI_Move(!actors.get(i).moving, (int)(System.currentTimeMillis()/1000));
 				step(actors.get(i),true);
+				actors.get(i).timeUpdate((int)(System.currentTimeMillis()/1000));
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ConcurrentModificationException e)

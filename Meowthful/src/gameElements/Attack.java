@@ -73,7 +73,7 @@ String list[] = params.split(",");
 	public Attack(String str, gameGlobal g)
 	{
 		Attack a = g.getAttack(str);
-		
+		System.out.println(str);
 		name = new String (a.name);
 		desc = new String (a.desc);
 		type = a.type;

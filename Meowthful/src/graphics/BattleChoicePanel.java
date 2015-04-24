@@ -103,4 +103,14 @@ public class BattleChoicePanel extends JPanel implements ActionListener{
 			}
 		}
 	}
+
+	public void reset()
+	{
+		removeAll();
+		add(attack);
+		add(switchPokemon);
+		revalidate();
+		repaint();
+		viewMenu = 0;
+	}
 }

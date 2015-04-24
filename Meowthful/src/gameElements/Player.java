@@ -33,6 +33,7 @@ public class Player extends AI{
 	public int AI;
 	public int coolDown;
 	public int coolDownTime;
+	public int currentTime;
 	
 	public String baseDialogue;//pre-event speech
 	public String successDialogue;//succesful/ option 1 speech
@@ -50,6 +51,7 @@ public class Player extends AI{
 		nextPos=0;
 		coolDownTime=0;
 		moveSwitch = new boolean [] {false, false, false, false};
+		currentTime=0;
 		// Parse from line into base
 		String list[] = params.split(",");
 
@@ -215,6 +217,7 @@ public class Player extends AI{
 		this.AI= origin.AI;
 		this.coolDown=origin.coolDown;
 		this.coolDownTime=origin.coolDownTime;
+		this.currentTime=origin.currentTime;
 		
 		this.id=origin.id;
 		
@@ -287,5 +290,21 @@ public class Player extends AI{
 		pk.id=currID;
 		pk.restoreHealth();
 		party.add(pk);
+	}
+
+	public void timeUpdate(int time)
+	{
+		if (currentTime==0)
+		{
+			currentTime=time;
+			return;
+		}
+		
+		if (time-currentTime>=1000 && coolDownTime>0)
+		{
+			coolDownTime--;
+			currentTime=time;
+		}
+			
 	}
 }

@@ -173,6 +173,9 @@ public class unownInterpreter {
 		
 		System.out.println(player.name + " sends out " + pkmn.name);
 		
+		graphics.battle.setUserPokemon(bc.p1Active);
+		graphics.battle.setUserPokemon(bc.p2Active);
+		
 		}
 		else {
 			
@@ -271,6 +274,8 @@ public class unownInterpreter {
 		winner.money+=exchange;
 		loser.coolDownTime=loser.coolDown;
 		
+		graphics.battle.reset();
+		
 		if (winner.id!=0)
 		{
 			interpret("successSpeech "+winner.id);
@@ -305,6 +310,7 @@ public class unownInterpreter {
 	{
 		System.out.println("Battle end between " + bc.p1.name + " and " + bc.p2.name);	
 		bc.endSession();
+		graphics.battle.reset();
 	}
 	
 	private void subProc(Packet p)
