@@ -11,19 +11,24 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import scriptEngine.unownInterpreter;
+
 @SuppressWarnings("serial")
 public class BattleChoicePanel extends JPanel implements ActionListener{
-	private Pokemon   poke;
-	private JButton   attack;
-	private JButton   switchPokemon;
-	private JButton[] attacks;
-	private JButton[] party;
-	private JButton   back;
-	private int       viewMenu;
+	private Pokemon   			poke;
+	private JButton   			attack;
+	private JButton   			switchPokemon;
+	private JButton[]			attacks;
+	private JButton[] 			party;
+	private JButton  			back;
+	private int       			viewMenu;
+	private unownInterpreter  	ui;
 	
-	public BattleChoicePanel(){
+	public BattleChoicePanel(unownInterpreter ui){
 		setLayout(new GridLayout(2, 4));
 
+		this.ui=ui;
+		
 		poke = null;
 		
 		viewMenu = 0;
@@ -54,6 +59,7 @@ public class BattleChoicePanel extends JPanel implements ActionListener{
 		
 		for(int i = 0; i < this.party.length; i++){
 			this.party[i] = new JButton(party.get(i).name);
+			this.party[i].setActionCommand(""+party.get(i).id);
 			this.party[i].addActionListener(this);
 		}
 	}
@@ -83,14 +89,15 @@ public class BattleChoicePanel extends JPanel implements ActionListener{
 		}else if(viewMenu == 1){
 			for(int i = 0; i < attacks.length; i++){
 				if(e.getSource() == attacks[i]){
-					//Add attacking here
+					ui.interpret("attack "+attacks[i].getText());
 					return;
 				}
 			}
 		}else if(viewMenu == 2){
 			for(int i = 0; i < party.length; i++){
 				if(e.getSource() == party[i]){
-					//Add party switch here
+					String s = new String(party[i].getActionCommand());
+					ui.interpret("swapParty "+party[i].getActionCommand());
 					return;
 				}
 			}

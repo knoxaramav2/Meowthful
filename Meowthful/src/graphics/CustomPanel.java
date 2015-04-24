@@ -396,4 +396,9 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	    g2d.dispose();
 	    return bi;
 	}	
+
+	private void dialogueBox(Player talkedTo, String text)
+	{
+		
+	}
 }

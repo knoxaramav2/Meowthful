@@ -132,7 +132,7 @@ public class Player extends AI{
 				
 				pk.setAttackList(att);
 				
-				party.add(pk);
+				this.AddPokemon(pk);
 				
 				break;
 			case 9:
@@ -196,12 +196,6 @@ public class Player extends AI{
 	public void setCellY(int y)
 	{
 		posy=y*48;
-	}
-	
-	@SuppressWarnings("unused")
-	private Pokemon Pokemon(String title, int lvl, gameGlobal g) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	//modified deep copy (certain elements shallow copied)
@@ -268,5 +262,30 @@ public class Player extends AI{
 			return 4;
 		
 		return -1;
+	}
+
+	public void AddPokemon(Pokemon pk)
+	{
+		ArrayList <Integer> used = new ArrayList <Integer>();
+		
+		for (int x=0; x<party.size(); x++)
+			used.add(x);
+		
+		boolean invalid=false;
+		int currID=0;
+
+		do
+		{
+			invalid=false;
+			for (int x=0; x<party.size(); x++)
+				if (currID==party.get(x).id)
+					invalid=true;
+			if (invalid)
+				currID++;
+		}while(invalid);
+		
+		pk.id=currID;
+		pk.restoreHealth();
+		party.add(pk);
 	}
 }

@@ -3,6 +3,7 @@ package scriptEngine;
 import gameElements.Attack;
 import gameElements.Player;
 import gameElements.Pokemon;
+import gameEngine.AI;
 import gameEngine.BattleCache;
 import gameEngine.BattleManager;
 import gameEngine.Utility;
@@ -722,7 +723,7 @@ public class unownInterpreter {
 	//attack 1, attack 2 --only supports actor vs. actor battle. No wild
 	private boolean attack(Packet p)
 	{		
-		if (p.params.size()!=2)
+		if (p.params.size()!=2 && p.params.size()!=1)
 		{
 			reportError("Error: Function accepts 2 parameters (atk1, atk2)",p.raw);
 			return false;
@@ -734,8 +735,15 @@ public class unownInterpreter {
 			return false;
 		}
 		
+		
 		Pokemon pk1 = bc.p1Active;
 		Pokemon pk2 = bc.p2Active;
+		
+		if (pk1.isKO() || pk2.isKO())
+		{
+			reportError("Defeated pokemon must be replaced",p.raw);
+			return false;
+		}
 		
 		if (pk1.isKO() || pk2.isKO())
 		{
@@ -744,29 +752,51 @@ public class unownInterpreter {
 		}
 		
 		//get attacks
-		int indx = pk1.getAttackIndex(p.params.get(0));
-		if (indx==-1)
+		Attack a1=null, a2=null;
+		
+		if (p.params.size()==1)//AI
 		{
-			reportError("Error: Pokemon 1 does not have requested attack (atk1, atk2)",p.raw);
-			return false;
+			int indx = pk1.getAttackIndex(p.params.get(0));
+			if (indx==-1)
+			{
+				reportError("Error: Pokemon 1 does not have requested attack (atk1, atk2)",p.raw);
+				return false;
+			}
+			
+			a1 = pk1.getAttack(indx);
+			a2 = AI.battleAI(bc.p2, bc.p1, pk2, pk1);
+			
+		}else//explicit
+		{
+			int indx = pk1.getAttackIndex(p.params.get(0));
+			if (indx==-1)
+			{
+				reportError("Error: Pokemon 1 does not have requested attack (atk1, atk2)",p.raw);
+				return false;
+			}
+			
+			a1 = pk1.getAttack(indx);
+			
+			indx = pk2.getAttackIndex(p.params.get(1));
+			if (indx==-1)
+			{
+				reportError("Error: Pokemon 2 does not have requested attack (atk1, atk2)",p.raw);
+				return false;
+			}
+			
+			a2 = pk2.getAttack(indx);
 		}
 		
-		Attack a1 = pk1.getAttack(indx);
 		
-		indx = pk2.getAttackIndex(p.params.get(1));
-		if (indx==-1)
-		{
-			reportError("Error: Pokemon 2 does not have requested attack (atk1, atk2)",p.raw);
-			return false;
-		}
-		
-		Attack a2 = pk2.getAttack(indx);
 		
 		int h1=pk1.getHealth();
 		int h2=pk2.getHealth();
 		
 		bm.resetWinner();
 		bm.executeRound(pk1, pk2, a1, a2);
+		
+		graphics.battle.setPokeHealthPercentage(1, pk1.getHealth()/(double)pk1.getBaseHealth());
+		graphics.battle.setPokeHealthPercentage(2, pk2.getHealth()/(double)pk2.getBaseHealth());
 		
 		System.out.println(pk1.name+" took "+(h1-pk1.getHealth()+" damage. Health is "+pk1.getHealth()));
 		System.out.println(pk2.name+" took "+(h2-pk2.getHealth()+" damage. Health is "+pk2.getHealth()));
@@ -779,6 +809,7 @@ public class unownInterpreter {
 			{
 				pk1.increaseEXP((int)(pk2.getLevel()*9.5)/7);
 				System.out.println(bc.p2.name+"'s "+pk2.name+" fainted\n"+bc.p1.name+"'s "+pk1.name+" is the winner.");
+				System.out.println("Opponent gained "+(pk2.getLevel()*9.5)/7+" exp");
 				if (!bc.p2.hasReadyPokemon())
 				{
 					System.out.println(bc.p2.name+" is out of pokemon");
@@ -796,6 +827,7 @@ public class unownInterpreter {
 			{
 				pk2.increaseEXP((int)(pk1.getLevel()*9.5)/7);
 				System.out.println(bc.p1.name+"'s "+pk1.name+" fainted\n"+bc.p2.name+"'s "+pk2.name+" is the winner.");
+				System.out.println("Player gained "+(pk1.getLevel()*9.5)/7+" exp");
 				if (!bc.p1.hasReadyPokemon())
 				{
 					System.out.println(bc.p1.name+" is out of pokemon.");
@@ -808,7 +840,10 @@ public class unownInterpreter {
 					for (int x=0; x<bc.p2.party.size();x++)
 						if (!bc.p2.party.get(x).isKO())
 							System.out.println(bc.p2.party.get(x).name+"\t"+x);
+					interpret("swapParty "+AI.switchAI(bc.p2, bc.p1, bc.p1Active, bc.p2.party));
 				}
+				
+				
 			}
 			bm.resetWinner();
 		}

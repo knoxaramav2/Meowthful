@@ -62,7 +62,7 @@ public class BattlePanel extends JPanel{
 		
 		setLayout(null);
 		
-		bcp = new BattleChoicePanel();
+		bcp = new BattleChoicePanel(ui);
 		bcp.setLocation(WIDTH - healthBar.getWidth()-10, HEIGHT - 120);
 		bcp.setSize(healthBar.getWidth() + 10, 120);
 		add(bcp);
@@ -100,6 +100,8 @@ public class BattlePanel extends JPanel{
 			
 			default:;
 		}
+		
+		repaint();
 	}
 	
 	public void setParty(ArrayList<Pokemon> party){

@@ -1,5 +1,8 @@
 package gameEngine;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import gameElements.Attack;
 import gameElements.Player;
 import gameElements.Pokemon;
@@ -16,6 +19,7 @@ public class AI {
 	public final static int MapAI_Mode_3	=	3;//walk 5 spaces horizontally
 	public final static int MapAI_Mode_4	=	4;//walk 4 spaces vertically
 	public final static int MapAI_Mode_5	=	5;//free move
+	private static Random r = new Random();
 	
 	int step_cycle=0;
 	int time=0;
@@ -92,10 +96,31 @@ public class AI {
 		}
 	}
 	
+	//npc actor, player actor, npc pokemon, player pokemon
 	public static Attack battleAI(Player p1, Player p2, Pokemon pk1, Pokemon pk2)
 	{
+		Attack ret = null;
+		
+		while (ret == null)
+		{
+			
+			for (int i=0; i<pk1.getAttackList().size(); i++)
+				{
+				int rand = r.nextInt()%10;
+				if (rand==1 && pk1.getAttack(i)!=null)
+					return pk1.getAttack(i);
+				}
+		}
+		
+		return ret;
+	}
+	
+	public static Pokemon switchAI(Player p1, Player p2, Pokemon pk2, ArrayList<Pokemon> party)
+	{
+		for (Pokemon p: party)
+			if (!p.isKO())
+				return p;
 		
 		return null;
 	}
-	
 }
