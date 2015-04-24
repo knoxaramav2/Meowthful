@@ -4,6 +4,7 @@ import gameElements.Pokemon;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import scriptEngine.unownInterpreter;
 
@@ -36,6 +38,7 @@ public class BattlePanel extends JPanel{
 	private double poke1HealthFactor;
 	private double poke2HealthFactor;
 	private ArrayList<Pokemon> party;
+	private JTextArea area;
 	
 	public BattlePanel(unownInterpreter ui) throws IOException{
 		healthBar = ImageIO.read(new File("core/HealthBar.png"));
@@ -61,6 +64,17 @@ public class BattlePanel extends JPanel{
 		party = null;
 		
 		setLayout(null);
+		
+		Font font = new Font("Comic Sans MS", Font.BOLD, 30);
+		
+		area = new JTextArea();
+		area.setLocation(0, 0);
+		area.setSize(100 + healthBar.getWidth(), 100);
+		area.setFont(font);
+		area.setVisible(true);
+		area.setWrapStyleWord(true);
+		area.setLineWrap(true);
+		add(area);
 		
 		bcp = new BattleChoicePanel(ui);
 		bcp.setLocation(WIDTH - healthBar.getWidth()-10, HEIGHT - 120);
@@ -121,6 +135,10 @@ public class BattlePanel extends JPanel{
 		g2.setStroke(new BasicStroke(15));
 		if(!(bg == null)) if(!(poke2 == null)) g2.draw(new Line2D.Float(161, 143, 161 + (int)(129*poke2HealthFactor), 143));
 		if(!(bg == null)) if(!(poke1 == null)) g2.draw(new Line2D.Float(555, 544, 555 + (int)(129*poke1HealthFactor), 544));
+	}
+	
+	public void setDialogue(String text){
+		area.setText(text);
 	}
 
 	
