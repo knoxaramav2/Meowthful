@@ -12,6 +12,7 @@ public class CommandCodes{
 	public final static int useBattleItem = 639617234;
 	public final static int startBattle = 1924640698;
 	public final static int endBattle = 1105032563;
+	public final static int givePokemon 	= -1191902078;
 	
 	public final static int giveItem		= 1293248964;
 	public final static int dropItem		= -432861534;
@@ -76,6 +77,7 @@ public class CommandCodes{
 	public final static int idleSpeech		= 1655375318;
 	public final static int failSpeech		= 61439392;
 	public final static int successSpeech	= 913565381;
+	public final static int dialogue		= -233842216;
 	public final static int ifCondition		= 3357;//command just 'if'
 	public final static int subProc			= -1868646986;
 	public final static int swapMap			= -1811394871;

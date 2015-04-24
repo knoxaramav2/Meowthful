@@ -95,4 +95,9 @@ public class gameGlobal {
 	{
 		return spriteDB;
 	}
+
+	public ArrayList <Attack> getAttackList()
+	{
+		return attackListDB;
+	}
 }

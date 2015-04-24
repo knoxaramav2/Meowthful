@@ -141,6 +141,10 @@ public class BattlePanel extends JPanel{
 		area.setText(text);
 	}
 
+	public void reset()
+	{
+		bcp.reset();
+	}
 	
 	private BufferedImage resize(BufferedImage image, int width, int height) {
 	    BufferedImage bi = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);

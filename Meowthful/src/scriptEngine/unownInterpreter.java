@@ -3,6 +3,7 @@ package scriptEngine;
 import gameElements.Attack;
 import gameElements.Player;
 import gameElements.Pokemon;
+import gameElements.Types.Type;
 import gameEngine.AI;
 import gameEngine.BattleCache;
 import gameEngine.BattleManager;
@@ -44,6 +45,7 @@ public class unownInterpreter {
 	BattleCache bc=new BattleCache();
 	Renderer graphics=null;
 	Random r;
+	boolean invalid;
 	
 	ArrayList <scriptFunction> subFunctions = new ArrayList <scriptFunction>();
 	ArrayList <PersonalFunction> winActivators = new ArrayList <PersonalFunction>();
@@ -171,10 +173,12 @@ public class unownInterpreter {
 		
 		graphics.battle.repaint();
 		
+		interpret("dialogue "+player.name + " sends out " + pkmn.name);
 		System.out.println(player.name + " sends out " + pkmn.name);
 		
 		graphics.battle.setUserPokemon(bc.p1Active);
-		graphics.battle.setUserPokemon(bc.p2Active);
+		graphics.battle.setOpponentPokemon(bc.p2Active);
+		graphics.battle.repaint();
 		
 		}
 		else {
@@ -196,6 +200,9 @@ public class unownInterpreter {
 			return false;
 		}
 		
+		Player p1=null;
+		Player p2=null;
+		
 		switch (psize)
 		{
 		case 2:
@@ -205,8 +212,8 @@ public class unownInterpreter {
 				return false;
 			}
 			
-			Player p1 = g.getPlayer(Integer.parseInt(p.params.get(0)));
-			Player p2 = g.getPlayer(Integer.parseInt(p.params.get(1)));
+			p1 = g.getPlayer(Integer.parseInt(p.params.get(0)));
+			p2 = g.getPlayer(Integer.parseInt(p.params.get(1)));
 			
 			if (p1==null || p2==null)
 			{
@@ -262,6 +269,29 @@ public class unownInterpreter {
 		
 		graphics.switchFrame(Renderer.BATTLE_FRAME);
 		
+		switch(p2.rank)
+		{
+		case 0:
+			interpret("dialogue Grunt "+p2.name+" wants to battle");
+			break;
+		case 1:
+			interpret("dialogue Private "+p2.name+" wants to battle");
+			break;
+		case 2:
+			interpret("dialogue General "+p2.name+" wants to battle");
+			break;
+		case 3:
+			interpret("dialogue Executive "+p2.name+" wants to battle");
+			break;
+		case 4:
+			interpret("dialogue Admin "+p2.name+" wants to battle");
+			break;
+		case 5:
+			interpret("dialogue Leader "+p2.name+" demands to battle");
+			break;
+		}
+			
+		
 		return true;
 	}
 	
@@ -278,8 +308,34 @@ public class unownInterpreter {
 		
 		if (winner.id!=0)
 		{
+			switch(winner.rank)
+			{
+			case 0:
+				interpret("dialogue "+winner.id+" Grunt "+winner.name+" has won the battle");
+				break;
+			case 1:
+				interpret("dialogue "+winner.id+" Private "+winner.name+" has won the battle");
+				break;
+			case 2:
+				interpret("dialogue "+winner.id+" General "+winner.name+" has won the battle");
+				break;
+			case 3:
+				interpret("dialogue "+winner.id+" Executive "+winner.name+" has won the battle");
+				break;
+			case 4:
+				interpret("dialogue "+winner.id+" Admin "+winner.name+" has won the battle");
+				break;
+			case 5:
+				interpret("dialogue "+winner.id+" Leader "+winner.name+" has won the battle");
+				break;
+			}
 			interpret("successSpeech "+winner.id);
 			for (Pokemon p: winner.party)
+			{
+				p.restoreStats();
+				p.levelUp();
+			}
+			for (Pokemon p: loser.party)
 			{
 				p.restoreStats();
 				p.levelUp();
@@ -288,7 +344,31 @@ public class unownInterpreter {
 		}
 		else
 		{
-			interpret("failureSpeech "+winner.id);
+			interpret("failureSpeech "+loser.id);
+			switch(loser.rank)
+			{
+			case 0:
+				interpret("dialogue "+winner.id+" Grunt "+loser.name+"has lost the battle");
+				break;
+			case 1:
+				interpret("dialogue "+winner.id+" Private "+loser.name+"has lost the battle");
+				break;
+			case 2:
+				interpret("dialogue "+winner.id+" General "+loser.name+"has lost the battle");
+				break;
+			case 3:
+				interpret("dialogue "+winner.id+" Executive "+loser.name+"has lost the battle");
+				break;
+			case 4:
+				interpret("dialogue "+winner.id+" Admin "+loser.name+"has won lost battle");
+				break;
+			case 5:
+				interpret("dialogue "+winner.id+" Leader "+loser.name+"has has been defeated");
+				break;
+			}
+			
+			loser.coolDownTime=loser.coolDown;
+			
 			for (Pokemon p: winner.party)
 			{
 				p.restoreStats();
@@ -323,18 +403,49 @@ public class unownInterpreter {
 		
 		for (int i=0; i<subFunctions.size(); i++)
 		{
+			if (subFunctions.size()==0)
+				return;
 			try {
+				if (subFunctions.size()==0)
+					return;
 				if (subFunctions.get(i).eventNumber==Integer.parseInt(p.params.get(0)))
 				{
 					for (int x=0; x<subFunctions.get(i).mapScript.size(); x++)
-						execute(subFunctions.get(i).mapScript.get(x));
+						if (subFunctions.get(i).mapScript.get(x).code.value==CommandCodes.ifCondition)
+						{
+							String concat = new String("if");
+							for (String s: subFunctions.get(i).mapScript.get(x).params)
+								concat= new String(concat+" "+s);
+							interpret(concat);
+						}
+						else 
+							execute(subFunctions.get(i).mapScript.get(x));
 				}
 			}catch (NumberFormatException e)
 			{
 				if (subFunctions.get(i).title.equals(p.params.get(0)))
-					for (int x=0; x<subFunctions.get(i).mapScript.size(); x++)
-						execute(subFunctions.get(i).mapScript.get(x));
-			}
+					try{
+						for (int x=0; x<subFunctions.get(i).mapScript.size(); x++)
+							if (subFunctions.get(i).mapScript.get(x).code.value==CommandCodes.ifCondition)
+							{
+								String concat = new String("if");
+								for (String s: subFunctions.get(i).mapScript.get(x).params)
+									concat= new String(" "+s);
+								interpret(concat);
+								if (subFunctions.size()==0)
+									return;
+							}
+							else
+							execute(subFunctions.get(i).mapScript.get(x));
+					}catch (IndexOutOfBoundsException e1)
+				{
+						return;
+				}
+					
+			}catch (IndexOutOfBoundsException e1)
+			{
+				return;
+		} 
 			
 		}
 	}
@@ -435,6 +546,9 @@ public class unownInterpreter {
 			return;
 		}
 		
+		subFunctions.clear();
+		winActivators.clear();
+		
 		//set map
 		graphics.panel.swapMap(g.getPlayer(0), world,posx,posy,orientation);
 		
@@ -522,7 +636,20 @@ public class unownInterpreter {
 				scriptFunction sf = subFunctions.get(x);
 				for (int y=0; y<sf.mapScript.size(); y++)
 				{
-					execute(sf.mapScript.get(y));
+					if (sf.mapScript.get(y).code.value==CommandCodes.ifCondition)
+					{
+						String concat = new String("if");
+						try
+						{
+						for (String s: sf.mapScript.get(y).params)
+							concat= new String(concat+" "+s);
+						interpret(concat);
+						}catch(IndexOutOfBoundsException e)
+						{
+							return;
+						}
+					}else
+						execute(sf.mapScript.get(y));
 				}
 				return;
 			}
@@ -530,6 +657,112 @@ public class unownInterpreter {
 		reportError("Error: Specified event not available",p.raw);
 	}
 	
+	private void givePokemon(Packet p)
+	{
+		if (p.params.size()!=2)
+		{
+			reportError("Error: Parameters are [Player id] [Pokemon name]",p.raw);
+			return;
+		}
+		
+		Player player = g.getPlayer(Integer.parseInt(p.params.get(0)));
+		if (player.party.size()>5)
+		{
+			reportError("Error: Party already full",p.raw);
+			return;
+		}
+		
+		Pokemon pk = g.getPokemon(p.params.get(1));
+		ArrayList <Attack> alist = new ArrayList <Attack>();
+		
+		if (pk==null)
+		{
+			reportError("Error: Pokemon not valid",p.raw);
+		}
+		
+		if (pk.getType()==Type.getType(0))
+		{
+			Attack atk = new Attack("tackle",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("pound",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("headbutt",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			pk.setAttackList(alist);
+		}
+		
+		if (pk.getType()==Type.getType(9))
+		{
+			Attack atk = new Attack("thunder",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("pound",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("thunder punch",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			pk.setAttackList(alist);
+		}
+		if (pk.getType()==Type.getType(8))
+		{
+			Attack atk = new Attack("ember",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("fire punch",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("fire blast",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			pk.setAttackList(alist);
+		}
+		if (pk.getType()==Type.getType(6))
+		{
+			Attack atk = new Attack("razor leaf",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("solar beam",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("tackle",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			pk.setAttackList(alist);
+		}
+		if (pk.getType()==Type.getType(11))
+		{	
+			Attack atk = new Attack("psychic",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("pound",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("psybeam",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			pk.setAttackList(alist);
+		}
+		if (pk.getType()==Type.getType(14))
+		{
+			Attack atk = new Attack("tackle",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("earthquake",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			atk = new Attack("horn drill",g);
+			atk.setCurrentPP(Integer.parseInt("30"));
+			alist.add(atk);
+			pk.setAttackList(alist);
+		}
+		
+		interpret("dialogue "+player.id +" recieved "+pk.name);
+		player.AddPokemon(pk);
+	}
 	private void interact(Packet p)
 	{
 		//id, event type
@@ -560,6 +793,7 @@ public class unownInterpreter {
 		}
 		
 		System.out.println(pl.baseDialogue);
+		interpret("dialogue "+pl.id+" "+pl.baseDialogue);
 	}
 	
 	private void idleSpeech (Packet p)
@@ -577,7 +811,7 @@ public class unownInterpreter {
 			reportError("Error: No Dialogue Set",p.raw);
 			return;
 		}
-		
+		interpret("dialogue "+pl.id+" "+pl.idleDialogue);
 		System.out.println(pl.idleDialogue);
 	}
 	
@@ -596,7 +830,7 @@ public class unownInterpreter {
 			reportError("Error: No Dialogue Set",p.raw);
 			return;
 		}
-		
+		interpret("dialogue "+pl.id+" "+pl.failureDialogue);
 		System.out.println(pl.failureDialogue);
 	}
 	
@@ -615,8 +849,40 @@ public class unownInterpreter {
 			reportError("Error: No Dialogue Set",p.raw);
 			return;
 		}
-		
+		interpret("dialogue "+pl.id+" "+pl.successDialogue);
 		System.out.println(pl.successDialogue);
+	}
+	
+	private void dialogue(Packet p)
+	{
+		int mode = graphics.getMode();
+		
+		if (mode==graphics.WORLD_FRAME)
+		{
+			if (p.params.size()<2)
+			{
+				reportError("Error: Must have parameters [player id] [text]",p.raw);
+				return;
+			}
+			
+			Player actor = g.getPlayer(Integer.parseInt(p.params.get(0)));
+			
+			String s=new String();
+			
+			for (int i=1; i<p.params.size(); i++)
+				s=new String(s+" "+p.params.get(i));
+			
+			graphics.panel.dialogueBox(actor, s);
+		}else if (mode==graphics.BATTLE_FRAME)
+		{
+			String s = new String();
+			for (int i=1; i<p.params.size(); i++)
+				s=new String(s+" "+p.params.get(i));
+			graphics.battle.setDialogue(s);
+		}else
+		{
+			reportError("Error: Must be in battle or world",p.raw);
+		}
 	}
 	
 	private void placeActor (Packet p)
@@ -848,6 +1114,8 @@ public class unownInterpreter {
 		bm.resetWinner();
 		bm.executeRound(pk1, pk2, a1, a2);
 		
+		interpret("dialogue "+pk1.name+" used "+a1.name+"\n"+pk2.name+" used "+a1.name);
+		
 		graphics.battle.setPokeHealthPercentage(1, pk1.getHealth()/(double)pk1.getBaseHealth());
 		graphics.battle.setPokeHealthPercentage(2, pk2.getHealth()/(double)pk2.getBaseHealth());
 		
@@ -862,18 +1130,21 @@ public class unownInterpreter {
 			{
 				pk1.increaseEXP((int)(pk2.getLevel()*9.5)/7);
 				System.out.println(bc.p2.name+"'s "+pk2.name+" fainted\n"+bc.p1.name+"'s "+pk1.name+" is the winner.");
+				interpret("dialogue "+bc.p2.name+"'s "+pk2.name+" fainted\n"+bc.p1.name+"'s "+pk1.name+" is the winner.");
 				System.out.println("Player gained "+(int)((pk2.getLevel()*9.5)/7)+" exp");
+				interpret("dialogue "+"Player gained "+(int)((pk2.getLevel()*9.5)/7)+" exp");
 				if (!bc.p2.hasReadyPokemon())
 				{
 					System.out.println(bc.p2.name+" is out of pokemon");
+					bc.p2.coolDownTime=bc.p2.coolDown;
 					declareWinner(bc.p1,bc.p2);
-					bc.p2.coolDown=bc.p2.coolDownTime;
 					bc.endSession(bc.p1.name);
 					graphics.switchFrame(graphics.WORLD_FRAME);
 					return true;
 				}else
 				{
 					System.out.println("Choose next pokemon");
+					interpret("dialogue Choose next pokemon");
 					for (int x=0; x<bc.p2.party.size();x++)
 						if (!bc.p2.party.get(x).isKO())
 							System.out.println(bc.p2.party.get(x).name+"\t"+x);
@@ -882,11 +1153,15 @@ public class unownInterpreter {
 			}else
 			{
 				pk2.increaseEXP((int)(pk1.getLevel()*9.5)/7);
+				interpret("dialogue "+bc.p1.name+"'s "+pk1.name+" fainted\n"+bc.p2.name+"'s "+pk2.name+" is the winner.");
 				System.out.println(bc.p1.name+"'s "+pk1.name+" fainted\n"+bc.p2.name+"'s "+pk2.name+" is the winner.");
 				System.out.println("Opponent gained "+(int)((pk2.getLevel()*9.5)/7)+" exp");
+				interpret("dialogue "+"Opponent gained "+(int)((pk2.getLevel()*9.5)/7)+" exp");
 				if (!bc.p1.hasReadyPokemon())
 				{
 					System.out.println(bc.p1.name+" is out of pokemon.");
+					interpret("dialogue "+bc.p1.name+" is out of pokemon.");
+					
 					declareWinner(bc.p2,bc.p1);
 					bc.endSession(bc.p2.name);
 					graphics.switchFrame(graphics.WORLD_FRAME);
@@ -905,7 +1180,7 @@ public class unownInterpreter {
 		return true;
 	}
 	
-	public void loadScript(String fName) throws IOException
+	private void loadScript(String fName) throws IOException
 	{
 		File file = new File(fName);
 		BufferedReader br = new BufferedReader(new FileReader(file));
@@ -960,12 +1235,13 @@ public class unownInterpreter {
 					param = Integer.toString(bc.p1Active.id);
 				break;
 			case '#'://variable
+				if (subParse)
+					continue;
 				int index = system.variables.indexOf(check);
 				if (index==-1)
 				{
 					param="";
-					reportError("Error: symbol undefined",p.raw);
-					return;
+					reportError("Warning: symbol undefined",p.raw);
 				}
 				else
 					param=system.values.get(index);
@@ -982,6 +1258,7 @@ public class unownInterpreter {
 		
 		execute(p);
 	}
+
 	
 	//distribute or execute messages
 	public void execute(Packet p)
@@ -1054,8 +1331,14 @@ public class unownInterpreter {
 		case CommandCodes.successSpeech:
 			successSpeech(p);
 			break;
+		case CommandCodes.dialogue:
+			dialogue(p);
+			break;
 		case CommandCodes.battleWin:
 			battleWin(p);
+			break;
+		case CommandCodes.givePokemon:
+			givePokemon(p);
 			break;
 			
 			//File Sys

@@ -9,10 +9,15 @@ setSpeech success 3 The flowers bring me luck!
 setSpeech fail 3 Oh! Down and out!
 setSpeech idle 3 I don't care what the others say, this island is beautiful.
 
-startProcedure 0 moveMap
-swapMap maps/Island2Exterior.WORLD 7 13 0
+startProcedure -1 island2Telo
+swapMap maps/Island2Exterior.WORLD 7 12 1
 endProcedure
 
-startProcedure 1 moveMap2
-subProc 0
+startProcedure 0 exit
+if #islandKey = 1 island2Telo
+if #islandKey = 3 island2Telo
+endProcedure
+
+startProcedure 1 exit1
+event 0
 endProcedure

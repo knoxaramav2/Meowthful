@@ -298,7 +298,7 @@ public class Pokemon {
 	
 	public void setAttackList(ArrayList <Attack> atL)
 	{
-		attacks = atL;
+		attacks = new ArrayList <Attack>(atL);
 	}
 	
 	public boolean isKO()
@@ -385,6 +385,11 @@ public class Pokemon {
 	public void generateAtLevel(String name, int level, Pokemon p)
 	{
 		
+	}
+	
+	public void addAttack(Attack a)
+	{
+		attacks.add(a);
 	}
 	
 	public void restoreCondition()

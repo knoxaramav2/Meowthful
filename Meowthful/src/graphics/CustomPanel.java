@@ -439,7 +439,7 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 	    return bi;
 	}	
 
-	private void dialogueBox(Player talkedTo, String text){
+	public void dialogueBox(Player talkedTo, String text){
 		canMove = false;
 		Font font = new Font("Comic Sans MS", Font.BOLD, 30);
 		int y = 0;
