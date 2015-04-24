@@ -44,40 +44,70 @@ import java.io.*;
 import javax.sound.sampled.*;
 
 public class BackgroundMusicPlayer{
-	private Clip clip;
+	private Clip extClip;
+	private Clip batClip;
+	private Clip menClip;
 	private AudioInputStream exterior;
 	private AudioInputStream battle;
 	private AudioInputStream menu;
-	private AudioInputStream curStream;
 	private AudioFormat format;
 	private DataLine.Info info;
+	private int playingClip;
 	
 	public BackgroundMusicPlayer() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
 		exterior = AudioSystem.getAudioInputStream(new File("music/IslandExterior.wav"));
 		battle = AudioSystem.getAudioInputStream(new File("music/Battle.wav"));
 		menu = AudioSystem.getAudioInputStream(new File("music/Mainmenu.wav"));
-		curStream = menu;
-		format = curStream.getFormat();
+		
+		format = menu.getFormat();
 		info = new DataLine.Info(Clip.class, format);
-		clip = (Clip) AudioSystem.getLine(info);
-		clip.open(curStream);
-		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		menClip = (Clip) AudioSystem.getLine(info);
+		menClip.open(menu);
+		
+		format = exterior.getFormat();
+		info = new DataLine.Info(Clip.class, format);
+		extClip = (Clip) AudioSystem.getLine(info);
+		extClip.open(exterior);
+		
+		format = battle.getFormat();
+		info = new DataLine.Info(Clip.class, format);
+		batClip = (Clip) AudioSystem.getLine(info);
+		batClip.open(battle);
+		
+		menClip.loop(Clip.LOOP_CONTINUOUSLY);
+		playingClip = 1;
 	}
 	
 	public void playTrack(String track) throws LineUnavailableException, IOException{
-		clip.stop();
+		switch(playingClip){
+		case 1:
+			menClip.stop();
+			menClip.setFramePosition(0);
+			break;
+			
+		case 2:
+			extClip.stop();
+			extClip.setFramePosition(0);
+			break;
+			
+		case 3:
+			batClip.stop();
+			batClip.setFramePosition(0);
+			break;
+		}
 		
-		if(track.equalsIgnoreCase("menu")) curStream = menu;
-		else if(track.equalsIgnoreCase("exterior")) curStream = exterior;
-		else if(track.equalsIgnoreCase("battle")) curStream = battle;
-		else curStream = null;
-		
-		if(curStream != null){
-			format = curStream.getFormat();
-			info = new DataLine.Info(Clip.class, format);
-			clip = (Clip) AudioSystem.getLine(info);
-			clip.open(curStream);
-			clip.loop(Clip.LOOP_CONTINUOUSLY);			
+		if(track.equalsIgnoreCase("menu")){
+			System.out.println("menu music");
+			menClip.loop(Clip.LOOP_CONTINUOUSLY);	
+			playingClip = 1;
+		}else if(track.equalsIgnoreCase("exterior")){
+			System.out.println("outside music");
+			extClip.loop(Clip.LOOP_CONTINUOUSLY);			
+			playingClip = 2;
+		}else if(track.equalsIgnoreCase("battle")){
+			System.out.println("battle music");
+			batClip.loop(Clip.LOOP_CONTINUOUSLY);			
+			playingClip = 3;
 		}
 	}
 }
