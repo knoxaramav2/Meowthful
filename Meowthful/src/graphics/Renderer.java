@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -63,11 +64,6 @@ public class Renderer extends JPanel implements ActionListener{
 	{
 		super (new GridBagLayout());
 		
-		try{
-			audio = new BackgroundMusicPlayer();
-		}catch(IOException e){
-			e.printStackTrace();
-		}
 		
 		base = new JPanel();
 		deck = new CardLayout();
@@ -115,10 +111,11 @@ public class Renderer extends JPanel implements ActionListener{
 		panel.console.appendText(text);
 	}
 	
-	public void createAndShowGUI(unownInterpreter ui, gameGlobal Gg) throws IOException {
+	public void createAndShowGUI(unownInterpreter ui, gameGlobal Gg, BackgroundMusicPlayer audio) throws IOException {
 		// Create and set up the window.
 		BufferedImage[] player = new BufferedImage[1];
 		this.ui=ui;
+		this.audio = audio;
 		//player[0] = ImageIO.read(new File("src/gameFiles/singlePerson.png"));
 		ArrayList<Player> players = new ArrayList<Player>();
 		for(int i = 0; i < Gg.getPlayerCount(); i++){
@@ -128,7 +125,7 @@ public class Renderer extends JPanel implements ActionListener{
 				
 		gameElements.Map map = new gameElements.Map("maps/Island1Exterior.WORLD");
 		master = new JFrame("Meowthful");
-		panel = new CustomPanel(map, Gg.getSpriteSheets(), ui);
+		panel = new CustomPanel(map, Gg.getSpriteSheets(), ui, audio);
 		panel.setConsole(ui);
 		
 		battle = new BattlePanel(ui);
@@ -171,7 +168,12 @@ public class Renderer extends JPanel implements ActionListener{
 		{
 		case WORLD_FRAME:
 			deck.show(base, "world");
-			audio.playTrack("exterior");
+			try {
+				audio.playTrack("exterior");
+			} catch (LineUnavailableException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println("Switched to world");
 			if (panel.requestFocusInWindow())
 				System.out.println("Success");
@@ -180,7 +182,12 @@ public class Renderer extends JPanel implements ActionListener{
 			break;
 		case MENU_FRAME:
 			deck.show(base, "menu");
-			audio.playTrack("menu");
+			try {
+				audio.playTrack("menu");
+			} catch (LineUnavailableException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println("Switched to menu");
 			if (menu.requestFocusInWindow())
 				System.out.println("Success");
@@ -189,7 +196,12 @@ public class Renderer extends JPanel implements ActionListener{
 			break;
 		case BATTLE_FRAME:
 			deck.show(base, "battle");
-			audio.playTrack("battle");
+			try {
+				audio.playTrack("battle");
+			} catch (LineUnavailableException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println("Switched to battle");
 			if (battle.requestFocusInWindow())
 				System.out.println("Success");
