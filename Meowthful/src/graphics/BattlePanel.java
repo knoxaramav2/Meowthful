@@ -63,7 +63,7 @@ public class BattlePanel extends JPanel{
 		setLayout(null);
 		
 		bcp = new BattleChoicePanel();
-		bcp.setLocation(bg.getWidth() - healthBar.getWidth()-10, bg.getHeight() - 120);
+		bcp.setLocation(WIDTH - healthBar.getWidth()-10, HEIGHT - 120);
 		bcp.setSize(healthBar.getWidth() + 10, 120);
 		add(bcp);
 	}

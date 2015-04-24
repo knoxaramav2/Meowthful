@@ -226,8 +226,16 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 			int por=p.orientation;
 			if (p.getProximal(pl)==p.orientation)
 			{
-				sop("Interaction > "+pl.id);
-				ui.interpret("interact "+pl.id+" baseSpeech");
+				if (pl.trainer && pl.coolDownTime==0)
+				{
+					ui.interpret("interact "+pl.id+" baseSpeech");
+					ui.interpret("startBattle 0 "+pl.id);
+				}else if (pl.trainer && pl.coolDownTime>0)
+				{
+					ui.interpret("interact "+pl.id+" idleSpeech");
+				}
+				
+				sop("Interaction > "+pl.id);	
 			}
 		}
 	}
@@ -247,10 +255,41 @@ public class CustomPanel extends JPanel implements KeyListener, ActionListener{
 				if (p.id==0)
 					p.sprite = resize(sprites.getPlayerSprite(Sprites.forward_idle, "player"), WIDTH, HEIGHT);			
 			break;
+		case 3:
+			for (Player p: actors)
+				if (p.id==0)
+					p.sprite = resize(sprites.getPlayerSprite(Sprites.left_idle, "player"), WIDTH, HEIGHT);
+			break;
+			
+		case 4:
+			for (Player p: actors)
+				if (p.id==0)
+					p.sprite = resize(sprites.getPlayerSprite(Sprites.right_idle, "player"), WIDTH, HEIGHT);			
+			break;
 		}
 		mapClass = new Map(mc.getNewMapPath(mapClass.getMapFileName(), teleporterID));
 		map = mapClass.getMap();
+		Player p = getActor(0);
 		actors.clear();
+		actors.add(p);
+	}
+	
+	public void swapMap(Player p, String newMap, int xCoord,int yCoord, int direction)
+	{
+		p.setCellX(xCoord);
+		p.setCellY(yCoord);
+		p.orientation=direction;
+		
+		try {
+			mapClass = new Map(newMap);
+		} catch (IOException e) {
+			System.out.println("Error: File "+newMap+" not found");
+			e.printStackTrace();
+		}
+		map = mapClass.getMap();
+		actors.clear();
+		
+		actors.add(p);
 	}
 	
 	public void addActor(Player p) {

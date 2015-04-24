@@ -406,7 +406,7 @@ public class Pokemon {
 	{
 		currentHealth = baseHealth;
 
-		currentSpeed = baseSpeed;;
+		currentSpeed = baseSpeed;
 
 		currentEvasiveness = baseEvasiveness;
 
@@ -420,6 +420,8 @@ public class Pokemon {
 
 		explicitStatus = Types.ExplicitStatus.none;
 		implicitStatus = Types.ImplicitStatus.none;		
+		
+		restoreAllPP();
 	}
 	
 	public void restoreHealth()

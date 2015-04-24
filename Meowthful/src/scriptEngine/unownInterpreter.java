@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import system.data;
 
@@ -35,6 +36,7 @@ public class unownInterpreter {
 	data system = null;
 	BattleCache bc=new BattleCache();
 	Renderer graphics=null;
+	Random r;
 	
 	ArrayList <scriptFunction> subFunctions = new ArrayList <scriptFunction>();
 	scriptFunction temp = null;
@@ -203,6 +205,11 @@ public class unownInterpreter {
 			
 			bc.startSession(p1, p2);
 			
+			graphics.battle.setParty(p1.party);
+			graphics.battle.setUserPokemon(p1.party.get(0));
+			graphics.battle.setOpponentPokemon(p2.party.get(0));
+			graphics.battle.setPokeHealthPercentage(1, bc.p1Active.getHealth()/(double)bc.p1Active.getBaseHealth());
+			graphics.battle.setPokeHealthPercentage(2, bc.p2Active.getHealth()/(double)bc.p2Active.getBaseHealth());
 			break;
 		case 3:
 			if (!Utility.isInteger(p.params.get(0)) || Utility.isInteger(p.params.get(1)) || !Utility.isInteger(p.params.get(2)))
@@ -220,6 +227,10 @@ public class unownInterpreter {
 			break;
 		}
 		
+		graphics.battle.setMap(1);
+		
+		graphics.switchFrame(Renderer.BATTLE_FRAME);
+		
 		return true;
 	}
 	
@@ -230,6 +241,29 @@ public class unownInterpreter {
 			exchange=loser.money;
 		loser.money-=exchange;
 		winner.money+=exchange;
+		loser.coolDownTime=loser.coolDown;
+		
+		if (winner.id!=0)
+		{
+			interpret("successSpeech "+winner.id);
+			for (Pokemon p: winner.party)
+			{
+				p.restoreStats();
+				p.levelUp();
+			}
+				
+		}
+		else
+		{
+			interpret("failureSpeech "+winner.id);
+			for (Pokemon p: winner.party)
+			{
+				p.restoreStats();
+				p.levelUp();
+			}
+				
+		}
+			
 		
 		System.out.println(winner.name + " won $"+exchange);
 	}
@@ -248,11 +282,21 @@ public class unownInterpreter {
 			return;
 		}
 		
-		for (int i=0; i>subFunctions.size(); i++)
+		for (int i=0; i<subFunctions.size(); i++)
 		{
-			if (subFunctions.get(i).title==p.params.get(0) || subFunctions.get(i).eventNumber==Integer.parseInt(p.params.get(0)))
-				for (int x=0; x<subFunctions.get(i).mapScript.size(); x++)
-					execute(subFunctions.get(i).mapScript.get(x));
+			try {
+				if (subFunctions.get(i).eventNumber==Integer.parseInt(p.params.get(0)))
+				{
+					for (int x=0; x<subFunctions.get(i).mapScript.size(); x++)
+						execute(subFunctions.get(i).mapScript.get(x));
+				}
+			}catch (NumberFormatException e)
+			{
+				if (subFunctions.get(i).title.equals(p.params.get(0)))
+					for (int x=0; x<subFunctions.get(i).mapScript.size(); x++)
+						execute(subFunctions.get(i).mapScript.get(x));
+			}
+			
 		}
 	}
 	
@@ -270,17 +314,30 @@ public class unownInterpreter {
 			return;
 		}
 		
-		if (p.params.get(1).equals("<"))
-			if (Integer.parseInt(p.params.get(0)) < Integer.parseInt(p.params.get(2)))
-				interpret("subProc "+p.params.get(3));
+		if (!(p.params.get(0)==null || p.params.get(2)==null))
+		{
+			if (p.params.get(1).equals("<"))
+				if (Integer.parseInt(p.params.get(0)) < Integer.parseInt(p.params.get(2)))
+					interpret("subProc "+p.params.get(3));
+			
+			if (p.params.get(1).equals(">"))
+				if (Integer.parseInt(p.params.get(0)) > Integer.parseInt(p.params.get(2)))
+					interpret("subProc "+p.params.get(3));
+			
+			if (p.params.get(1).equals("="))
+				if (p.params.get(0).equals(p.params.get(2)))
+					interpret("subProc "+p.params.get(3));
+		}
 		
-		if (p.params.get(1).equals(">"))
-			if (Integer.parseInt(p.params.get(0)) > Integer.parseInt(p.params.get(2)))
+		if (p.params.get(1).equals("!"))
+		{
+			if(p.params.get(0)==null ^ p.params.get(2)==null)
+			{
 				interpret("subProc "+p.params.get(3));
-		
-		if (p.params.get(1).equals("="))
-			if (p.params.get(0).equals(p.params.get(2)))
+			}
+			else if(!(p.params.get(0).equals(p.params.get(2))))
 				interpret("subProc "+p.params.get(3));
+		}
 	}
 	
 	//file system
@@ -311,9 +368,41 @@ public class unownInterpreter {
 		//load map script
 		String scpt = p.params.get(0).split("\\.")[0]+".scpt";
 		interpret("loadScript "+scpt);
-		graphics.panel.addActor(g.getPlayer(0));
+		
+		graphics.battle.setMap(1);
 		
 		return true;
+	}
+	
+	private void swapMap(Packet p)
+	{
+		
+		if (p.params.size()!=4)
+		{
+			reportError("Error: Must have 4 parameters (Map.WORLD, posx, posy, orientation)",p.raw);
+			return;
+		}
+		
+		String world=p.params.get(0);
+		int posx=0, posy=0, orientation;
+		try{
+			posx=Integer.parseInt(p.params.get(1));
+			posy=Integer.parseInt(p.params.get(2));
+			orientation=Integer.parseInt(p.params.get(1));
+		}catch (NumberFormatException e)
+		{
+			reportError("Error: Parameters 2,3,4 must be integers",p.raw);
+			return;
+		}
+		
+		//set map
+		graphics.panel.swapMap(g.getPlayer(0), world,posx,posy,orientation);
+		
+		//load map script
+		String scpt = world.split("\\.")[0]+".scpt";
+		interpret("loadScript "+scpt);
+		
+		graphics.battle.setMap(1);
 	}
 	
 	private void loadScript(Packet p)
@@ -355,6 +444,7 @@ public class unownInterpreter {
 		if (p.params.size()!=2)
 		{
 			reportError("Error: Must specify event code and function title",p.raw);
+			return;
 		}
 		
 		int id = Integer.parseInt(p.params.get(0));
@@ -369,6 +459,9 @@ public class unownInterpreter {
 	
 	private void endProcedure(Packet p)
 	{
+		if (p.params.size()!=0)
+			reportError("Warning: Function takes no parameters",p.raw);
+		
 		subParse=false;
 		subFunctions.add(temp);
 		temp=null;
@@ -588,6 +681,16 @@ public class unownInterpreter {
 		graphics.switchFrame(Renderer.NEW_FRAME);
 	}
 	
+	private void battleDialogue(Packet p)
+	{
+		if (p.params.size()!=0)
+		{
+			reportError("Error: Function has no parameters",p.raw);
+		}
+		
+		graphics.switchFrame(Renderer.BATTLE_FRAME);
+	}
+	
 	private void setWindow(Packet p)
 	{
 		if (p.params.size()!=1)
@@ -733,6 +836,7 @@ public class unownInterpreter {
 		this.bm=bm;
 		this.system = d;
 		this.graphics=graphics;
+		this.r= new Random();
 	}
 	
 	public void interpret(String raw)
@@ -753,7 +857,7 @@ public class unownInterpreter {
 			String check = new String(param.substring(1, param.length()));
 			if (check.length()==0)
 				continue;
-			char c = p.params.get(0).charAt(0);
+			char c = p.params.get(x).charAt(0);
 			switch (c)
 			{
 			case '$'://special cache/register
@@ -870,6 +974,9 @@ public class unownInterpreter {
 				e.printStackTrace();
 			}
 			break;
+		case CommandCodes.swapMap:
+			swapMap(p);
+			break;
 		case CommandCodes.loadScript:
 			loadScript(p);
 			break;
@@ -896,6 +1003,9 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.newGameDialogue:
 			newGameDialogue(p);
+			break;
+		case CommandCodes.battleDialogue:
+			battleDialogue(p);
 			break;
 		case CommandCodes.setWindow:
 			setWindow(p);

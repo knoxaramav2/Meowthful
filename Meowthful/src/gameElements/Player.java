@@ -32,6 +32,7 @@ public class Player extends AI{
 	public boolean trainer;
 	public int AI;
 	public int coolDown;
+	public int coolDownTime;
 	
 	public String baseDialogue;//pre-event speech
 	public String successDialogue;//succesful/ option 1 speech
@@ -47,6 +48,7 @@ public class Player extends AI{
 		spriteDB=sDb;
 		movePos=0;
 		nextPos=0;
+		coolDownTime=0;
 		moveSwitch = new boolean [] {false, false, false, false};
 		// Parse from line into base
 		String list[] = params.split(",");
@@ -218,6 +220,7 @@ public class Player extends AI{
 		this.trainer = origin.trainer;
 		this.AI= origin.AI;
 		this.coolDown=origin.coolDown;
+		this.coolDownTime=origin.coolDownTime;
 		
 		this.id=origin.id;
 		

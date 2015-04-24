@@ -8,3 +8,11 @@ setSpeech base 3 Do you like the flowers? I planted them myself!
 setSpeech success 3 The flowers bring me luck!
 setSpeech fail 3 Oh! Down and out!
 setSpeech idle 3 I don't care what the others say, this island is beautiful.
+
+startProcedure 0 moveMap
+swapMap maps/Island2Exterior.WORLD 7 13 0
+endProcedure
+
+startProcedure 1 moveMap2
+subProc 0
+endProcedure

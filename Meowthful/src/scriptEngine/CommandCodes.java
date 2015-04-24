@@ -59,6 +59,7 @@ public class CommandCodes{
 	public final static int getCache		= 1950242252;
 	public final static int newGameDialogue	= -1664350806;
 	public final static int loadGameDialogue= -452958224;
+	public final static int battleDialogue  = 1318213296;
 	public final static int setWindow		= 693646066;
 	
 	public final static int teleport		= -1360201941;
@@ -77,6 +78,7 @@ public class CommandCodes{
 	public final static int successSpeech	= 913565381;
 	public final static int ifCondition		= 3357;//command just 'if'
 	public final static int subProc			= -1868646986;
+	public final static int swapMap			= -1811394871;
 	
 	@SuppressWarnings("unused")
 	private int type;

@@ -125,7 +125,7 @@ public class Renderer extends JPanel implements ActionListener{
 		panel = new CustomPanel(map, Gg.getSpriteSheets(), ui);
 		panel.setConsole(ui);
 		
-		battle = new BattlePanel(6);
+		battle = new BattlePanel(ui);
 		
 		menu = new MainMenuPanel(ui);
 		loadGame = new LoadGamePanel(ui);
