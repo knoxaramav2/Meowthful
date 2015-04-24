@@ -125,7 +125,7 @@ public class Renderer extends JPanel implements ActionListener{
 				
 		gameElements.Map map = new gameElements.Map("maps/Island1Exterior.WORLD");
 		master = new JFrame("Meowthful");
-		panel = new CustomPanel(map, Gg.getSpriteSheets(), ui, audio);
+		panel = new CustomPanel(map, Gg.getSpriteSheets(), ui);
 		panel.setConsole(ui);
 		
 		battle = new BattlePanel(ui);

@@ -97,7 +97,7 @@ public class BattleChoicePanel extends JPanel implements ActionListener{
 			for(int i = 0; i < party.length; i++){
 				if(e.getSource() == party[i]){
 					String s = new String(party[i].getActionCommand());
-					ui.interpret("swapParty "+party[i].getActionCommand());
+					ui.interpret("swapParty "+"0 "+party[i].getActionCommand());
 					return;
 				}
 			}

@@ -79,6 +79,7 @@ public class CommandCodes{
 	public final static int ifCondition		= 3357;//command just 'if'
 	public final static int subProc			= -1868646986;
 	public final static int swapMap			= -1811394871;
+	public final static int battleWin		= -487938044;
 	
 	@SuppressWarnings("unused")
 	private int type;

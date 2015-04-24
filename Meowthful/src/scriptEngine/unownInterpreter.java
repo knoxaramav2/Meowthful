@@ -28,6 +28,12 @@ class scriptFunction
 	public ArrayList <Packet> mapScript = new ArrayList <Packet>();
 }
 
+class PersonalFunction
+{
+	String function=null;
+	public int id=0;
+}
+
 public class unownInterpreter {
 	
 	//connection to database
@@ -40,6 +46,7 @@ public class unownInterpreter {
 	Random r;
 	
 	ArrayList <scriptFunction> subFunctions = new ArrayList <scriptFunction>();
+	ArrayList <PersonalFunction> winActivators = new ArrayList <PersonalFunction>();
 	scriptFunction temp = null;
 	boolean subParse=false;
 	
@@ -151,9 +158,18 @@ public class unownInterpreter {
 		}
 		
 		if (player==bc.p1)
+		{
 			bc.p1Active=pkmn;
+			graphics.battle.setPokeHealthPercentage(1, (bc.p1Active.getHealth()/(double)bc.p1Active.getBaseHealth()));
+		}
 		else
+		{
 			bc.p2Active=pkmn;
+			graphics.battle.setPokeHealthPercentage(2, (bc.p2Active.getHealth()/(double)bc.p2Active.getBaseHealth()));
+		}
+			
+		
+		graphics.battle.repaint();
 		
 		System.out.println(player.name + " sends out " + pkmn.name);
 		
@@ -207,8 +223,19 @@ public class unownInterpreter {
 			bc.startSession(p1, p2);
 			
 			graphics.battle.setParty(p1.party);
-			graphics.battle.setUserPokemon(p1.party.get(0));
-			graphics.battle.setOpponentPokemon(p2.party.get(0));
+			for (Pokemon pk:p1.party)
+				if (!pk.isKO())
+				{
+					graphics.battle.setUserPokemon(p1.party.get(0));
+					break;
+				}
+					
+			for (Pokemon pk:p2.party)
+				if (!pk.isKO())
+				{
+					graphics.battle.setOpponentPokemon(p2.party.get(0));
+					break;
+				}		
 			graphics.battle.setPokeHealthPercentage(1, bc.p1Active.getHealth()/(double)bc.p1Active.getBaseHealth());
 			graphics.battle.setPokeHealthPercentage(2, bc.p2Active.getHealth()/(double)bc.p2Active.getBaseHealth());
 			break;
@@ -262,7 +289,12 @@ public class unownInterpreter {
 				p.restoreStats();
 				p.levelUp();
 			}
-				
+			
+			for (int i=0; i<winActivators.size(); i++)
+			{
+				if (winActivators.get(i).id==loser.id)
+					interpret("subProc "+winActivators.get(i).function);
+			}
 		}
 			
 		
@@ -352,6 +384,7 @@ public class unownInterpreter {
 			return false;
 		}
 		
+		winActivators.clear();
 		subFunctions.clear();
 		subParse=false;
 		temp=null;
@@ -663,6 +696,20 @@ public class unownInterpreter {
 	{
 	}
 	
+	private void battleWin(Packet p)
+	{
+		if (p.params.size()!=2)
+		{
+			reportError("Error: Must have id and function call",p.raw);
+		}
+		
+		PersonalFunction pf = new PersonalFunction();
+		pf.id=Integer.parseInt(p.params.get(0));
+		pf.function=p.params.get(1);
+		
+		winActivators.add(pf);
+	}
+	
 	private void loadGameDialogue(Packet p)
 	{
 		if (p.params.size()!=0)
@@ -809,12 +856,14 @@ public class unownInterpreter {
 			{
 				pk1.increaseEXP((int)(pk2.getLevel()*9.5)/7);
 				System.out.println(bc.p2.name+"'s "+pk2.name+" fainted\n"+bc.p1.name+"'s "+pk1.name+" is the winner.");
-				System.out.println("Opponent gained "+(pk2.getLevel()*9.5)/7+" exp");
+				System.out.println("Player gained "+(int)((pk2.getLevel()*9.5)/7)+" exp");
 				if (!bc.p2.hasReadyPokemon())
 				{
 					System.out.println(bc.p2.name+" is out of pokemon");
 					declareWinner(bc.p1,bc.p2);
+					bc.p2.coolDown=bc.p2.coolDownTime;
 					bc.endSession(bc.p1.name);
+					graphics.switchFrame(graphics.WORLD_FRAME);
 					return true;
 				}else
 				{
@@ -823,16 +872,18 @@ public class unownInterpreter {
 						if (!bc.p2.party.get(x).isKO())
 							System.out.println(bc.p2.party.get(x).name+"\t"+x);
 				}
+				interpret("swapParty "+bc.p2.id+" "+AI.switchAI(bc.p2, bc.p1, bc.p1Active, bc.p2.party).id);
 			}else
 			{
 				pk2.increaseEXP((int)(pk1.getLevel()*9.5)/7);
 				System.out.println(bc.p1.name+"'s "+pk1.name+" fainted\n"+bc.p2.name+"'s "+pk2.name+" is the winner.");
-				System.out.println("Player gained "+(pk1.getLevel()*9.5)/7+" exp");
+				System.out.println("Opponent gained "+(int)((pk2.getLevel()*9.5)/7)+" exp");
 				if (!bc.p1.hasReadyPokemon())
 				{
 					System.out.println(bc.p1.name+" is out of pokemon.");
 					declareWinner(bc.p2,bc.p1);
 					bc.endSession(bc.p2.name);
+					graphics.switchFrame(graphics.WORLD_FRAME);
 					return true;
 				}else
 				{
@@ -840,10 +891,7 @@ public class unownInterpreter {
 					for (int x=0; x<bc.p2.party.size();x++)
 						if (!bc.p2.party.get(x).isKO())
 							System.out.println(bc.p2.party.get(x).name+"\t"+x);
-					interpret("swapParty "+AI.switchAI(bc.p2, bc.p1, bc.p1Active, bc.p2.party));
 				}
-				
-				
 			}
 			bm.resetWinner();
 		}
@@ -999,6 +1047,9 @@ public class unownInterpreter {
 			break;
 		case CommandCodes.successSpeech:
 			successSpeech(p);
+			break;
+		case CommandCodes.battleWin:
+			battleWin(p);
 			break;
 			
 			//File Sys
