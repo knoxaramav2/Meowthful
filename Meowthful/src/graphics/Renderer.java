@@ -1,6 +1,7 @@
 package graphics;
 
 import gameElements.Player;
+import gameEngine.BackgroundMusicPlayer;
 import gameEngine.gameGlobal;
 
 import java.awt.CardLayout;
@@ -12,11 +13,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 //import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,19 +36,20 @@ public class Renderer extends JPanel implements ActionListener{
 	 */
 
 	
-	protected JTextField consoleWindow;
-	protected JTextArea consoleFrame;
-	protected unownInterpreter ui;
-	private final static String newLine = "\n";
-	public JPanel			base = null;
-	public CustomPanel  	panel = null;
-	public MainMenuPanel	menu = null;
-	public BattlePanel		battle = null;
-	public JFrame			master = null;
-	public NewGamePanel		newGame = null;
-	public LoadGamePanel 	loadGame = null;
-	public CardLayout 		deck = null;
-	
+	protected JTextField 			consoleWindow;
+	protected JTextArea 			consoleFrame;
+	protected unownInterpreter 		ui;
+	private final static String 	newLine = "\n";
+	public JPanel					base = null;
+	public CustomPanel  			panel = null;
+	public MainMenuPanel			menu = null;
+	public BattlePanel				battle = null;
+	public JFrame					master = null;
+	public NewGamePanel				newGame = null;
+	public LoadGamePanel 			loadGame = null;
+	public CardLayout 				deck = null;
+	public BackgroundMusicPlayer   	audio = null;
+
 	int panelMode = 0;
 	
 	public final static int WORLD_FRAME = 1;
@@ -59,9 +59,15 @@ public class Renderer extends JPanel implements ActionListener{
 	public final static int NEW_FRAME = 5;
 	
 	
-	public Renderer () 
+	public Renderer ()
 	{
 		super (new GridBagLayout());
+		
+		try{
+			audio = new BackgroundMusicPlayer();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 		
 		base = new JPanel();
 		deck = new CardLayout();
@@ -119,7 +125,7 @@ public class Renderer extends JPanel implements ActionListener{
 			Player p = Gg.getPlayer(i);
 			players.add(p);
 		}
-		
+				
 		gameElements.Map map = new gameElements.Map("maps/Island1Exterior.WORLD");
 		master = new JFrame("Meowthful");
 		panel = new CustomPanel(map, Gg.getSpriteSheets(), ui);
@@ -165,6 +171,7 @@ public class Renderer extends JPanel implements ActionListener{
 		{
 		case WORLD_FRAME:
 			deck.show(base, "world");
+			audio.playTrack("exterior");
 			System.out.println("Switched to world");
 			if (panel.requestFocusInWindow())
 				System.out.println("Success");
@@ -173,6 +180,7 @@ public class Renderer extends JPanel implements ActionListener{
 			break;
 		case MENU_FRAME:
 			deck.show(base, "menu");
+			audio.playTrack("menu");
 			System.out.println("Switched to menu");
 			if (menu.requestFocusInWindow())
 				System.out.println("Success");
@@ -181,6 +189,7 @@ public class Renderer extends JPanel implements ActionListener{
 			break;
 		case BATTLE_FRAME:
 			deck.show(base, "battle");
+			audio.playTrack("battle");
 			System.out.println("Switched to battle");
 			if (battle.requestFocusInWindow())
 				System.out.println("Success");
